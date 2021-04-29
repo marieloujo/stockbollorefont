@@ -1,36 +1,60 @@
 <nz-layout>
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+  <nz-sider [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzCollapsible>
     <div class="logo"></div>
-    <ul nz-menu nzTheme="dark" nzMode="inline">
+    <ul nz-menu nzMode="inline" nzTheme="dark">
 
       <li nz-menu-item>
         <a [routerLink]="['/dashboard']">
-        <i nz-icon nzType="home"></i>
-        <span>Accueil</span>
-      </a>
+          <i nz-icon nzType="home"></i>
+          <span>Accueil</span>
+        </a>
       </li>
 
       <li nz-menu-item>
-        <i nz-icon nzType="shop"></i>
-        <span>Magasin</span>
+        <a [routerLink]="['/dashboard/magasins']">
+          <i nz-icon nzType="shop"></i>
+          <span>Magasin</span>
+        </a>
       </li>
 
       <li nz-menu-item>
-        <i nz-icon nzType="file-text"></i>
-        <span>Nouvelle demande</span>
+        <a [routerLink]="['/dashboard/nouvelle-demande']">
+          <i nz-icon nzType="file-text"></i>
+          <span>Nouvelle demande</span>
+        </a>
       </li>
 
-      <li nz-submenu nzTitle="Matériel" nzIcon="insert-row-below">
+      <li nz-submenu nzIcon="insert-row-below" nzTitle="Matériel">
         <ul>
-          <li nz-menu-item>Marque</li>
-          <li nz-menu-item>Modèle</li>
-          <li nz-menu-item>Gamme</li>
-          <li nz-menu-item>Etat</li>
-          <li nz-menu-item>Matériel</li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/marque']">
+              Marque
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/modele']">
+            Modèle
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/gamme']">
+              Gamme
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/etat']">
+              Etat
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/produit']">
+              Produit
+            </a>
+          </li>
         </ul>
       </li>
 
-      <li nz-submenu nzTitle="Utilisateur" nzIcon="team">
+      <li nz-submenu nzIcon="team" nzTitle="Utilisateur">
         <ul>
           <li nz-menu-item>Service</li>
           <li nz-menu-item>Profil</li>
@@ -39,24 +63,26 @@
       </li>
 
       <li nz-menu-item>
+        <a [routerLink]="['/dashboard/apropos']">
         <i nz-icon nzType="info-circle"></i>
         <span>A propos</span>
+        </a>
       </li>
     </ul>
   </nz-sider>
   <nz-layout>
     <nz-header>
-      <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
+      <i (click)="isCollapsed = !isCollapsed" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" class="trigger"
+         nz-icon></i>
     </nz-header>
     <nz-content>
-      <router-outlet></router-outlet>
-      <!--<nz-breadcrumb>
-        <nz-breadcrumb-item>Accueil</nz-breadcrumb-item>
-        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
-      </nz-breadcrumb>
+      <div style="padding: 10px;">
+        <app-breadcrumb></app-breadcrumb>
+      </div>
+
       <div class="inner-content">
-        Bill is a cat.
-      </div>-->
+        <router-outlet></router-outlet>
+      </div>
     </nz-content>
     <nz-footer>Gestion de Stock Bollore ©2021 Implement By IT interns</nz-footer>
   </nz-layout>

@@ -1,0 +1,42 @@
+<p>magasin works!</p>
+
+
+<nz-tabset [nzSize]="'large'" [nzSelectedIndex]="indexOfTab">
+  <nz-tab [nzTitle]="'Liste des magasins '" >Content of tab 01</nz-tab>
+  <nz-tab [nzTitle]="'Nouvel magasin' " >
+
+    <form [formGroup]="validateMagasinForm" nz-form>
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Libellé</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input nz-input formControlName="libelle" placeholder="saisir le libellé" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-space>
+            <nz-space-item>
+              <button nz-button nzType="default"  (click)="resetMagasinForm($event)"
+              ><i nz-icon nzType="close"></i>
+                Annuler
+              </button>
+            </nz-space-item>
+            <nz-space-item>
+              <button nz-button nzType="primary" (click)="submitMagasinForm()"
+                      [disabled]="validateMagasinForm.invalid"
+              ><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>
+            </nz-space-item>
+          </nz-space>
+        </div>
+
+      </div>
+
+    </form>
+
+  </nz-tab>
+</nz-tabset>
