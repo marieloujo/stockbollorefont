@@ -1,0 +1,49 @@
+<p>nouvelle-demande works!</p>
+
+<h3 nz-typography>Fournisseur</h3>
+<form nz-form class="ant-advanced-search-form">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="10">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Le nom du fournisseur est requis">
+          <input nz-input type="text" name="fournisseur" id="fournisseur" placeholder="Nom du fournisseur " />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="10">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Adresse est requise">
+          <input nz-input type="text" name="adresse" id="adresse" placeholder="Adresse du fournisseur" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="10">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Le téléphone est requis">
+          <input nz-input type="text" name="telephone" id="telephone" placeholder="Téléphone" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="10">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="L\'email est requis">
+          <input nz-input type="email" name="email" id="email" placeholder="Email" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-space>
+        <nz-space-item>
+          <button nz-button [nzType]="'danger'" >Annuler</button>
+        </nz-space-item>
+        <nz-space-item>
+          <button nz-button [nzType]="'primary'">Enregistrer</button>
+        </nz-space-item>
+      </nz-space>
+    </nz-form-control>
+  </nz-form-item>
+</form>

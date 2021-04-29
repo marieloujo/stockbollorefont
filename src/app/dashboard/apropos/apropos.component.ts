@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import {BehaviorService} from '../../services/common/behavior.service';
 
 @Component({
-  selector: 'app-accueil',
-  templateUrl: './accueil.component.html',
-  styleUrls: ['./accueil.component.css']
+  selector: 'app-apropos',
+  templateUrl: './apropos.component.html',
+  styleUrls: ['./apropos.component.css']
 })
-export class AccueilComponent implements OnInit {
+export class AproposComponent implements OnInit {
 
   constructor(
     private behaviorService: BehaviorService,
   ) { }
 
   ngOnInit(): void {
-    this.behaviorService.setBreadcrumbItems(['Accueil', 'Tableau de bord']);
+    this.behaviorService.setBreadcrumbItems(['Accueil', 'A propos']);
   }
 
 }
