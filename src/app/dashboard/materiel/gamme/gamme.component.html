@@ -1,1 +1,90 @@
-<p>gamme works!</p>
+
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+  <nz-tab [nzTitle]="'Liste des gammes '">
+    <nz-table #sortTable [nzData]="gammeList" nzTableLayout="fixed">
+      <thead>
+      <tr>
+        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+        <th> Actions </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of sortTable.data">
+        <td>{{ data.libelle }}</td>
+        <td>{{ data.description }}</td>
+        <td>
+          <nz-space>
+            <nz-space-item>
+              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            </nz-space-item>
+            <nz-space-item>
+              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            </nz-space-item>
+          </nz-space>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+  <nz-tab [nzTitle]="'Nouvelle gamme' ">
+
+    <form [formGroup]="validateMagasinForm" nz-form>
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Libellé</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="libelle" nz-input placeholder="saisir le libellé"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Description</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <textarea rows="4" nz-input formControlName="description" placeholder="saisir une description"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          `
+          <!--<br />
+          <nz-input-group [nzSuffix]="textAreaClearTpl" class="ant-input-affix-wrapper-textarea-with-clear-btn">
+            <textarea nz-input [(ngModel)]="textValue" placeholder="textarea with clear icon"></textarea>
+          </nz-input-group>
+          <ng-template #textAreaClearTpl
+          ><i
+            nz-icon
+            class="ant-input-textarea-clear-icon"
+            nzTheme="fill"
+            nzType="close-circle"
+            *ngIf="textValue"
+            (click)="textValue = null"
+          ></i
+          ></ng-template>-->
+        </div>
+
+
+        <div nz-col nzSpan="24">
+          <nz-space>
+            <nz-space-item>
+              <button (click)="resetGammeForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>
+            </nz-space-item>
+            <nz-space-item>
+              <button (click)="submitGameForm()" [disabled]="validateMagasinForm.invalid" nz-button
+                      nzType="primary"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>
+            </nz-space-item>
+          </nz-space>
+        </div>
+
+      </div>
+
+    </form>
+
+  </nz-tab>
+</nz-tabset>
