@@ -18,6 +18,8 @@ export class MagasinComponent implements OnInit {
 
   indexOfTab: number;
 
+  listOfColumn: any = [];
+
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
@@ -30,6 +32,8 @@ export class MagasinComponent implements OnInit {
     this.makeMagasinForm(null);
 
     this.list();
+
+    this.listOfColumnHeadeer();
 
   }
 
@@ -69,6 +73,7 @@ export class MagasinComponent implements OnInit {
             this.makeMagasinForm(null);
 
             console.log('Enregistrement ok');
+            this.indexOfTab = 0;
 
           },
           (error: HttpErrorResponse) => {
@@ -83,9 +88,12 @@ export class MagasinComponent implements OnInit {
             this.magasinList = [...this.magasinList];
             this.makeMagasinForm(null);
 
+            console.log('Update ok');
+            this.indexOfTab = 0;
+
           },
           (error: HttpErrorResponse) => {
-
+            console.log('Update non ok');
           });
       }
 
@@ -105,6 +113,31 @@ export class MagasinComponent implements OnInit {
       (error: HttpErrorResponse) => {
         console.log('error getList Magasin ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
+  }
+
+  listOfColumnHeadeer(){
+    this.listOfColumn = [
+      /*{
+        title: 'Name',
+        compare: null,
+        priority: false
+      },*/
+      {
+        title: 'Libellé',
+        compare: null,
+        priority: false
+      },
+      /*{
+        title: 'Math Score',
+        compare: (a: DataItem, b: DataItem) => a.math - b.math,
+        priority: 2
+      },
+      {
+        title: 'English Score',
+        compare: (a: DataItem, b: DataItem) => a.english - b.english,
+        priority: 1
+      }*/
+    ];
   }
 
 }

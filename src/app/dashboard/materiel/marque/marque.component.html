@@ -1,1 +1,62 @@
-<p>marque works!</p>
+
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+  <nz-tab [nzTitle]="'Liste des marques '">
+    <nz-table #sortTable [nzData]="marqueList" nzTableLayout="fixed">
+      <thead>
+      <tr>
+        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+        <th> Actions </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of sortTable.data">
+        <td>{{ data.libelle }}</td>
+        <td>
+          <nz-space>
+            <nz-space-item>
+              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            </nz-space-item>
+            <nz-space-item>
+              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            </nz-space-item>
+          </nz-space>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+  <nz-tab [nzTitle]="'Nouvelle marque' ">
+
+    <form [formGroup]="validateMagasinForm" nz-form>
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Libellé</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="libelle" nz-input placeholder="saisir le libellé"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-space>
+            <nz-space-item>
+              <button (click)="resetMarqueForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>
+            </nz-space-item>
+            <nz-space-item>
+              <button (click)="submitMarqueForm()" [disabled]="validateMagasinForm.invalid" nz-button
+                      nzType="primary"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>
+            </nz-space-item>
+          </nz-space>
+        </div>
+
+      </div>
+
+    </form>
+
+  </nz-tab>
+</nz-tabset>
