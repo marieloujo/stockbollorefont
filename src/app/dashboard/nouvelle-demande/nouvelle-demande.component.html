@@ -1,3 +1,131 @@
+
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+  <nz-tab [nzTitle]="'Liste des nouvelle demande'">
+    <nz-table #sortTable [nzData]="produitList" nzTableLayout="fixed">
+      <thead>
+      <tr>
+        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+        <th> Actions </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of sortTable.data">
+        <td>{{ data.numSerie }}</td>
+        <td>{{ data.numSerie }}</td>
+        <td>{{ data.numSerie }}</td>
+        <td>{{ data.numSerie }}</td>
+        <td>{{ data.numSerie }}</td>
+        <td>
+          <nz-space>
+            <nz-space-item>
+              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            </nz-space-item>
+            <nz-space-item>
+              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            </nz-space-item>
+          </nz-space>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+  <nz-tab [nzTitle]="'Nouvelle demande' ">
+
+    <form nz-form>
+      <div nz-row>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Marque</nz-form-label>
+            <nz-select >
+              <nz-option [nzLabel]="'Marque01'" [nzValue]="'Home'"></nz-option>
+              <nz-option [nzLabel]="'Marque02'" [nzValue]="'Company'"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Modele</nz-form-label>
+            <nz-select >
+              <nz-option [nzLabel]="'Modele01'" [nzValue]="'Home'"></nz-option>
+              <nz-option [nzLabel]="'Modele2'" [nzValue]="'Company'"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Gamme</nz-form-label>
+            <nz-select >
+              <nz-option [nzLabel]="'Gamme01'" [nzValue]="'Home'"></nz-option>
+              <nz-option [nzLabel]="'Gamme02'" [nzValue]="'Company'"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input  nz-input placeholder="saisir le num de serie"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Nom de la personne concerné</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input  nz-input placeholder="nom de la personne concerné"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Description</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <textarea rows="4" nz-input  placeholder="saisir une description"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-space>
+            <nz-space-item>
+              <!--<button (click)="resetEtatForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>-->
+              <button nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>
+            </nz-space-item>
+            <nz-space-item>
+              <!--<button (click)="submitEtatForm()" [disabled]="validateEtatForm.invalid" nz-button
+                      nzType="primary"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>-->
+              <button nz-button nzType="primary"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>
+            </nz-space-item>
+          </nz-space>
+        </div>
+
+      </div>
+
+    </form>
+
+  </nz-tab>
+</nz-tabset>
+
+
+
+
+
+<!--
 <p>nouvelle-demande works!</p>
 
 <h3 nz-typography>Fournisseur</h3>
@@ -47,3 +175,4 @@
     </nz-form-control>
   </nz-form-item>
 </form>
+-->

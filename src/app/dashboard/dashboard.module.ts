@@ -21,6 +21,7 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {NzTableModule} from 'ng-zorro-antd/table';
+import {NzSelectModule} from 'ng-zorro-antd/select';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {NzTableModule} from 'ng-zorro-antd/table';
     NzInputModule,
     NzTabsModule,
     NzTableModule,
+    NzSelectModule,
   ]
 })
 export class DashboardModule { }

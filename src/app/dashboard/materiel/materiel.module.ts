@@ -18,6 +18,7 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzSelectModule} from 'ng-zorro-antd/select';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
     NzLayoutModule,
     NzIconModule,
     FormsModule,
+    NzSelectModule,
   ]
 })
 export class MaterielModule { }
