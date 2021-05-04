@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BehaviorService} from '../../services/common/behavior.service';
+import {FormGroup} from '@angular/forms';
+import {Produit} from '../../models/produit';
 
 @Component({
   selector: 'app-nouvelle-demande',
@@ -7,6 +9,14 @@ import {BehaviorService} from '../../services/common/behavior.service';
   styleUrls: ['./nouvelle-demande.component.css']
 })
 export class NouvelleDemandeComponent implements OnInit {
+
+  validateNewDemandeForm!: FormGroup;
+
+  produitList: Produit[];
+
+  indexOfTab: number;
+
+  listOfColumn: any = [];
 
   constructor(
     private behaviorService: BehaviorService,

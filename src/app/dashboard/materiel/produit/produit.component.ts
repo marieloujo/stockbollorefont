@@ -13,7 +13,7 @@ import {Produit} from '../../../models/produit';
 })
 export class ProduitComponent implements OnInit {
 
-  validateMagasinForm!: FormGroup;
+  validateProduitForm!: FormGroup;
 
   produitList: Produit[];
 
@@ -30,8 +30,48 @@ export class ProduitComponent implements OnInit {
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Matériel', 'Produit']);
 
+    this.listOfColumnHeader();
 
+  }
 
+  listOfColumnHeader(){
+    this.listOfColumn = [
+      {
+        title: 'Numero Série',
+        compare: null,
+        priority: false
+      },
+      {
+        title: 'Gamme',
+        compare: null,
+        priority: false
+      },
+      {
+        title: 'Marque',
+        compare: null,
+        priority: false
+      },
+      {
+        title: 'Modele',
+        compare: null,
+        priority: false
+      },
+      {
+        title: 'Etat',
+        compare: null,
+        priority: false
+      },
+      /*{
+        title: 'Math Score',
+        compare: (a: DataItem, b: DataItem) => a.math - b.math,
+        priority: 2
+      },
+      {
+        title: 'English Score',
+        compare: (a: DataItem, b: DataItem) => a.english - b.english,
+        priority: 1
+      }*/
+    ];
   }
 
 }
