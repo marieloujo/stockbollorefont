@@ -4,7 +4,7 @@
     <nz-table #sortTable [nzData]="produitList" nzTableLayout="fixed">
       <thead>
       <tr>
-        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }} <i nz-icon nzType="search"></i> </th>
         <th> Actions </th>
       </tr>
       </thead>

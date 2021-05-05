@@ -22,6 +22,7 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {NzTableModule} from 'ng-zorro-antd/table';
 import {NzSelectModule} from 'ng-zorro-antd/select';
+import {NzBadgeModule} from 'ng-zorro-antd/badge';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import {NzSelectModule} from 'ng-zorro-antd/select';
     NzTabsModule,
     NzTableModule,
     NzSelectModule,
+    NzBadgeModule,
   ]
 })
 export class DashboardModule { }
