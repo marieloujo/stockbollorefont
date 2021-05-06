@@ -23,7 +23,16 @@ export class NouvelleDemandeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.behaviorService.setBreadcrumbItems(['Accueil', 'Nouvelle demande']);
+    this.behaviorService.setBreadcrumbItems(['Accueil', 'Demande', 'Nouvelle demande']);
   }
+
+  validerProduit(){
+    this.indexOfTab = 1;
+  }
+
+  addNewProduit(){
+    this.indexOfTab = 0;
+  }
+
 
 }

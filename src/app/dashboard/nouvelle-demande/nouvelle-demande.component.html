@@ -69,7 +69,7 @@
                       nzType="primary"><i nz-icon nzType="check"></i>
                 Enregistrer
               </button>-->
-              <button nz-button nzType="primary"><i nz-icon nzType="check"></i>
+              <button nz-button nzType="primary" (click)="validerProduit()"><i nz-icon nzType="check"></i>
                 Valider
               </button>
             </nz-space-item>
@@ -77,9 +77,9 @@
               <!--<button (click)="resetEtatForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
                 Annuler
               </button>-->
-              <button nz-button nzType="default"><i nz-icon nzType="check"></i>
+              <!--<button nz-button nzType="default"><i nz-icon nzType="check"></i>
                 Soumettre
-              </button>
+              </button>-->
             </nz-space-item>
           </nz-space>
         </div>
@@ -135,7 +135,7 @@
       <div nz-col nzSpan="24">
         <nz-space>
           <nz-space-item>
-            <button nz-button nzType="default"><i nz-icon nzType="check"></i>
+            <button nz-button nzType="default" (click)="addNewProduit()"><i nz-icon nzType="check"></i>
               Rajouter un nouveau produit
             </button>
           </nz-space-item>

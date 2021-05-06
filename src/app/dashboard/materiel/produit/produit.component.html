@@ -1,34 +1,63 @@
-
 <nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
-  <nz-tab [nzTitle]="'Liste des produits'">
-    <nz-table #sortTable [nzData]="produitList" nzTableLayout="fixed">
-      <thead>
-      <tr>
-        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }} <i nz-icon nzType="search"></i> </th>
-        <th> Actions </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let data of sortTable.data">
-        <td>{{ data.numSerie }}</td>
-        <td>{{ data.numSerie }}</td>
-        <td>{{ data.numSerie }}</td>
-        <td>{{ data.numSerie }}</td>
-        <td>{{ data.numSerie }}</td>
-        <td>
-          <nz-space>
-            <nz-space-item>
-              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
-            </nz-space-item>
-            <nz-space-item>
-              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
-            </nz-space-item>
-          </nz-space>
-        </td>
-      </tr>
-      </tbody>
-    </nz-table>
-  </nz-tab>
+  <!--<div nz-row>
+    <div nz-col nzSpan="24" style="padding-right: 1.5em">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Magasin</nz-form-label>
+        <nz-select>
+          <nz-option [nzLabel]="'&#45;&#45;selectionner un magasin&#45;&#45;'" [nzValue]="null"></nz-option>
+          <nz-option [nzLabel]="'Magasin 01'" [nzValue]="'Home'"></nz-option>
+          <nz-option [nzLabel]="'Magasin 02'" [nzValue]="'Company'"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+  </div>-->
+
+
+    <nz-tab [nzTitle]="'Liste des produits'">
+
+      <div nz-row>
+        <div nz-col nzSpan="10" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Sélectionner un magasin</nz-form-label>
+            <nz-select>
+              <nz-option [nzLabel]="'Magasin 01'" [nzValue]="'Home'"></nz-option>
+              <nz-option [nzLabel]="'Magasin 02'" [nzValue]="'Company'"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <nz-table #sortTable [nzData]="produitList" nzTableLayout="fixed">
+        <thead>
+        <tr>
+          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare"
+              [nzSortPriority]="column.priority">{{ column.title }} <i nz-icon nzType="search"></i></th>
+          <th> Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of sortTable.data">
+          <td>{{ data.numSerie }}</td>
+          <td>{{ data.numSerie }}</td>
+          <td>{{ data.numSerie }}</td>
+          <td>{{ data.numSerie }}</td>
+          <td>{{ data.numSerie }}</td>
+          <td>
+            <nz-space>
+              <nz-space-item>
+                <button nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="edit"></i>
+                </button>
+              </nz-space-item>
+              <nz-space-item>
+                <button nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="delete"></i>
+                </button>
+              </nz-space-item>
+            </nz-space>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-tab>
   <nz-tab [nzTitle]="'Nouveau produit' ">
 
     <form nz-form>
@@ -36,41 +65,51 @@
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
-            <nz-form-label [nzSpan]="24">Marque</nz-form-label>
-            <nz-select >
-              <nz-option [nzLabel]="'Marque01'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Marque02'" [nzValue]="'Company'"></nz-option>
-            </nz-select>
-          </nz-form-item>
-        </div>
-
-
-        <div nz-col nzSpan="12" style="padding-right: 1.5em">
-          <nz-form-item>
-            <nz-form-label [nzSpan]="24">Modele</nz-form-label>
-            <nz-select >
-              <nz-option [nzLabel]="'Modele01'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Modele2'" [nzValue]="'Company'"></nz-option>
-            </nz-select>
+            <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input nz-input placeholder="saisir le numero de serie"/>
+            </nz-form-control>
           </nz-form-item>
         </div>
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Gamme</nz-form-label>
-            <nz-select >
-              <nz-option [nzLabel]="'Gamme01'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Gamme02'" [nzValue]="'Company'"></nz-option>
+            <nz-select>
+              <nz-option [nzLabel]="'Gamme 01'" [nzValue]="'Home'"></nz-option>
+              <nz-option [nzLabel]="'Gamme 02'" [nzValue]="'Company'"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
 
-        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
           <nz-form-item>
-            <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
-            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input  nz-input placeholder="saisir le num de serie"/>
-            </nz-form-control>
+            <nz-form-label [nzSpan]="24">Magasin</nz-form-label>
+            <nz-select>
+              <nz-option [nzLabel]="'Magasin 01'" [nzValue]="'Home'"></nz-option>
+              <nz-option [nzLabel]="'Magasin 02'" [nzValue]="'Company'"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Marque</nz-form-label>
+            <nz-select>
+              <nz-option [nzLabel]="'Marque 01'" [nzValue]="'Home'"></nz-option>
+              <nz-option [nzLabel]="'Marque 02'" [nzValue]="'Company'"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Modele</nz-form-label>
+            <nz-select>
+              <nz-option [nzLabel]="'Modele 01'" [nzValue]="'Home'"></nz-option>
+              <nz-option [nzLabel]="'Modele 02'" [nzValue]="'Company'"></nz-option>
+            </nz-select>
           </nz-form-item>
         </div>
 
@@ -78,7 +117,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Description</nz-form-label>
             <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <textarea rows="4" nz-input  placeholder="saisir une description"></textarea>
+              <textarea nz-input placeholder="saisir une description" rows="4"></textarea>
             </nz-form-control>
           </nz-form-item>
         </div>

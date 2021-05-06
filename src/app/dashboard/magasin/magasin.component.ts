@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Magasin} from '../../models/magasin';
 import {HttpErrorResponse} from '@angular/common/http';
 import {MagasinService} from '../../services/dashboard/magasin.service';
+import {Produit} from '../../models/produit';
 
 @Component({
   selector: 'app-magasin',
@@ -11,6 +12,18 @@ import {MagasinService} from '../../services/dashboard/magasin.service';
   styleUrls: ['./magasin.component.css']
 })
 export class MagasinComponent implements OnInit {
+
+  listOfData: Magasin[] = [
+    {
+      id: 1,
+      libelle: 'Magsin 01',
+    },
+    {
+      id: 2,
+      libelle: 'Magsin 02',
+    },
+
+  ];
 
   validateMagasinForm!: FormGroup;
 

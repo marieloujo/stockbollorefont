@@ -23,10 +23,11 @@ import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {NzTableModule} from 'ng-zorro-antd/table';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
+import { HistoriqueDemandeComponent } from './historique-demande/historique-demande.component';
 
 
 @NgModule({
-  declarations: [DashboardComponent, AccueilComponent, MagasinComponent, NouvelleDemandeComponent, AproposComponent],
+  declarations: [DashboardComponent, AccueilComponent, MagasinComponent, NouvelleDemandeComponent, AproposComponent, HistoriqueDemandeComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
