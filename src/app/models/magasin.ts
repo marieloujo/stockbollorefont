@@ -4,6 +4,6 @@ export class Magasin {
 
   id: number;
   libelle: string;
-  produits: Produit[];
+  //produits: Produit[];
 
 }

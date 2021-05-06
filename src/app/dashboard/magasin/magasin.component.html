@@ -1,7 +1,7 @@
 
 <nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
   <nz-tab [nzTitle]="'Liste des magasins '">
-    <nz-table #sortTable [nzData]="magasinList" nzTableLayout="fixed">
+    <nz-table #sortTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
       <tr>
         <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>

@@ -5,6 +5,7 @@ import {AccueilComponent} from './accueil/accueil.component';
 import {MagasinComponent} from './magasin/magasin.component';
 import {NouvelleDemandeComponent} from './nouvelle-demande/nouvelle-demande.component';
 import {AproposComponent} from './apropos/apropos.component';
+import {HistoriqueDemandeComponent} from './historique-demande/historique-demande.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'apropos',
         component: AproposComponent,
+      },
+      {
+        path: 'historique-demande',
+        component: HistoriqueDemandeComponent,
       },
       {
         path: 'materiel',
