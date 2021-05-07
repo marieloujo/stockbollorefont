@@ -73,9 +73,21 @@
 
       <li nz-submenu nzIcon="team" nzTitle="Utilisateur">
         <ul>
-          <li nz-menu-item>Service</li>
-          <li nz-menu-item>Profil</li>
-          <li nz-menu-item>Utilisateur</li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/utilisateur/service']">
+              Service
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/utilisateur/profil']">
+              Profil
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/utilisateur/user']">
+              Utilisateur
+            </a>
+          </li>
         </ul>
       </li>
 
