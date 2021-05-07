@@ -35,11 +35,11 @@ const routes: Routes = [
         path: 'materiel',
         loadChildren: () => import('./materiel/materiel.module').then(value => value.MaterielModule)
       },
-      /*{
-        path: 'sie',
-        loadChildren: () => import('./sie/sie.module').then(value => value.SieModule)
-      },
       {
+        path: 'utilisateur',
+        loadChildren: () => import('./utilisateurs/utilisateurs.module').then(value => value.UtilisateursModule)
+      },
+      /*{
         path: 'sig',
         loadChildren: () => import('./sig/sig.module').then(value => value.SigModule)
       },*/
