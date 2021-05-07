@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {BehaviorService} from '../../../services/common/behavior.service';
 
 @Component({
   selector: 'app-profil',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfilComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private behaviorService: BehaviorService,
+  ) { }
 
   ngOnInit(): void {
+    this.behaviorService.setBreadcrumbItems(['Accueil', 'Gestion Utilisateur', 'Profil']);
   }
 
 }
