@@ -20,8 +20,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Sélectionner un magasin</nz-form-label>
             <nz-select>
-              <nz-option [nzLabel]="'Magasin 01'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Magasin 02'" [nzValue]="'Company'"></nz-option>
+              <nz-option  *ngFor="let magasin of magasinList" [nzLabel]="magasin.libelle" [nzValue]="magasin.id"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>

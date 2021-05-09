@@ -1,7 +1,7 @@
 
 <nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
   <nz-tab [nzTitle]="'Liste des magasins '">
-    <nz-table #sortTable [nzData]="listOfData" nzTableLayout="fixed">
+    <nz-table #sortTable [nzData]="magasinList" nzTableLayout="fixed">
       <thead>
       <tr>
         <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
@@ -14,10 +14,16 @@
         <td>
           <nz-space>
             <nz-space-item>
-              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+              <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
             </nz-space-item>
-            <nz-space-item>
-              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            <nz-space-item> 
+              <button 
+                nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                (nzOnConfirm)="confirmMsgDelete(data)"
+                (nzOnCancel)="cancelMsgDelete()"
+                nzPopconfirmPlacement="topRight"
+                nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
             </nz-space-item>
           </nz-space>
         </td>
