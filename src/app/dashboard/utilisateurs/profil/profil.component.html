@@ -1,0 +1,70 @@
+
+
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+    <nz-tab [nzTitle]="'Liste des profils'">
+      <nz-table #sortTable [nzData]="profilList" nzTableLayout="fixed">
+        <thead>
+        <tr>
+          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+          <th> Actions </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of sortTable.data">
+          <td>{{ data.libelle }}</td>
+          <td>
+            <nz-space>
+              <nz-space-item>
+                <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+              </nz-space-item>
+              <nz-space-item>
+                <button 
+                  nz-popconfirm
+                  nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                  (nzOnConfirm)="confirmMsgDelete(data)"
+                  (nzOnCancel)="cancelMsgDelete()"
+                  nzPopconfirmPlacement="topRight"
+                  nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+              </nz-space-item>
+            </nz-space>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-tab>
+    <nz-tab [nzTitle]="'Nouveau profil' ">
+  
+      <form [formGroup]="validateProfilForm" nz-form>
+        <div nz-row>
+          <div nz-col nzSpan="24">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Libellé</nz-form-label>
+              <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+                <input formControlName="libelle" nz-input placeholder="saisir le libellé"/>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+  
+          <div nz-col nzSpan="24">
+            <nz-space>
+              <nz-space-item>
+                <button (click)="resetEtatForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+                  Annuler
+                </button>
+              </nz-space-item>
+              <nz-space-item>
+                <button (click)="submitProfilForm()" [disabled]="validateProfilForm.invalid" nz-button
+                        nzType="primary"><i nz-icon nzType="check"></i>
+                  Enregistrer
+                </button>
+              </nz-space-item>
+            </nz-space>
+          </div>
+  
+        </div>
+  
+      </form>
+  
+    </nz-tab>
+  </nz-tabset>
+  

@@ -1,0 +1,33 @@
+<h2>Historique des demandes</h2>
+
+<div nz-row>
+
+  <button nz-button nzType="primary" nzBlock style="margin-bottom: 10px">
+    <a [routerLink]="['/dashboard/nouvelle-demande']"> Faire une nouvelle demande </a>
+  </button>
+
+  <nz-table #sortTable [nzData]="listOfData" nzTableLayout="fixed">
+    <thead>
+    <tr>
+      <!--<th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare"
+          [nzSortPriority]="column.priority">{{ column.title }}</th>-->
+      <th> Num série </th>
+      <th> Marque </th>
+      <th> Modele </th>
+      <th> Equipement </th>
+      <th> Demandeur </th>
+      <th> Date </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of sortTable.data">
+      <td>{{ data.numserie }}</td>
+      <td>{{ data.marque }}</td>
+      <td>{{ data.modele }}</td>
+      <td>{{ data.gamme }}</td>
+      <td>{{ data.demandeur }}</td>
+      <td>{{ data.date }}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>
