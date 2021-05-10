@@ -58,6 +58,15 @@ export class MarqueComponent implements OnInit {
     console.log('Tab en cours ==> ', this.indexOfTab);
   }
 
+
+  updateForm(data: Marque){
+
+    this.makeMarqueForm(data);
+
+    this.indexOfTab = 1;
+  }
+
+
   list(): void {
     this.marqueService.getList().subscribe(
       (data: any) => {
@@ -69,13 +78,30 @@ export class MarqueComponent implements OnInit {
       });
   }
 
+  confirmMsgDelete(data: Marque){
+
+    this.marqueService.deleteMarque(data.id).subscribe(
+      (data01: any) => {
+        console.log('data du delete ==>', data01);
+        //this.indexOfTab = 0;
+        //this.nzMessageService.info('click cancel');
+        this.list();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error deleteEtat ==>', error.message, ' ', error.status, ' ', error.statusText);
+      }
+    );
+  }
+
+
+  cancelMsgDelete(): void {
+    //this.nzMessageService.info('click confirm');
+  }
+
+
   listOfColumnHeadeer(){
     this.listOfColumn = [
-      /*{
-        title: 'Name',
-        compare: null,
-        priority: false
-      },*/
+   
       {
         title: 'Libellé',
         compare: null,

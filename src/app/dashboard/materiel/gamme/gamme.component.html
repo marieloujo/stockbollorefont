@@ -1,6 +1,6 @@
 
 <nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
-  <nz-tab [nzTitle]="'Liste des gammes '">
+  <nz-tab [nzTitle]="'Liste des équipements '">
     <nz-table #sortTable [nzData]="gammeList" nzTableLayout="fixed">
       <thead>
       <tr>
@@ -15,10 +15,16 @@
         <td>
           <nz-space>
             <nz-space-item>
-              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+              <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
             </nz-space-item>
             <nz-space-item>
-              <button nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+              <button 
+                nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                (nzOnConfirm)="confirmMsgDelete(data)"
+                (nzOnCancel)="cancelMsgDelete()"
+                nzPopconfirmPlacement="topRight"
+                nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
             </nz-space-item>
           </nz-space>
         </td>
@@ -26,7 +32,7 @@
       </tbody>
     </nz-table>
   </nz-tab>
-  <nz-tab [nzTitle]="'Nouvelle gamme' ">
+  <nz-tab [nzTitle]="'Nouveau équipement' ">
 
     <form [formGroup]="validateMagasinForm" nz-form>
       <div nz-row>

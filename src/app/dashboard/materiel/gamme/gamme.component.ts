@@ -61,6 +61,14 @@ export class GammeComponent implements OnInit {
     console.log('Tab en cours ==> ', this.indexOfTab);
   }
 
+  updateForm(data: Gamme){
+
+    this.makeGammeForm(data);
+
+    this.indexOfTab = 1;
+  }
+
+
   list(): void {
     this.gammeService.getList().subscribe(
       (data: any) => {
@@ -71,6 +79,10 @@ export class GammeComponent implements OnInit {
         console.log('error getList Magasin ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
   }
+
+
+
+
 
   listOfColumnHeadeer(){
     this.listOfColumn = [
@@ -101,6 +113,28 @@ export class GammeComponent implements OnInit {
       }*/
     ];
   }
+
+
+  confirmMsgDelete(data: Gamme){
+
+    this.gammeService.deleteGamme(data.id).subscribe(
+      (data01: any) => {
+        console.log('data du delete ==>', data01);
+        //this.indexOfTab = 0;
+        //this.nzMessageService.info('click cancel');
+        this.list();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error deleteEtat ==>', error.message, ' ', error.status, ' ', error.statusText);
+      }
+    );
+  }
+
+
+  cancelMsgDelete(): void {
+    //this.nzMessageService.info('click confirm');
+  }
+
 
   submitGameForm(): void {
     for (const i in this.validateMagasinForm.controls) {
