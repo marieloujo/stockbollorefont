@@ -58,6 +58,16 @@ export class ModeleComponent implements OnInit {
     console.log('Tab en cours ==> ', this.indexOfTab);
   }
 
+  updateForm(data: Modele){
+
+    this.makeModeleForm(data);
+
+    this.indexOfTab = 1;
+  }
+
+
+
+
   list(): void {
     this.modeleService.getList().subscribe(
       (data: any) => {
@@ -68,6 +78,26 @@ export class ModeleComponent implements OnInit {
         console.log('error getList Magasin ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
   }
+
+  confirmMsgDelete(data: Modele){
+
+    this.modeleService.deleteModele(data.id).subscribe(
+      (data01: any) => {
+        console.log('data du delete ==>', data01);
+        //this.indexOfTab = 0;
+        //this.nzMessageService.info('click cancel');
+        this.list();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error deleteEtat ==>', error.message, ' ', error.status, ' ', error.statusText);
+      }
+    );
+  }
+
+  cancelMsgDelete(): void {
+    //this.nzMessageService.info('click confirm');
+  }
+
 
   listOfColumnHeadeer(){
     this.listOfColumn = [
