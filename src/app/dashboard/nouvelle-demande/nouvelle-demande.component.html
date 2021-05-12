@@ -3,12 +3,24 @@
   <nz-tab [nzTitle]="'Nouvelle demande' ">
 
     <form nz-form>
+
+      <div nz-row>
+        <div nz-col nzSpan="8">
+
+        </div>
+        <div nz-col nzSpan="8" nzOffset="8" style="padding-left: 26%">
+          <nz-badge (click)="countAdd()" [nzCount]="countNew"> </nz-badge>
+          <!--<button nz-button nzType="primary" nzShape="circle" style="margin-left: 80%" >A</button>  <span [(ngModel)]="countNew">  </span>-->
+          <!--<button nz-button nzType="danger" nzShape="circle" (click)="countAdd()"> <nz-badge [nzCount]="countNew"> </nz-badge> </button>-->
+        </div>
+      </div>
+
       <div nz-row>
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
-            <nz-select>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série">
               <nz-option [nzLabel]="'211NDTC41169'" [nzValue]="'Home'"></nz-option>
               <nz-option [nzLabel]="'205NDYG4F042'" [nzValue]="'Company'"></nz-option>
             </nz-select>
@@ -90,9 +102,7 @@
 
   </nz-tab>
 
-  <nz-tab [nzTitle]="'Liste des produits pour nouvelle demande'"  >
-
-    <nz-badge [nzCount]="2"> </nz-badge>
+  <nz-tab [nzTitle]="'Liste des produits pour nouvelle demande'">
 
     <div nz-row>
       <nz-table #sortTable [nzData]="produitList" nzTableLayout="fixed">

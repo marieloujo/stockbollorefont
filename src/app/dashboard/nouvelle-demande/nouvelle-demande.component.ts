@@ -18,6 +18,8 @@ export class NouvelleDemandeComponent implements OnInit {
 
   listOfColumn: any = [];
 
+  countNew: number = 0;
+
   constructor(
     private behaviorService: BehaviorService,
   ) { }
@@ -27,11 +29,16 @@ export class NouvelleDemandeComponent implements OnInit {
   }
 
   validerProduit(){
-    this.indexOfTab = 1;
+    //this.indexOfTab = 1;
+    this.countNew++;
   }
 
   addNewProduit(){
     this.indexOfTab = 0;
+  }
+
+  countAdd (){
+    this.countNew++;
   }
 
 
