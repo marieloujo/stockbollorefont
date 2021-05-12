@@ -5,6 +5,7 @@ import {Magasin} from '../../models/magasin';
 import {HttpErrorResponse} from '@angular/common/http';
 import {MagasinService} from '../../services/dashboard/magasin.service';
 import {Produit} from '../../models/produit';
+//import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-magasin',
@@ -13,18 +14,7 @@ import {Produit} from '../../models/produit';
 })
 export class MagasinComponent implements OnInit {
 
-  listOfData: Magasin[] = [
-    {
-      id: 1,
-      libelle: 'Magsin 01',
-    },
-    {
-      id: 2,
-      libelle: 'Magsin 02',
-    },
-
-  ];
-
+ 
   validateMagasinForm!: FormGroup;
 
   magasinList: Magasin[];
@@ -36,7 +26,8 @@ export class MagasinComponent implements OnInit {
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
-    private magasinService: MagasinService
+    private magasinService: MagasinService,
+    //private nzMessageService: NzMessageService
   ) { }
 
   ngOnInit(): void {
@@ -96,9 +87,12 @@ export class MagasinComponent implements OnInit {
       } else {
         const i = this.magasinList.findIndex(p => p.id == formData.id);
         this.magasinService.updateMagasin(formData).subscribe(
-          (data: any) => {
-            this.magasinList[i] = data[0];
+          (data: Magasin) => {
+            console.log(this.magasinList);
+            console.log(data);
+            this.magasinList[i] = data;
             this.magasinList = [...this.magasinList];
+            console.log(this.magasinList);
             this.makeMagasinForm(null);
 
             console.log('Update ok');
@@ -119,7 +113,7 @@ export class MagasinComponent implements OnInit {
 
   list(): void {
     this.magasinService.getList().subscribe(
-      (data: any) => {
+      (data: Magasin[]) => {
         this.magasinList = data;
         console.log('MagasinList ==>', this.magasinList);
       },
@@ -127,6 +121,37 @@ export class MagasinComponent implements OnInit {
         console.log('error getList Magasin ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
   }
+
+  updateForm(data: Magasin){
+
+    this.makeMagasinForm(data);
+
+    this.indexOfTab = 1;
+  }
+
+
+  confirmMsgDelete(data: Magasin){
+    this.magasinService.deleteMagasin(data.id).subscribe(
+      (data01: any) => {
+        console.log('data du delete ==>', data01);
+        //this.indexOfTab = 0;
+        //this.nzMessageService.info('click cancel');
+        this.list();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error deleteMagasin ==>', error.message, ' ', error.status, ' ', error.statusText);
+      }
+    );
+  }
+
+  /*cancelMsgDelete(): void {
+    this.nzMessageService.info('click cancel');
+  }*/
+
+  cancelMsgDelete(): void {
+    //this.nzMessageService.info('click confirm');
+  }
+
 
   listOfColumnHeadeer(){
     this.listOfColumn = [

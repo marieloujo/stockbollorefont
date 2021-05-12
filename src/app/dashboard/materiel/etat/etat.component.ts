@@ -59,6 +59,14 @@ export class EtatComponent implements OnInit {
     console.log('Tab en cours ==> ', this.indexOfTab);
   }
 
+  updateForm(data: Etat){
+
+    this.makeEtatForm(data);
+
+    this.indexOfTab = 1;
+  }
+
+
   list(): void {
     this.etatService.getList().subscribe(
       (data: any) => {
@@ -68,6 +76,26 @@ export class EtatComponent implements OnInit {
       (error: HttpErrorResponse) => {
         console.log('error getList Etat ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
+  }
+
+  confirmMsgDelete(data: Etat){
+
+    this.etatService.deleteEtat(data.id).subscribe(
+      (data01: any) => {
+        console.log('data du delete ==>', data01);
+        //this.indexOfTab = 0;
+        //this.nzMessageService.info('click cancel');
+        this.list();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error deleteEtat ==>', error.message, ' ', error.status, ' ', error.statusText);
+      }
+    );
+  }
+
+
+  cancelMsgDelete(): void {
+    //this.nzMessageService.info('click confirm');
   }
 
   submitEtatForm(): void {
@@ -98,7 +126,7 @@ export class EtatComponent implements OnInit {
         const i = this.etatList.findIndex(p => p.id == formData.id);
         this.etatService.updateEtat(formData).subscribe(
           (data: any) => {
-            this.etatList[i] = data[0];
+            this.etatList[i] = data;
             this.etatList = [...this.etatList];
             this.makeEtatForm(null);
 
@@ -131,3 +159,6 @@ export class EtatComponent implements OnInit {
   }
 
 }
+
+
+

@@ -5,6 +5,8 @@ import {Magasin} from '../../../models/magasin';
 import {MarqueService} from '../../../services/dashboard/marque.service';
 import {ProduitService} from '../../../services/dashboard/produit.service';
 import {Produit} from '../../../models/produit';
+import { MagasinService } from 'src/app/services/dashboard/magasin.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-produit',
@@ -16,6 +18,7 @@ export class ProduitComponent implements OnInit {
   validateProduitForm!: FormGroup;
 
   produitList: Produit[];
+  magasinList: Magasin[];
 
   indexOfTab: number;
 
@@ -24,14 +27,27 @@ export class ProduitComponent implements OnInit {
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
-    private produitService: ProduitService
+    private produitService: ProduitService,
+    private magasinService: MagasinService,
   ) { }
 
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Matériel', 'Produit']);
 
     this.listOfColumnHeader();
+    this.listMagasin();
 
+  }
+
+  listMagasin(): void {
+    this.magasinService.getList().subscribe(
+      (data: Magasin[]) => {
+        this.magasinList = data;
+        console.log('MagasinList ==>', this.magasinList);
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error getList Magasin ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
   }
 
   listOfColumnHeader(){

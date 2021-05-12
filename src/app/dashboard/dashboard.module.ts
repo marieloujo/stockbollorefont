@@ -24,6 +24,7 @@ import {NzTableModule} from 'ng-zorro-antd/table';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
 import { HistoriqueDemandeComponent } from './historique-demande/historique-demande.component';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 
 @NgModule({
@@ -48,6 +49,8 @@ import { HistoriqueDemandeComponent } from './historique-demande/historique-dema
     NzTableModule,
     NzSelectModule,
     NzBadgeModule,
+    NzPopconfirmModule,
+    
   ]
 })
 export class DashboardModule { }
