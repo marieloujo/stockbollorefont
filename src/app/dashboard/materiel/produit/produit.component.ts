@@ -7,6 +7,11 @@ import {ProduitService} from '../../../services/dashboard/produit.service';
 import {Produit} from '../../../models/produit';
 import { MagasinService } from 'src/app/services/dashboard/magasin.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import {Gamme} from '../../../models/gamme';
+import {Marque} from '../../../models/marque';
+import {Modele} from '../../../models/modele';
+import {GammeService} from '../../../services/dashboard/gamme.service';
+import {ModeleService} from '../../../services/dashboard/modele.service';
 
 @Component({
   selector: 'app-produit',
@@ -19,16 +24,25 @@ export class ProduitComponent implements OnInit {
 
   produitList: Produit[];
   magasinList: Magasin[];
+  gammeList: Gamme[];
+  marqueList: Marque[];
+  modeleList: Modele[];
+  produitByMagasinIdList: Produit[] = null;
 
   indexOfTab: number;
 
   listOfColumn: any = [];
+  isMagasinSelect: boolean = false;
+  magasinChoice: Magasin = null;
 
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
     private produitService: ProduitService,
     private magasinService: MagasinService,
+    private gammeService: GammeService,
+    private marqueService: MarqueService,
+    private modeleService: ModeleService,
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +50,15 @@ export class ProduitComponent implements OnInit {
 
     this.listOfColumnHeader();
     this.listMagasin();
+    this.listGamme();
+    this.listMarque();
+    this.listModele();
 
+  }
+
+  loadMagasinProduit(){
+    console.log('Le magasin');
+    console.log(this.magasinChoice);
   }
 
   listMagasin(): void {
@@ -47,6 +69,39 @@ export class ProduitComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         console.log('error getList Magasin ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+  }
+
+  listGamme(): void {
+    this.gammeService.getList().subscribe(
+      (data: Gamme[]) => {
+        this.gammeList = data;
+        console.log('GammeList ==>', this.gammeList);
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error getList Gamme ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+  }
+
+  listMarque(): void {
+    this.marqueService.getList().subscribe(
+      (data: Marque[]) => {
+        this.marqueList = data;
+        console.log('MarqueList ==>', this.marqueList);
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error getList marque ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+  }
+
+  listModele(): void {
+    this.modeleService.getList().subscribe(
+      (data: Modele[]) => {
+        this.modeleList = data;
+        console.log('ModeleList ==>', this.modeleList);
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error getList modele ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
   }
 

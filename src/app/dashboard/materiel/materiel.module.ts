@@ -20,6 +20,7 @@ import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import {NzAlertModule} from 'ng-zorro-antd/alert';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     FormsModule,
     NzSelectModule,
     NzPopconfirmModule,
+    NzAlertModule,
   ]
 })
 export class MaterielModule { }

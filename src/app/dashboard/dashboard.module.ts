@@ -13,7 +13,7 @@ import { MagasinComponent } from './magasin/magasin.component';
 import { NouvelleDemandeComponent } from './nouvelle-demande/nouvelle-demande.component';
 import { AproposComponent } from './apropos/apropos.component';
 import {NzButtonModule} from 'ng-zorro-antd/button';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NzSpaceModule} from 'ng-zorro-antd/space';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
@@ -50,7 +50,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     NzSelectModule,
     NzBadgeModule,
     NzPopconfirmModule,
-    
+    FormsModule,
+
   ]
 })
 export class DashboardModule { }

@@ -16,17 +16,32 @@
     <nz-tab [nzTitle]="'Liste des produits'">
 
       <div nz-row>
-        <div nz-col nzSpan="10" style="padding-right: 1.5em">
+        <div nz-col nzSpan="14" style="padding-right: 1.5em">
           <nz-form-item>
-            <nz-form-label [nzSpan]="24">Sélectionner un magasin</nz-form-label>
-            <nz-select>
-              <nz-option  *ngFor="let magasin of magasinList" [nzLabel]="magasin.libelle" [nzValue]="magasin.id"></nz-option>
+            <!--<nz-form-label [nzSpan]="24">Sélectionner un magasin</nz-form-label>-->
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" [(ngModel)]="magasinChoice" [nzSize]="'default'" >
+              <nz-option  *ngFor="let magasin of magasinList" [nzLabel]="magasin.libelle" [nzValue]="magasin"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
+        <div nz-col nzSpan="10" style="">
+          <button (click)="loadMagasinProduit()" nz-button nzType="primary" nzBlock><i nz-icon nzType="search"></i>Charger produits</button>
+        </div>
       </div>
 
-      <nz-table #sortTable [nzData]="produitList" nzTableLayout="fixed">
+      <div nz-row *ngIf="produitByMagasinIdList == null || produitByMagasinIdList.length == 0">
+        <div nz-col nzSpan="24" style="">
+          <nz-alert
+            nzType="info"
+            nzMessage="Note Info !"
+            nzDescription="Aucun produit trouvé. Veillez sélectionner un magasin pour voir la liste des produits !"
+            nzShowIcon
+          >
+          </nz-alert>
+        </div>
+      </div>
+
+      <nz-table *ngIf="produitByMagasinIdList != null && produitByMagasinIdList.length > 0" #sortTable [nzData]="produitList" nzTableLayout="fixed">
         <thead>
         <tr>
           <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare"
@@ -74,9 +89,8 @@
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Gamme</nz-form-label>
-            <nz-select>
-              <nz-option [nzLabel]="'Gamme 01'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Gamme 02'" [nzValue]="'Company'"></nz-option>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" >
+              <nz-option  *ngFor="let gamme of gammeList" [nzLabel]="gamme.libelle" [nzValue]="gamme"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
@@ -84,9 +98,8 @@
         <div nz-col nzSpan="8" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Magasin</nz-form-label>
-            <nz-select>
-              <nz-option [nzLabel]="'Magasin 01'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Magasin 02'" [nzValue]="'Company'"></nz-option>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" >
+              <nz-option  *ngFor="let magasin of magasinList" [nzLabel]="magasin.libelle" [nzValue]="magasin"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
@@ -94,9 +107,8 @@
         <div nz-col nzSpan="8" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Marque</nz-form-label>
-            <nz-select>
-              <nz-option [nzLabel]="'Marque 01'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Marque 02'" [nzValue]="'Company'"></nz-option>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" >
+              <nz-option  *ngFor="let marque of marqueList" [nzLabel]="marque.libelle" [nzValue]="marque"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
@@ -105,9 +117,8 @@
         <div nz-col nzSpan="8" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Modele</nz-form-label>
-            <nz-select>
-              <nz-option [nzLabel]="'Modele 01'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Modele 02'" [nzValue]="'Company'"></nz-option>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" >
+              <nz-option  *ngFor="let modele of modeleList" [nzLabel]="modele.libelle" [nzValue]="modele"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
