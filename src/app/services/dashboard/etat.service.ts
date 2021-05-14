@@ -32,4 +32,8 @@ export class EtatService {
     return this.http.delete(`${this.url}/supprimer-etat/${id}`);
   }
 
+  getEtatByCode(code: string): Observable<Object> {
+    return this.http.get(`${this.url}/get-etat-byCode/${code}`);
+  }
+
 }

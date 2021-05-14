@@ -31,7 +31,7 @@ export class GammeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.behaviorService.setBreadcrumbItems(['Accueil', 'Matériel', 'Gamme']);
+    this.behaviorService.setBreadcrumbItems(['Accueil', 'Matériel', 'Equipement']);
 
     this.makeGammeForm(null);
 

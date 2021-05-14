@@ -1,7 +1,7 @@
 
 <nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
   <nz-tab [nzTitle]="'Liste des modeles '">
-    <nz-table #sortTable [nzData]="modeleList" nzTableLayout="fixed">
+    <nz-table #sortTable [nzData]="modeleList" nzTableLayout="fixed" [nzPageSize]="5">
       <thead>
       <tr>
         <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
@@ -17,7 +17,7 @@
               <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
             </nz-space-item>
             <nz-space-item>
-              <button 
+              <button
               nz-popconfirm
               nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
               (nzOnConfirm)="confirmMsgDelete(data)"

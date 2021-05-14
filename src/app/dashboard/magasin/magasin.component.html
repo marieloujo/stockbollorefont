@@ -1,10 +1,15 @@
 
 <nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
-  <nz-tab [nzTitle]="'Liste des magasins '">
-    <nz-table #sortTable [nzData]="magasinList" nzTableLayout="fixed">
+  <nz-tab [nzTitle]="'Liste des magasins '" >
+    <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="3" [nzPageIndex]="pageIndex">
       <thead>
       <tr>
-        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+        <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">
+          {{ column.title }}
+          <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+        </th>
         <th> Actions </th>
       </tr>
       </thead>
@@ -16,8 +21,8 @@
             <nz-space-item>
               <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
             </nz-space-item>
-            <nz-space-item> 
-              <button 
+            <nz-space-item>
+              <button
                 nz-popconfirm
                 nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
                 (nzOnConfirm)="confirmMsgDelete(data)"
@@ -31,6 +36,20 @@
       </tbody>
     </nz-table>
   </nz-tab>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un magasin" [(ngModel)]="searchValue" />
+        <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="reset()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+
   <nz-tab [nzTitle]="'Nouveau magasin' ">
 
     <form [formGroup]="validateMagasinForm" nz-form>

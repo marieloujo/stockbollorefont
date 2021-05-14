@@ -1,1 +1,165 @@
-<p>user-run works!</p>
+
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+  <nz-tab [nzTitle]="'Liste des personnes'" >
+    <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5" [nzPageIndex]="pageIndex">
+      <thead>
+      <tr>
+        <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">
+          {{ column.title }}
+          <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+        </th>
+        <th> Actions </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of sortTable.data">
+        <td>{{ data.nom }}</td>
+        <td>{{ data.prenom }}</td>
+        <td>{{ data.sexe }}</td>
+        <td>{{ data.email }}</td>
+        <td>{{ data.profil.libelle }}</td>
+        <td>{{ data.serviceB.libelle }}</td>
+        <td>
+          <nz-space>
+            <nz-space-item>
+              <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            </nz-space-item>
+            <nz-space-item>
+              <button
+                nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                (nzOnConfirm)="confirmMsgDelete(data)"
+                (nzOnCancel)="cancelMsgDelete()"
+                nzPopconfirmPlacement="topRight"
+                nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            </nz-space-item>
+          </nz-space>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un magasin" [(ngModel)]="searchValue" />
+        <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="reset()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+
+  <nz-tab [nzTitle]="'Nouvelle personne' ">
+
+    <form [formGroup]="validatePersonneForm" nz-form>
+      <div nz-row>
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Nom</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="nom" nz-input placeholder="saisir le nom"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Prénom</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="prenom" nz-input placeholder="saisir le prénom"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Service</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un service" formControlName="serviceB" >
+              <nz-option  *ngFor="let serviceB of serviceBList" [nzLabel]="serviceB.libelle" [nzValue]="serviceB"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Profil</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un groupe de profil" formControlName="profil" >
+              <nz-option  *ngFor="let profil of profilList" [nzLabel]="profil.libelle" [nzValue]="profil"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Sexe</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un sexe" formControlName="sexe" >
+              <nz-option  [nzLabel]="'Masculin'" [nzValue]="'Masculin'"></nz-option>
+              <nz-option  [nzLabel]="'Féminin'" [nzValue]="'Féminin'"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">E-mail</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="email" nz-input placeholder="saisir le mail"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Login</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input  nz-input placeholder="saisir le login"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Mot de passe </nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input nz-input placeholder="saisir le mot de passe"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Confirmer le Mot de passe </nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input nz-input placeholder="re-saisir le mot de passe"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-space>
+            <nz-space-item>
+              <button (click)="resetPersonneForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>
+            </nz-space-item>
+            <nz-space-item>
+              <button (click)="submitPersonneForm()" [disabled]="validatePersonneForm.invalid" nz-button
+                      nzType="primary"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>
+            </nz-space-item>
+          </nz-space>
+        </div>
+
+      </div>
+
+    </form>
+
+  </nz-tab>
+</nz-tabset>

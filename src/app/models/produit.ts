@@ -1,9 +1,9 @@
 import {Gamme} from './gamme';
-import {Magasin} from './magasin';
 import {Marque} from './marque';
 import {Modele} from './modele';
 import {DemandeProduit} from './demande-produit';
 import {EtatProduit} from './etat-produit';
+import {MagasinProduit} from './magasin-produit';
 
 export class Produit {
 
@@ -17,5 +17,6 @@ export class Produit {
   modele: Modele;
   demandeProduits: DemandeProduit[];
   etatProduits: EtatProduit[];
+  magazinProduits: MagasinProduit[];
 
 }
