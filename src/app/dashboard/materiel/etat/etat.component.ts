@@ -43,6 +43,8 @@ export class EtatComponent implements OnInit {
   makeEtatForm(etat: Etat){
     this.validateEtatForm = this.fb.group({
       id: [etat != null ? etat.id : null],
+      code: [etat != null ? etat.code : null,
+        [Validators.required]],
       libelle: [etat != null ? etat.libelle : null,
         [Validators.required]],
     });
@@ -150,9 +152,14 @@ export class EtatComponent implements OnInit {
     this.listOfColumn = [
 
       {
+        title: 'Code',
+        compare: null,
+        sortFn: (a: Etat, b: Etat) => a.code.localeCompare(b.code),
+      },
+      {
         title: 'Libellé',
         compare: null,
-        priority: false
+        sortFn: (a: Etat, b: Etat) => a.libelle.localeCompare(b.libelle),
       },
 
     ];

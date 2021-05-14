@@ -5,6 +5,7 @@ import { Profil } from 'src/app/models/profil';
 import { ServiceB } from 'src/app/models/service-b';
 import { ProfilService } from 'src/app/services/dashboard/profil.service';
 import {BehaviorService} from '../../../services/common/behavior.service';
+import {Magasin} from '../../../models/magasin';
 
 @Component({
   selector: 'app-profil',
@@ -21,6 +22,11 @@ export class ProfilComponent implements OnInit {
 
   indexOfTab: number;
 
+  searchValue = '';
+  visible = false;
+  listOfDisplayData;
+  pageIndex;
+
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
@@ -34,18 +40,17 @@ export class ProfilComponent implements OnInit {
 
     this.makeProfilForm(null);
 
-  }
+    this.list();
 
+  }
 
   listOfColumnHeadeer(){
     this.listOfColumn = [
-
       {
         title: 'Libellé',
         compare: null,
-        priority: false
+        sortFn: (a: Magasin, b: Magasin) => a.libelle.localeCompare(b.libelle),
       },
-
     ];
   }
 
@@ -57,7 +62,7 @@ export class ProfilComponent implements OnInit {
     });
   }
 
-  resetEtatForm(e: MouseEvent): void {
+  resetProfilForm(e: MouseEvent): void {
     e.preventDefault();
     this.validateProfilForm.reset();
     for (const key in this.validateProfilForm.controls) {
@@ -93,6 +98,16 @@ export class ProfilComponent implements OnInit {
     //this.nzMessageService.info('click confirm');
   }
 
+  reset(): void {
+    this.searchValue = '';
+    this.search();
+  }
+
+  search(): void {
+    this.visible = false;
+    this.listOfDisplayData = this.profilList.filter((item: Profil) => item.libelle.indexOf(this.searchValue) !== -1);
+  }
+
 
   submitProfilForm(): void {
     for (const i in this.validateProfilForm.controls) {
@@ -108,6 +123,7 @@ export class ProfilComponent implements OnInit {
           (data: any) => {
             this.profilList.unshift(data);
             this.profilList = [...this.profilList];
+            this.listOfDisplayData = [...this.profilList];
             this.makeProfilForm(null);
 
             console.log('Enregistrement ok');
@@ -124,6 +140,7 @@ export class ProfilComponent implements OnInit {
           (data: any) => {
             this.profilList[i] = data;
             this.profilList = [...this.profilList];
+            this.listOfDisplayData = [...this.profilList];
             this.makeProfilForm(null);
 
             console.log('Update ok');
@@ -142,17 +159,17 @@ export class ProfilComponent implements OnInit {
 
   }
 
-
   list(): void {
     this.profilService.getList().subscribe(
       (data: any) => {
         this.profilList = data;
-        console.log('EtatList ==>', this.profilList);
+        console.log('Profil List ==>', this.profilList);
+        this.listOfDisplayData = [...this.profilList];
+        this.pageIndex = 1;
       },
       (error: HttpErrorResponse) => {
-        console.log('error getList Etat ==>', error.message, ' ', error.status, ' ', error.statusText);
+        console.log('error getList profil ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
   }
-
 
 }

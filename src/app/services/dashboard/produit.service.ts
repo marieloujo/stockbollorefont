@@ -20,16 +20,16 @@ export class ProduitService {
     return this.http.get(`${this.url}/list`);
   }
 
-  createMarque(produit: Produit): Observable<Object> {
+  createProduit(produit: Produit): Observable<Object> {
     return this.http.post(`${this.url}/creer-produit`, produit);
   }
 
-  updateMarque(produit: Produit): Observable<Object> {
+  updateProduit(produit: Produit): Observable<Object> {
     return this.http.put(`${this.url}/modifier-produit`, produit);
   }
 
-  deleteMarque(id: number): Observable<Object> {
-    return this.http.delete(`${this.url}/supprimer-marque/${id}`);
+  deleteProduit(id: number): Observable<Object> {
+    return this.http.delete(`${this.url}/supprimer-produit/${id}`);
   }
 
 }

@@ -15,10 +15,10 @@
 
     <nz-tab [nzTitle]="'Liste des produits'">
 
-      <div nz-row>
+      <!--<div nz-row>
         <div nz-col nzSpan="14" style="padding-right: 1.5em">
           <nz-form-item>
-            <!--<nz-form-label [nzSpan]="24">Sélectionner un magasin</nz-form-label>-->
+            &lt;!&ndash;<nz-form-label [nzSpan]="24">Sélectionner un magasin</nz-form-label>&ndash;&gt;
             <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" [(ngModel)]="magasinChoice" [nzSize]="'default'" >
               <nz-option  *ngFor="let magasin of magasinList" [nzLabel]="magasin.libelle" [nzValue]="magasin"></nz-option>
             </nz-select>
@@ -27,9 +27,9 @@
         <div nz-col nzSpan="10" style="">
           <button (click)="loadMagasinProduit()" nz-button nzType="primary" nzBlock><i nz-icon nzType="search"></i>Charger produits</button>
         </div>
-      </div>
+      </div>-->
 
-      <div nz-row *ngIf="produitByMagasinIdList == null || produitByMagasinIdList.length == 0">
+      <!--<div nz-row *ngIf="produitByMagasinIdList == null || produitByMagasinIdList.length == 0">
         <div nz-col nzSpan="24" style="">
           <nz-alert
             nzType="info"
@@ -39,23 +39,23 @@
           >
           </nz-alert>
         </div>
-      </div>
+      </div>-->
 
-      <nz-table *ngIf="produitByMagasinIdList != null && produitByMagasinIdList.length > 0" #sortTable [nzData]="produitList" nzTableLayout="fixed">
+      <nz-table #sortTable [nzData]="produitList" nzTableLayout="fixed">
         <thead>
         <tr>
-          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare"
-              [nzSortPriority]="column.priority">{{ column.title }} <i nz-icon nzType="search"></i></th>
+          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare">{{ column.title }} </th>
           <th> Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let data of sortTable.data">
           <td>{{ data.numSerie }}</td>
-          <td>{{ data.numSerie }}</td>
-          <td>{{ data.numSerie }}</td>
-          <td>{{ data.numSerie }}</td>
-          <td>{{ data.numSerie }}</td>
+          <td>{{ data.gamme.libelle }}</td>
+          <td>{{ data.marque.libelle }}</td>
+          <td>{{ data.modele.libelle }}</td>
+          <td> -- </td>
+          <td> -- </td>
           <td>
             <nz-space>
               <nz-space-item>
@@ -74,14 +74,14 @@
     </nz-tab>
   <nz-tab [nzTitle]="'Nouveau produit' ">
 
-    <form nz-form>
+    <form [formGroup]="validateProduitForm" nz-form>
       <div nz-row>
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
             <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input nz-input placeholder="saisir le numero de serie"/>
+              <input formControlName="numSerie" nz-input placeholder="saisir le numero de serie"/>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -89,7 +89,7 @@
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Gamme</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" >
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" formControlName="gamme" >
               <nz-option  *ngFor="let gamme of gammeList" [nzLabel]="gamme.libelle" [nzValue]="gamme"></nz-option>
             </nz-select>
           </nz-form-item>
@@ -98,7 +98,7 @@
         <div nz-col nzSpan="8" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Magasin</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" >
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" formControlName="magazin">
               <nz-option  *ngFor="let magasin of magasinList" [nzLabel]="magasin.libelle" [nzValue]="magasin"></nz-option>
             </nz-select>
           </nz-form-item>
@@ -107,7 +107,7 @@
         <div nz-col nzSpan="8" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Marque</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" >
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une marque" formControlName="marque">
               <nz-option  *ngFor="let marque of marqueList" [nzLabel]="marque.libelle" [nzValue]="marque"></nz-option>
             </nz-select>
           </nz-form-item>
@@ -117,7 +117,7 @@
         <div nz-col nzSpan="8" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Modele</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" >
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un modele" formControlName="modele" >
               <nz-option  *ngFor="let modele of modeleList" [nzLabel]="modele.libelle" [nzValue]="modele"></nz-option>
             </nz-select>
           </nz-form-item>
@@ -127,7 +127,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Description</nz-form-label>
             <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <textarea nz-input placeholder="saisir une description" rows="4"></textarea>
+              <textarea formControlName="description" nz-input placeholder="saisir une description" rows="4"></textarea>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -135,21 +135,21 @@
         <div nz-col nzSpan="24">
           <nz-space>
             <nz-space-item>
-              <!--<button (click)="resetEtatForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
-                Annuler
-              </button>-->
-              <button nz-button nzType="default"><i nz-icon nzType="close"></i>
+              <button (click)="resetProduitForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
                 Annuler
               </button>
+              <!--<button nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>-->
             </nz-space-item>
             <nz-space-item>
-              <!--<button (click)="submitEtatForm()" [disabled]="validateEtatForm.invalid" nz-button
+              <button (click)="submitProduitForm()" [disabled]="validateProduitForm.invalid" nz-button
                       nzType="primary"><i nz-icon nzType="check"></i>
                 Enregistrer
-              </button>-->
-              <button nz-button nzType="primary"><i nz-icon nzType="check"></i>
-                Enregistrer
               </button>
+              <!--<button nz-button nzType="primary" [disabled]="validateProduitForm.invalid"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>-->
             </nz-space-item>
           </nz-space>
         </div>

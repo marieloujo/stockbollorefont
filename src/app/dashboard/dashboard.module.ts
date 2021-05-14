@@ -25,6 +25,10 @@ import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
 import { HistoriqueDemandeComponent } from './historique-demande/historique-demande.component';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import {NzPaginationModule} from 'ng-zorro-antd/pagination';
+import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
 
 
 @NgModule({
@@ -51,6 +55,10 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     NzBadgeModule,
     NzPopconfirmModule,
     FormsModule,
+    NzPaginationModule,
+    NzDropDownModule,
+    NzModalModule,
+    NzDividerModule,
 
   ]
 })

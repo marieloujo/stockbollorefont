@@ -2,7 +2,7 @@
 
 <div nz-row>
 
-  <button nz-button nzType="primary" nzBlock style="margin-bottom: 10px">
+  <button nz-button nzBlock nzType="primary" style="margin-bottom: 10px">
     <a [routerLink]="['/dashboard/nouvelle-demande']"> Faire une nouvelle demande </a>
   </button>
 
@@ -11,12 +11,12 @@
     <tr>
       <!--<th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare"
           [nzSortPriority]="column.priority">{{ column.title }}</th>-->
-      <th> Num série </th>
-      <th> Marque </th>
-      <th> Modele </th>
-      <th> Equipement </th>
-      <th> Demandeur </th>
-      <th> Date </th>
+      <th> Num série</th>
+      <th> Marque</th>
+      <th> Modele</th>
+      <th> Equipement</th>
+      <th> Demandeur</th>
+      <th> Détails</th>
     </tr>
     </thead>
     <tbody>
@@ -26,8 +26,62 @@
       <td>{{ data.modele }}</td>
       <td>{{ data.gamme }}</td>
       <td>{{ data.demandeur }}</td>
-      <td>{{ data.date }}</td>
+      <td>
+        <button (click)="showModalMiddle()" nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline"
+                                                                                           nzType="bars"></i>
+        </button>
+
+      </td>
     </tr>
     </tbody>
   </nz-table>
 </div>
+
+<nz-modal
+  (nzOnCancel)="handleCancelMiddle()"
+  (nzOnOk)="handleOkMiddle()"
+  [(nzVisible)]="isVisibleMiddle"
+  nzCentered
+  nzTitle="DETAILS"
+>
+  <ng-container *nzModalContent >
+
+    <div nz-row>
+
+      <div nz-col nzSpan="24">
+
+        <nz-table #basicTable [nzData]="listOfDetail">
+          <thead>
+          <tr>
+            <th>Demandeur</th>
+            <th>Date demande</th>
+            <th>Validateur</th>
+            <th>Date Validation</th>
+            <th>Gestionnaire</th>
+            <th>Date sorti</th>
+            <th>Destination</th>
+            <th>Date mise en service</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>{{data.demandeur}}</td>
+            <td>{{data.date_demande}}</td>
+            <td>{{data.validateur}}</td>
+            <td>{{data.date_Validation}}</td>
+            <td>{{data.gestionnaire}}</td>
+            <td>{{data.date_sorti}}</td>
+            <td>{{data.destination}}</td>
+            <td>{{data.date_service}}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+
+      </div>
+
+    </div>
+
+
+
+  </ng-container>
+</nz-modal>

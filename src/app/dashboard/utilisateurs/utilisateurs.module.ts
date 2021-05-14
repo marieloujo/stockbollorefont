@@ -12,7 +12,7 @@ import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
 import {NzMenuModule} from 'ng-zorro-antd/menu';
 import {RouterModule} from '@angular/router';
 import {NzButtonModule} from 'ng-zorro-antd/button';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NzSpaceModule} from 'ng-zorro-antd/space';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
@@ -24,6 +24,9 @@ import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { SharingModule } from 'src/app/sharing/sharing.module';
+import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
+import {NzPaginationModule} from 'ng-zorro-antd/pagination';
+import {NzModalModule} from 'ng-zorro-antd/modal';
 
 
 
@@ -50,6 +53,10 @@ import { SharingModule } from 'src/app/sharing/sharing.module';
     NzSelectModule,
     NzBadgeModule,
     NzPopconfirmModule,
+    FormsModule,
+    NzPaginationModule,
+    NzDropDownModule,
+    NzModalModule,
   ]
 })
 export class UtilisateursModule { }

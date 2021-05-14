@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {BehaviorService} from '../../../services/common/behavior.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Magasin} from '../../../models/magasin';
 import {MarqueService} from '../../../services/dashboard/marque.service';
 import {ProduitService} from '../../../services/dashboard/produit.service';
@@ -12,6 +12,12 @@ import {Marque} from '../../../models/marque';
 import {Modele} from '../../../models/modele';
 import {GammeService} from '../../../services/dashboard/gamme.service';
 import {ModeleService} from '../../../services/dashboard/modele.service';
+import {MagasinProduit} from '../../../models/magasin-produit';
+import {EtatService} from '../../../services/dashboard/etat.service';
+import {Etat} from '../../../models/etat';
+import {MagasinProduitService} from '../../../services/dashboard/magasin-produit.service';
+import {EtatProduitService} from '../../../services/dashboard/etat-produit.service';
+import {EtatProduit} from '../../../models/etat-produit';
 
 @Component({
   selector: 'app-produit',
@@ -27,13 +33,18 @@ export class ProduitComponent implements OnInit {
   gammeList: Gamme[];
   marqueList: Marque[];
   modeleList: Modele[];
-  produitByMagasinIdList: Produit[] = null;
+  produitByMagasinIdList: Produit[] = [];
+  etatCourant: Etat = null;
 
   indexOfTab: number;
 
   listOfColumn: any = [];
   isMagasinSelect: boolean = false;
   magasinChoice: Magasin = null;
+
+  searchValueNumSerie = '';
+  visibleNumSerie = false;
+  listOfDisplayData;
 
   constructor(
     private behaviorService: BehaviorService,
@@ -43,22 +54,203 @@ export class ProduitComponent implements OnInit {
     private gammeService: GammeService,
     private marqueService: MarqueService,
     private modeleService: ModeleService,
+    private etatService: EtatService,
+    private magasinProduitService: MagasinProduitService,
+    private etatProduitService: EtatProduitService,
   ) { }
 
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Matériel', 'Produit']);
+
+    this.makeProduitForm(null, null);
 
     this.listOfColumnHeader();
     this.listMagasin();
     this.listGamme();
     this.listMarque();
     this.listModele();
+    this.list();
+
+    this.getEtatByCode("NEW");
 
   }
 
   loadMagasinProduit(){
     console.log('Le magasin');
     console.log(this.magasinChoice);
+  }
+
+  makeProduitForm(produit: Produit, magasinProduit: MagasinProduit){
+    this.validateProduitForm = this.fb.group({
+      id: [produit != null ? produit.id : null],
+      numSerie: [produit != null ? produit.numSerie : null,
+        [Validators.required]],
+      modele: [produit != null ? produit.modele : null,
+        [Validators.required]],
+      marque: [produit != null ? produit.marque : null,
+        [Validators.required]],
+      gamme: [produit != null ? produit.gamme : null,
+        [Validators.required]],
+      description: [produit != null ? produit.description : null],
+      magazin: [magasinProduit != null ? magasinProduit.magazin : null,
+        [Validators.required]],
+      idMP: [magasinProduit != null ? magasinProduit.id : null],
+    });
+  }
+
+  /*makeProduitForm(produit: Produit, magasinProduit: MagasinProduit){
+    this.validateProduitForm = this.fb.group({
+      id: [produit != null ? produit.id : null],
+      numSerie: [produit != null ? produit.numSerie : null],
+      modele: [produit != null ? produit.modele : null],
+      marque: [produit != null ? produit.marque : null],
+      gamme: [produit != null ? produit.gamme : null],
+      description: [produit != null ? produit.description : null],
+      magazin: [magasinProduit != null ? magasinProduit.magazin : null],
+      idMP: [magasinProduit != null ? magasinProduit.id : null],
+    });
+  }*/
+
+  resetProduitForm(e: MouseEvent): void {
+    e.preventDefault();
+    this.validateProduitForm.reset();
+    for (const key in this.validateProduitForm.controls) {
+      this.validateProduitForm.controls[key].markAsPristine();
+      this.validateProduitForm.controls[key].updateValueAndValidity();
+    }
+    this.makeProduitForm(null, null);
+    this.indexOfTab = 0;
+    //this.pageIndex = 1;
+  }
+
+
+  submitProduitForm(): void {
+    for (const i in this.validateProduitForm.controls) {
+      this.validateProduitForm.controls[i].markAsDirty();
+      this.validateProduitForm.controls[i].updateValueAndValidity();
+    }
+
+    if (this.validateProduitForm.valid) {
+
+      const formData = this.validateProduitForm.value;
+      console.log('FormData -- Formulaire valide');
+      console.log(formData);
+      if (formData.id == null) {
+
+        console.log(formData.numSerie);
+
+        let newProduit: Produit = new Produit();
+        newProduit.numSerie = formData.numSerie;
+        newProduit.marque = formData.marque;
+        newProduit.modele = formData.modele;
+        newProduit.gamme = formData.gamme;
+        newProduit.description = formData.description;
+        console.log('LE NEW PRODUIT');
+        console.log(newProduit);
+
+
+        this.produitService.createProduit(newProduit).subscribe(
+          (data: any) => {
+            this.produitList.unshift(data);
+            //this.magasinList.push(data)
+            this.produitList = [...this.produitList];
+            this.listOfDisplayData = [...this.produitList];
+
+
+            // Enregistrement Magasin Produit
+
+            let newMagasinProduit: MagasinProduit = new MagasinProduit();
+            newMagasinProduit.magazin = formData.magazin;
+            newMagasinProduit.actuel = true;
+            newMagasinProduit.produit = data;
+            console.log('LE NEW MAGASIN PRODUIT');
+            console.log(newMagasinProduit);
+
+            this.magasinProduitService.createMagasinProduit(newMagasinProduit).subscribe(
+              (data: any) => {
+                console.log('Enregistrement magasin produit ok');
+                console.log(data);
+              },
+              (error: HttpErrorResponse) => {
+              console.log('Enregistrement de magasin produit non ok');
+
+            });
+
+            // Enregistrement Etat Produit
+
+            let newEtatProduit: EtatProduit = new EtatProduit();
+            newEtatProduit.actuel = true;
+            newEtatProduit.etat = this.etatCourant;
+            newEtatProduit.produit = data;
+
+            this.etatProduitService.createEtatProduit(newEtatProduit).subscribe(
+              (data: any) => {
+                console.log('Enregistrement etat produit ok');
+                console.log(data);
+              },
+              (error: HttpErrorResponse) => {
+                console.log('Enregistrement de etat produit non ok');
+
+              });
+
+            this.makeProduitForm(null, null);
+            console.log('Enregistrement produit ok');
+            this.indexOfTab = 0;
+            //this.pageIndex = 1;
+
+          },
+          (error: HttpErrorResponse) => {
+            console.log('Enregistrement produit non ok');
+
+          });
+      } /*else {
+        const i = this.magasinList.findIndex(p => p.id == formData.id);
+        this.magasinService.updateMagasin(formData).subscribe(
+          (data: Magasin) => {
+            console.log(this.magasinList);
+            console.log(data);
+            this.magasinList[i] = data;
+            this.magasinList = [...this.magasinList];
+            this.listOfDisplayData = [...this.magasinList];
+            console.log(this.magasinList);
+            this.makeProduitForm(null, null);
+
+            console.log('Update ok');
+            this.indexOfTab = 0;
+            //this.pageIndex = 1;
+
+          },
+          (error: HttpErrorResponse) => {
+            console.log('Update non ok');
+          });
+      }*/
+
+    }
+    else {
+      console.log('FormData -- Formulaire non valide');
+    }
+
+  }
+
+  /*updateForm(data: Produit){
+
+    this.makeProduitForm(data);
+
+    this.indexOfTab = 1;
+  }*/
+
+
+  list(): void {
+    this.produitService.getList().subscribe(
+      (data: Produit[]) => {
+        this.produitList = [...data];
+        console.log('Produit List ==>', this.produitList);
+        this.listOfDisplayData = [...this.produitList];
+        //this.pageIndex = 1;
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error getList Produit ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
   }
 
   listMagasin(): void {
@@ -105,32 +297,76 @@ export class ProduitComponent implements OnInit {
       });
   }
 
+  getEtatByCode(code: string): void {
+    this.etatService.getEtatByCode(code).subscribe(
+      (data: Etat) => {
+        this.etatCourant = data;
+        console.log('Data etat courant  ==>', this.etatCourant);
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error get data etat courant ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+  }
+
+  resetNumSerie(): void {
+    this.searchValueNumSerie = '';
+    this.searchNumSerie();
+  }
+
+  searchNumSerie(): void { //indexOf(this.searchValueNumSerie) !== -1)
+    this.visibleNumSerie = false;
+    this.listOfDisplayData = this.produitList.filter((item: Produit) => item.numSerie.toString().indexOf(this.searchValueNumSerie) !== -1);
+  }
+
+  confirmMsgDelete(data: Produit){
+    this.magasinService.deleteMagasin(data.id).subscribe(
+      (data01: any) => {
+        console.log('data du delete ==>', data01);
+        //this.indexOfTab = 0;
+        //this.nzMessageService.info('click cancel');
+        this.list();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error deleteMagasin ==>', error.message, ' ', error.status, ' ', error.statusText);
+      }
+    );
+  }
+
+  cancelMsgDelete(): void {
+    //this.nzMessageService.info('click confirm');
+  }
+
   listOfColumnHeader(){
     this.listOfColumn = [
       {
         title: 'Numero Série',
         compare: null,
-        priority: false
+        sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
       },
       {
         title: 'Gamme',
         compare: null,
-        priority: false
+        sortFn: (a: Produit, b: Produit) => a.gamme.libelle.localeCompare(b.gamme.libelle),
       },
       {
         title: 'Marque',
         compare: null,
-        priority: false
+        sortFn: (a: Produit, b: Produit) => a.marque.libelle.localeCompare(b.marque.libelle),
       },
       {
         title: 'Modele',
         compare: null,
-        priority: false
+        sortFn: (a: Produit, b: Produit) => a.modele.libelle.localeCompare(b.modele.libelle),
       },
       {
         title: 'Etat',
         compare: null,
-        priority: false
+        sortFn: null,
+      },
+      {
+        title: 'Magasin',
+        compare: null,
+        sortFn: null,
       },
       /*{
         title: 'Math Score',

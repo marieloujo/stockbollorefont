@@ -14,7 +14,7 @@ import {Produit} from '../../models/produit';
 })
 export class MagasinComponent implements OnInit {
 
- 
+
   validateMagasinForm!: FormGroup;
 
   magasinList: Magasin[];
@@ -22,6 +22,11 @@ export class MagasinComponent implements OnInit {
   indexOfTab: number;
 
   listOfColumn: any = [];
+
+  searchValue = '';
+  visible = false;
+  listOfDisplayData;
+  pageIndex;
 
   constructor(
     private behaviorService: BehaviorService,
@@ -57,7 +62,8 @@ export class MagasinComponent implements OnInit {
       this.validateMagasinForm.controls[key].updateValueAndValidity();
     }
     this.makeMagasinForm(null);
-    console.log('Tab en cours ==> ', this.indexOfTab);
+    this.indexOfTab = 0;
+    this.pageIndex = 1;
   }
 
   submitMagasinForm(): void {
@@ -73,11 +79,14 @@ export class MagasinComponent implements OnInit {
         this.magasinService.createMagasin(formData).subscribe(
           (data: any) => {
             this.magasinList.unshift(data);
+            //this.magasinList.push(data)
             this.magasinList = [...this.magasinList];
+            this.listOfDisplayData = [...this.magasinList];
             this.makeMagasinForm(null);
 
             console.log('Enregistrement ok');
             this.indexOfTab = 0;
+            this.pageIndex = 1;
 
           },
           (error: HttpErrorResponse) => {
@@ -92,11 +101,13 @@ export class MagasinComponent implements OnInit {
             console.log(data);
             this.magasinList[i] = data;
             this.magasinList = [...this.magasinList];
+            this.listOfDisplayData = [...this.magasinList];
             console.log(this.magasinList);
             this.makeMagasinForm(null);
 
             console.log('Update ok');
             this.indexOfTab = 0;
+            this.pageIndex = 1;
 
           },
           (error: HttpErrorResponse) => {
@@ -116,19 +127,28 @@ export class MagasinComponent implements OnInit {
       (data: Magasin[]) => {
         this.magasinList = data;
         console.log('MagasinList ==>', this.magasinList);
+        this.listOfDisplayData = [...this.magasinList];
+        this.pageIndex = 1;
       },
       (error: HttpErrorResponse) => {
         console.log('error getList Magasin ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
   }
 
-  updateForm(data: Magasin){
-
-    this.makeMagasinForm(data);
-
-    this.indexOfTab = 1;
+  reset(): void {
+    this.searchValue = '';
+    this.search();
   }
 
+  search(): void {
+    this.visible = false;
+    this.listOfDisplayData = this.magasinList.filter((item: Magasin) => item.libelle.indexOf(this.searchValue) !== -1);
+  }
+
+  updateForm(data: Magasin){
+    this.makeMagasinForm(data);
+    this.indexOfTab = 1;
+  }
 
   confirmMsgDelete(data: Magasin){
     this.magasinService.deleteMagasin(data.id).subscribe(
@@ -155,26 +175,11 @@ export class MagasinComponent implements OnInit {
 
   listOfColumnHeadeer(){
     this.listOfColumn = [
-      /*{
-        title: 'Name',
-        compare: null,
-        priority: false
-      },*/
       {
         title: 'Libellé',
         compare: null,
-        priority: false
+        sortFn: (a: Magasin, b: Magasin) => a.libelle.localeCompare(b.libelle),
       },
-      /*{
-        title: 'Math Score',
-        compare: (a: DataItem, b: DataItem) => a.math - b.math,
-        priority: 2
-      },
-      {
-        title: 'English Score',
-        compare: (a: DataItem, b: DataItem) => a.english - b.english,
-        priority: 1
-      }*/
     ];
   }
 

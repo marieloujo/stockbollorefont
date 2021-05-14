@@ -2,36 +2,51 @@
 
   <nz-tab [nzTitle]="'Nouvelle demande' ">
 
+    <div nz-row>
+      <div nz-col nzSpan="8">
+
+      </div>
+      <div nz-col nzSpan="8" nzOffset="8" style="padding-left: 26%">
+        <nz-badge (click)="goToListDemandeProduit()" [nzCount]="countNew"> </nz-badge>
+        <!--<button nz-button nzType="primary" nzShape="circle" style="margin-left: 80%" >A</button>  <span [(ngModel)]="countNew">  </span>-->
+        <!--<button nz-button nzType="danger" nzShape="circle" (click)="countAdd()"> <nz-badge [nzCount]="countNew"> </nz-badge> </button>-->
+      </div>
+    </div>
+
+    <!--<div nz-row>
+
+      <div nz-col nzSpan="12">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série" [(ngModel)]="produitChoice" name="produitChoice" (change)="loadDetailProduit()">
+          <nz-option *ngFor="let produit of produitList" [nzLabel]="produit.numSerie" [nzValue]="produit"></nz-option>
+        </nz-select>
+      </div>
+
+    </div>-->
+
     <form nz-form>
 
       <div nz-row>
-        <div nz-col nzSpan="8">
 
-        </div>
-        <div nz-col nzSpan="8" nzOffset="8" style="padding-left: 26%">
-          <nz-badge (click)="countAdd()" [nzCount]="countNew"> </nz-badge>
-          <!--<button nz-button nzType="primary" nzShape="circle" style="margin-left: 80%" >A</button>  <span [(ngModel)]="countNew">  </span>-->
-          <!--<button nz-button nzType="danger" nzShape="circle" (click)="countAdd()"> <nz-badge [nzCount]="countNew"> </nz-badge> </button>-->
-        </div>
-      </div>
-
-      <div nz-row>
-
-        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+        <div nz-col nzSpan="10" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série">
-              <nz-option [nzLabel]="'211NDTC41169'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'205NDYG4F042'" [nzValue]="'Company'"></nz-option>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série" [(ngModel)]="produitChoice" name="produitChoice" >
+              <nz-option *ngFor="let produit of produitList" [nzLabel]="produit.numSerie" [nzValue]="produit"></nz-option>
             </nz-select>
           </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="2" style="padding-top: 2.8em">
+          <button nz-button nzType="primary" (click)="loadDetailProduit()"><i nz-icon nzType="check"></i>
+
+          </button>
         </div>
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Modele</nz-form-label>
             <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input nz-input placeholder="" disabled value="E2210PM"/>
+              <input nz-input placeholder="" disabled value="{{modele}}"/>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -40,7 +55,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Gamme</nz-form-label>
             <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input nz-input placeholder="" disabled value="Ecran sans pieds"/>
+              <input nz-input placeholder="" disabled value="{{gamme}}"/>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -49,7 +64,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Marque</nz-form-label>
             <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input nz-input placeholder="" disabled value="LG"/>
+              <input nz-input placeholder="" disabled value="{{marque}}"/>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -58,8 +73,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Demandeur</nz-form-label>
             <nz-select>
-              <nz-option [nzLabel]="'Jeam SOSSAHOU --- COMPTABLE'" [nzValue]="'Home'"></nz-option>
-              <nz-option [nzLabel]="'Désirat MINTON --- SECRETAIRE'" [nzValue]="'Company'"></nz-option>
+              <nz-option *ngFor="let pers of personneList" [nzLabel]=" pers.nom + ' ' + pers.prenom + ' --- '+pers.serviceB.libelle " [nzValue]="pers"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
