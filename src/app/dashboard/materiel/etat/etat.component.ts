@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BehaviorService} from '../../../services/common/behavior.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Marque} from '../../../models/marque';
 import {Etat} from '../../../models/etat';
-import {MarqueService} from '../../../services/dashboard/marque.service';
 import {EtatService} from '../../../services/dashboard/etat.service';
-import {Magasin} from '../../../models/magasin';
 import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
@@ -23,11 +20,14 @@ export class EtatComponent implements OnInit {
 
   listOfColumn: any = [];
 
+  etatExist = false;
+
   constructor(
     private fb: FormBuilder,
     private etatService: EtatService,
     private behaviorService: BehaviorService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Matériel', 'Etat']);
@@ -40,7 +40,7 @@ export class EtatComponent implements OnInit {
 
   }
 
-  makeEtatForm(etat: Etat){
+  makeEtatForm(etat: Etat) {
     this.validateEtatForm = this.fb.group({
       id: [etat != null ? etat.id : null],
       code: [etat != null ? etat.code : null,
@@ -61,7 +61,7 @@ export class EtatComponent implements OnInit {
     console.log('Tab en cours ==> ', this.indexOfTab);
   }
 
-  updateForm(data: Etat){
+  updateForm(data: Etat) {
 
     this.makeEtatForm(data);
 
@@ -80,7 +80,7 @@ export class EtatComponent implements OnInit {
       });
   }
 
-  confirmMsgDelete(data: Etat){
+  confirmMsgDelete(data: Etat) {
 
     this.etatService.deleteEtat(data.id).subscribe(
       (data01: any) => {
@@ -108,8 +108,17 @@ export class EtatComponent implements OnInit {
 
     if (this.validateEtatForm.valid) {
 
+      this.etatExist = false;
+
       const formData = this.validateEtatForm.value;
-      if (formData.id == null) {
+
+      for (let etat of this.etatList) {
+        if (formData.code.toUpperCase() == etat.code.toUpperCase() || formData.libelle.toUpperCase() == etat.libelle.toUpperCase()) {
+          this.etatExist = true;
+        }
+      }
+
+      if (formData.id == null && this.etatExist == false) {
         this.etatService.createEtat(formData).subscribe(
           (data: any) => {
             this.etatList.unshift(data);
@@ -124,7 +133,9 @@ export class EtatComponent implements OnInit {
             console.log('Enregistrement non ok');
 
           });
-      } else {
+      }
+      if (formData.id != null && this.etatExist == false) {
+
         const i = this.etatList.findIndex(p => p.id == formData.id);
         this.etatService.updateEtat(formData).subscribe(
           (data: any) => {
@@ -141,14 +152,13 @@ export class EtatComponent implements OnInit {
           });
       }
 
-    }
-    else {
+    } else {
 
     }
 
   }
 
-  listOfColumnHeadeer(){
+  listOfColumnHeadeer() {
     this.listOfColumn = [
 
       {

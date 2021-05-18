@@ -143,9 +143,7 @@ export class ServiceComponent implements OnInit {
   }
 
   updateForm(data: ServiceB){
-
     this.makeServiceForm(data);
-
     this.indexOfTab = 1;
   }
 

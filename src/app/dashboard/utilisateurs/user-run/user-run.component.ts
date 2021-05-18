@@ -29,8 +29,20 @@ export class UserRunComponent implements OnInit {
 
   listOfColumn: any = [];
 
-  searchValue = '';
-  visible = false;
+  searchValueNom = '';
+  searchValuePrenom = '';
+  searchValueEmail = '';
+  searchValueSexe = '';
+  searchValueProfil = '';
+  searchValueService = '';
+
+  visibleNom = false;
+  visiblePrenom = false;
+  visibleEmail = false;
+  visibleSexe = false;
+  visibleProfil = false;
+  visibleService = false;
+
   listOfDisplayData;
   pageIndex;
 
@@ -177,14 +189,64 @@ export class UserRunComponent implements OnInit {
       });
   }
 
-  reset(): void {
-    this.searchValue = '';
-    this.search();
+  resetNom(): void {
+    this.searchValueNom = '';
+    this.searchNom();
   }
 
-  search(): void {
-    this.visible = false;
-    this.listOfDisplayData = this.personneList.filter((item: Personne) => item.nom.indexOf(this.searchValue) !== -1);
+  searchNom(): void {
+    this.visibleNom = false;
+    this.listOfDisplayData = this.personneList.filter((item: Personne) => item.nom.indexOf(this.searchValueNom) !== -1);
+  }
+
+  resetPrenom(): void {
+    this.searchValuePrenom = '';
+    this.searchPrenom();
+  }
+
+  searchPrenom(): void {
+    this.visiblePrenom = false;
+    this.listOfDisplayData = this.personneList.filter((item: Personne) => item.prenom.indexOf(this.searchValuePrenom) !== -1);
+  }
+
+  resetEmail(): void {
+    this.searchValueEmail = '';
+    this.searchEmail();
+  }
+
+  searchEmail(): void {
+    this.visibleEmail = false;
+    this.listOfDisplayData = this.personneList.filter((item: Personne) => item.email.indexOf(this.searchValueEmail) !== -1);
+  }
+
+  resetSexe(): void {
+    this.searchValueNom = '';
+    this.searchSexe();
+  }
+
+  searchSexe(): void {
+    this.visibleSexe = false;
+    this.listOfDisplayData = this.personneList.filter((item: Personne) => item.sexe.indexOf(this.searchValueSexe) !== -1);
+  }
+
+  resetProfil(): void {
+    this.searchValueProfil = '';
+    this.searchProfil();
+  }
+
+  searchProfil(): void {
+    this.visibleProfil = false;
+    this.listOfDisplayData = this.personneList.filter((item: Personne) => item.profil.libelle.indexOf(this.searchValueProfil) !== -1);
+  }
+
+  resetService(): void {
+    this.searchValueService = '';
+    this.searchProfil();
+  }
+
+  searchService(): void {
+    this.visibleService = false;
+    this.listOfDisplayData = this.personneList.filter((item: Personne) => item.serviceB.libelle.indexOf(this.searchValueService) !== -1);
   }
 
   updateForm(data: Personne){

@@ -27,6 +27,7 @@ import { SharingModule } from 'src/app/sharing/sharing.module';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
 
 
 
@@ -57,6 +58,7 @@ import {NzModalModule} from 'ng-zorro-antd/modal';
     NzPaginationModule,
     NzDropDownModule,
     NzModalModule,
+    NzDividerModule,
   ]
 })
 export class UtilisateursModule { }
