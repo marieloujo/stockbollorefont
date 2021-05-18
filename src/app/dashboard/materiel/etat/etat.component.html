@@ -53,6 +53,10 @@
           </nz-form-item>
         </div>
 
+        <div *ngIf="etatExist" nz-col nzSpan="24">
+          <h4 style="color: red"> Le code ou le libellé saisi a été déjà utilisé !!! Merci de saisir autre chose !</h4>
+        </div>
+
         <div nz-col nzSpan="24">
           <nz-space>
             <nz-space-item>

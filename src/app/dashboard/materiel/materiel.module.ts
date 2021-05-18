@@ -21,6 +21,10 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import {NzAlertModule} from 'ng-zorro-antd/alert';
+import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 
 
 @NgModule({
@@ -42,6 +46,10 @@ import {NzAlertModule} from 'ng-zorro-antd/alert';
     NzSelectModule,
     NzPopconfirmModule,
     NzAlertModule,
+    NzDropDownModule,
+    NzModalModule,
+    NzDividerModule,
+    NzPaginationModule,
   ]
 })
 export class MaterielModule { }

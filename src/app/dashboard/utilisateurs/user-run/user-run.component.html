@@ -6,9 +6,31 @@
       <tr>
         <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">
           {{ column.title }}
-          <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+
+          <nz-filter-trigger *ngIf="column.title == 'Nom'" [(nzVisible)]="visibleNom" [nzActive]="searchValueNom.length > 0" [nzDropdownMenu]="menuNom">
             <i nz-icon nzType="search"></i>
           </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Prénom'"  [(nzVisible)]="visiblePrenom" [nzActive]="searchValuePrenom.length > 0" [nzDropdownMenu]="menuPrenom">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Service'" [(nzVisible)]="visibleService" [nzActive]="searchValueService.length > 0" [nzDropdownMenu]="menuService">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Email'" [(nzVisible)]="visibleEmail" [nzActive]="searchValueEmail.length > 0" [nzDropdownMenu]="menuEmail">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Sexe'" [(nzVisible)]="visibleSexe" [nzActive]="searchValueSexe.length > 0" [nzDropdownMenu]="menuSexe">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Profil'" [(nzVisible)]="visibleProfil" [nzActive]="searchValueProfil.length > 0" [nzDropdownMenu]="menuProfil">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
         </th>
         <th> Actions </th>
       </tr>
@@ -17,8 +39,8 @@
       <tr *ngFor="let data of sortTable.data">
         <td>{{ data.nom }}</td>
         <td>{{ data.prenom }}</td>
-        <td>{{ data.sexe }}</td>
         <td>{{ data.email }}</td>
+        <td>{{ data.sexe }}</td>
         <td>{{ data.profil.libelle }}</td>
         <td>{{ data.serviceB.libelle }}</td>
         <td>
@@ -42,14 +64,74 @@
     </nz-table>
   </nz-tab>
 
-  <nz-dropdown-menu #menu="nzDropdownMenu">
+  <nz-dropdown-menu #menuNom="nzDropdownMenu">
     <div class="ant-table-filter-dropdown">
       <div class="search-box">
-        <input type="text" nz-input placeholder="chercher un magasin" [(ngModel)]="searchValue" />
-        <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+        <input type="text" nz-input placeholder="chercher un nom" [(ngModel)]="searchValueNom" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchNom()" class="search-button">
           Chercher
         </button>
-        <button nz-button nzSize="small" (click)="reset()">Annuler</button>
+        <button nz-button nzSize="small" (click)="resetNom()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuPrenom="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un prenom" [(ngModel)]="searchValuePrenom" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchPrenom()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetPrenom()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuEmail="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un email" [(ngModel)]="searchValueEmail" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchEmail()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetEmail()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuSexe="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un sexe" [(ngModel)]="searchValueSexe" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchSexe()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetSexe()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuProfil="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un profil" [(ngModel)]="searchValueProfil" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchProfil()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetProfil()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuService="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un service" [(ngModel)]="searchValueService" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchService()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetService()">Annuler</button>
       </div>
     </div>
   </nz-dropdown-menu>

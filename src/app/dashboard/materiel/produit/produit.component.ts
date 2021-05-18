@@ -18,6 +18,7 @@ import {Etat} from '../../../models/etat';
 import {MagasinProduitService} from '../../../services/dashboard/magasin-produit.service';
 import {EtatProduitService} from '../../../services/dashboard/etat-produit.service';
 import {EtatProduit} from '../../../models/etat-produit';
+import {Personne} from '../../../models/personne';
 
 @Component({
   selector: 'app-produit',
@@ -44,6 +45,10 @@ export class ProduitComponent implements OnInit {
 
   searchValueNumSerie = '';
   visibleNumSerie = false;
+
+  searchValueMarque = '';
+  visibleMarque = false;
+
   listOfDisplayData;
 
   constructor(
@@ -316,6 +321,16 @@ export class ProduitComponent implements OnInit {
   searchNumSerie(): void { //indexOf(this.searchValueNumSerie) !== -1)
     this.visibleNumSerie = false;
     this.listOfDisplayData = this.produitList.filter((item: Produit) => item.numSerie.toString().indexOf(this.searchValueNumSerie) !== -1);
+  }
+
+  resetMarque(): void {
+    this.searchValueMarque = '';
+    this.searchMarque();
+  }
+
+  searchMarque(): void {
+    this.visibleMarque = false;
+    this.listOfDisplayData = this.produitList.filter((item: Produit) => item.marque.libelle.indexOf(this.searchValueMarque) !== -1);
   }
 
   confirmMsgDelete(data: Produit){
