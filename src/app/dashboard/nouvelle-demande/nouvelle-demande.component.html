@@ -23,14 +23,14 @@
 
     </div>-->
 
-    <form nz-form>
+    <form [formGroup]="validateNewDemandeForm" nz-form>
 
       <div nz-row>
 
         <div nz-col nzSpan="10" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série" [(ngModel)]="produitChoice" name="produitChoice" >
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série" formControlName="produit" name="produitChoice" >
               <nz-option *ngFor="let produit of produitList" [nzLabel]="produit.numSerie" [nzValue]="produit"></nz-option>
             </nz-select>
           </nz-form-item>
@@ -38,7 +38,6 @@
 
         <div nz-col nzSpan="2" style="padding-top: 2.8em">
           <button nz-button nzType="primary" (click)="loadDetailProduit()"><i nz-icon nzType="check"></i>
-
           </button>
         </div>
 
@@ -69,11 +68,20 @@
           </nz-form-item>
         </div>
 
-        <div nz-col nzSpan="24" style="padding-right: 1.5em">
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Demandeur</nz-form-label>
-            <nz-select>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une personne"  formControlName="personne" >
               <nz-option *ngFor="let pers of personneList" [nzLabel]=" pers.nom + ' ' + pers.prenom + ' --- '+pers.serviceB.libelle " [nzValue]="pers"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Nature du mouvement</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un mouvement" formControlName="mouvement">
+              <nz-option *ngFor="let mouv of mouvementList" [nzLabel]="mouv.description" [nzValue]="mouv.value"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
@@ -81,8 +89,8 @@
         <div nz-col nzSpan="24">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Description</nz-form-label>
-            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <textarea nz-input placeholder="saisir une description" rows="4"></textarea>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!" >
+              <textarea nz-input placeholder="saisir une description" rows="4" formControlName="description"></textarea>
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -95,14 +103,14 @@
                       nzType="primary"><i nz-icon nzType="check"></i>
                 Enregistrer
               </button>-->
-              <button nz-button nzType="primary" (click)="validerProduit()"><i nz-icon nzType="check"></i>
+              <button nz-button nzType="primary" (click)="validerProduit()" [disabled]="validateNewDemandeForm.invalid"><i nz-icon nzType="check"></i>
                 Valider
               </button>
             </nz-space-item>
             <nz-space-item>
-              <!--<button (click)="resetEtatForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+              <button (click)="resetDemandeForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
                 Annuler
-              </button>-->
+              </button>
               <!--<button nz-button nzType="default"><i nz-icon nzType="check"></i>
                 Soumettre
               </button>-->
@@ -119,31 +127,29 @@
   <nz-tab [nzTitle]="'Liste des produits pour nouvelle demande'">
 
     <div nz-row>
-      <nz-table #sortTable [nzData]="produitList" nzTableLayout="fixed">
+      <nz-table #sortTable [nzData]="demandeProduitList" nzTableLayout="fixed">
         <thead>
         <tr>
-          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare"
+          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn"
               [nzSortPriority]="column.priority">{{ column.title }}</th>
-          <th> Num série </th>
-          <th> Marque </th>
-          <th> Modele </th>
-          <th> Gamme </th>
-          <th> Demandeur </th>
+
           <th> Actions </th>
+
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let data of sortTable.data">
-          <td>{{ data.numSerie }}</td>
-          <td>{{ data.numSerie }}</td>
-          <td>{{ data.numSerie }}</td>
-          <td>{{ data.numSerie }}</td>
-          <td>{{ data.numSerie }}</td>
+          <td>{{ data.produit.numSerie }}</td>
+          <td>{{ data.produit.marque.libelle }}</td>
+          <td>{{ data.produit.modele.libelle }}</td>
+          <td>{{ data.produit.gamme.libelle }}</td>
+          <td>{{ data.personne.nom }}</td>
+          <td>{{ data.livrer }}</td>
           <td>
             <nz-space>
               <nz-space-item>
-                <button nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="edit"></i>
-                </button>
+                <!--<button nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="edit"></i>
+                </button>-->
               </nz-space-item>
               <nz-space-item>
                 <button nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="delete"></i>
@@ -155,7 +161,7 @@
         </tbody>
       </nz-table>
     </div>
-    <div nz-row>
+    <div nz-row style="margin-top: 10px;">
       <div nz-col nzSpan="24">
         <nz-space>
           <nz-space-item>
@@ -164,7 +170,7 @@
             </button>
           </nz-space-item>
           <nz-space-item>
-            <button nz-button nzType="primary"><i nz-icon nzType="check"></i>
+            <button nz-button nzType="primary" (click)="faireValiderProduit()" [disabled]="demandeProduitList.length == 0 || demandeProduitList == null"><i nz-icon nzType="check"></i>
               Faire valider
             </button>
           </nz-space-item>
