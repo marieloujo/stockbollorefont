@@ -29,6 +29,8 @@ import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NzDrawerModule} from 'ng-zorro-antd/drawer';
+import {NzDescriptionsModule} from 'ng-zorro-antd/descriptions';
 
 
 @NgModule({
@@ -59,6 +61,8 @@ import {NzDividerModule} from 'ng-zorro-antd/divider';
     NzDropDownModule,
     NzModalModule,
     NzDividerModule,
+    NzDrawerModule,
+    NzDescriptionsModule,
 
   ]
 })
