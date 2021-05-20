@@ -32,4 +32,8 @@ export class DemandeService {
     return this.http.delete(`${this.url}/supprimer-demande/${id}`);
   }
 
+  getDemandeById(id: number): Observable<Object> {
+    return this.http.get(`${this.url}/get-by-id/${id}`);
+  }
+
 }

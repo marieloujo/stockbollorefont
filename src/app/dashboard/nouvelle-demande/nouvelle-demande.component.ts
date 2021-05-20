@@ -278,7 +278,7 @@ export class NouvelleDemandeComponent implements OnInit {
         sortFn: (a: Produit, b: Produit) => a.modele.libelle.localeCompare(b.modele.libelle),
       },
       {
-        title: 'Gamme',
+        title: 'Equipement',
         compare: null,
         sortFn: (a: Produit, b: Produit) => a.gamme.libelle.localeCompare(b.gamme.libelle),
       },
