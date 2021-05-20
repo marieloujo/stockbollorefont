@@ -103,6 +103,8 @@ export class HistoriqueDemandeComponent implements OnInit {
   listOfColumn: any = [];
   listOfDisplayData;
 
+  visibleDrawer = false;
+
   constructor(
     private behaviorService: BehaviorService,
     private demandeProduitService: DemandeProduitService,
@@ -211,6 +213,14 @@ export class HistoriqueDemandeComponent implements OnInit {
         priority: 1
       }*/
     ];
+  }
+
+  openDrawer(): void {
+    this.visibleDrawer = true;
+  }
+
+  closeDrawer(): void {
+    this.visibleDrawer = false;
   }
 
 }
