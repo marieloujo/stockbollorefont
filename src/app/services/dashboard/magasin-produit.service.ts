@@ -32,4 +32,8 @@ export class MagasinProduitService {
     return this.http.delete(`${this.url}/supprimer-magazin-produit/${id}`);
   }
 
+  getMagasinProduitById(id: number): Observable<Object> {
+    return this.http.get(`${this.url}/get-by-id/${id}`);
+  }
+
 }

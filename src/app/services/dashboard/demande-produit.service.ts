@@ -31,4 +31,8 @@ export class DemandeProduitService {
     return this.http.delete(`${this.url}/supprimer-demande-produit/${id}`);
   }
 
+  getListDescCreateDate(): Observable<Object> {
+    return this.http.get(`${this.url}/list/desc-create-date`);
+  }
+
 }

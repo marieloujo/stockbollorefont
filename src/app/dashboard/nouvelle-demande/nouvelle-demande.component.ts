@@ -265,7 +265,8 @@ export class NouvelleDemandeComponent implements OnInit {
       {
         title: 'Numero Série',
         compare: null,
-        sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
+        sortFn: (a: Produit, b: Produit) => a.numSerie.localeCompare(b.numSerie),
+        //sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
       },
       {
         title: 'Marque',
@@ -278,7 +279,7 @@ export class NouvelleDemandeComponent implements OnInit {
         sortFn: (a: Produit, b: Produit) => a.modele.libelle.localeCompare(b.modele.libelle),
       },
       {
-        title: 'Gamme',
+        title: 'Equipement',
         compare: null,
         sortFn: (a: Produit, b: Produit) => a.gamme.libelle.localeCompare(b.gamme.libelle),
       },

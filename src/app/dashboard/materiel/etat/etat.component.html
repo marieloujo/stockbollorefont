@@ -10,8 +10,8 @@
       </thead>
       <tbody>
       <tr *ngFor="let data of sortTable.data">
-        <td>{{ data.code }}</td>
-        <td>{{ data.libelle }}</td>
+        <td>{{ data?.code }}</td>
+        <td>{{ data?.libelle }}</td>
         <td>
           <nz-space>
             <nz-space-item>

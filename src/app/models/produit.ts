@@ -4,11 +4,13 @@ import {Modele} from './modele';
 import {DemandeProduit} from './demande-produit';
 import {EtatProduit} from './etat-produit';
 import {MagasinProduit} from './magasin-produit';
+import {Etat} from './etat';
+import {Magasin} from './magasin';
 
 export class Produit {
 
   id: number;
-  numSerie: number;
+  numSerie: string;
   description: string;
   nbrStock: number;
   dateHeureStock: Date;
@@ -18,5 +20,8 @@ export class Produit {
   demandeProduits: DemandeProduit[];
   etatProduits: EtatProduit[];
   magazinProduits: MagasinProduit[];
+
+  etat: Etat;
+  magasin: Magasin;
 
 }
