@@ -8,7 +8,7 @@ import {MagasinProduit} from './magasin-produit';
 export class Produit {
 
   id: number;
-  numSerie: number;
+  numSerie: string;
   description: string;
   nbrStock: number;
   dateHeureStock: Date;
