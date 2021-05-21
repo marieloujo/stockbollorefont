@@ -163,8 +163,8 @@ export class GammeComponent implements OnInit {
       } else {
         const i = this.gammeList.findIndex(p => p.id == formData.id);
         this.gammeService.updateGamme(formData).subscribe(
-          (data: any) => {
-            this.gammeList[i] = data[0];
+          (data: Gamme) => {
+            this.gammeList[i] = data;
             this.gammeList = [...this.gammeList];
             this.makeGammeForm(null);
 

@@ -250,6 +250,34 @@ export class ProduitComponent implements OnInit {
       (data: Produit[]) => {
         this.produitList = [...data];
         console.log('Produit List ==>', this.produitList);
+
+        /*for (let prod of this.produitList){
+
+          for (let etatProd of prod.etatProduits){
+            if (etatProd.actuel == true){
+              this.etatProduitService.getEtatProduitById(etatProd.id).subscribe(
+                (dataEtatProd: EtatProduit) => {
+                  prod.etat = dataEtatProd.etat;
+                },
+                (error: HttpErrorResponse) => {
+                  console.log('error get by id etatProduit ==>', error.message, ' ', error.status, ' ', error.statusText);
+                });
+            }
+          }
+
+          for (let magProd of prod.magazinProduits){
+            if (magProd.actuel == true){
+              this.magasinProduitService.getMagasinProduitById(magProd.id).subscribe(
+                (dataMagProd: MagasinProduit) => {
+                  prod.magasin = dataMagProd.magazin;
+                },
+                (error: HttpErrorResponse) => {
+                  console.log('error get by id etatProduit ==>', error.message, ' ', error.status, ' ', error.statusText);
+                });
+            }
+          }
+        }*/
+
         this.listOfDisplayData = [...this.produitList];
         //this.pageIndex = 1;
       },

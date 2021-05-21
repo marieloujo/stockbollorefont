@@ -65,9 +65,6 @@ export class ModeleComponent implements OnInit {
     this.indexOfTab = 1;
   }
 
-
-
-
   list(): void {
     this.modeleService.getList().subscribe(
       (data: any) => {
@@ -151,8 +148,8 @@ export class ModeleComponent implements OnInit {
       } else {
         const i = this.modeleList.findIndex(p => p.id == formData.id);
         this.modeleService.updateModele(formData).subscribe(
-          (data: any) => {
-            this.modeleList[i] = data[0];
+          (data: Modele) => {
+            this.modeleList[i] = data;
             this.modeleList = [...this.modeleList];
             this.makeModeleForm(null);
 

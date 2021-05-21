@@ -37,12 +37,12 @@
       </thead>
       <tbody>
       <tr *ngFor="let data of sortTable.data">
-        <td>{{ data.nom }}</td>
-        <td>{{ data.prenom }}</td>
-        <td>{{ data.email }}</td>
-        <td>{{ data.sexe }}</td>
-        <td>{{ data.profil.libelle }}</td>
-        <td>{{ data.serviceB.libelle }}</td>
+        <td>{{ data?.nom }}</td>
+        <td>{{ data?.prenom }}</td>
+        <td>{{ data?.email }}</td>
+        <td>{{ data?.sexe }}</td>
+        <td>{{ data?.profil.libelle }}</td>
+        <td>{{ data?.serviceB.libelle }}</td>
         <td>
           <nz-space>
             <nz-space-item>
