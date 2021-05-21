@@ -3,6 +3,7 @@ import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Magasin} from '../../models/magasin';
+import { RequestService } from '../request/request.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,11 @@ export class PersonneService {
   url: string = environment.backend +'/personne'
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient, private requestService: RequestService
   ) { }
+
+
+
 
   getList(): Observable<Object> {
     return this.http.get(`${this.url}/list`);

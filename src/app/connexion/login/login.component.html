@@ -1,7 +1,6 @@
-<!--<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">-->
+<!--form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()"-->
 <div style="height: 100%; width: 100%; ">
-
-  <form nz-form  [formGroup]="validateForm" class="login-form" style="display: block; margin-left: auto; margin-right: auto; width: 40%; margin-top: 50%;" >
+  <form nz-form  [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()" style="display: block; margin-left: auto; margin-right: auto; width: 40%; margin-top: 50%;" >
     <nz-form-item>
       <nz-form-control nzErrorTip="Please input your username!">
         <nz-input-group nzPrefixIcon="user">
@@ -29,6 +28,5 @@
     <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
     Or <a> register now! </a>
   </form>
-
 </div>
 

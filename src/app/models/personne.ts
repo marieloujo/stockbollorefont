@@ -10,5 +10,7 @@ export class Personne {
   email: string;
   profil: Profil;
   serviceB: ServiceB;
+  username: String;
+  password: String;
 
 }
