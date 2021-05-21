@@ -101,7 +101,7 @@ export class MarqueComponent implements OnInit {
 
   listOfColumnHeadeer(){
     this.listOfColumn = [
-   
+
       {
         title: 'Libellé',
         compare: null,
@@ -147,8 +147,8 @@ export class MarqueComponent implements OnInit {
       } else {
         const i = this.marqueList.findIndex(p => p.id == formData.id);
         this.marqueService.updateMarque(formData).subscribe(
-          (data: any) => {
-            this.marqueList[i] = data[0];
+          (data: Marque) => {
+            this.marqueList[i] = data;
             this.marqueList = [...this.marqueList];
             this.makeMarqueForm(null);
 

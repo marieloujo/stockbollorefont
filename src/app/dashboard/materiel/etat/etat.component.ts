@@ -138,7 +138,7 @@ export class EtatComponent implements OnInit {
 
         const i = this.etatList.findIndex(p => p.id == formData.id);
         this.etatService.updateEtat(formData).subscribe(
-          (data: any) => {
+          (data: Etat) => {
             this.etatList[i] = data;
             this.etatList = [...this.etatList];
             this.makeEtatForm(null);
