@@ -265,7 +265,8 @@ export class NouvelleDemandeComponent implements OnInit {
       {
         title: 'Numero Série',
         compare: null,
-        sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
+        sortFn: (a: Produit, b: Produit) => a.numSerie.localeCompare(b.numSerie),
+        //sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
       },
       {
         title: 'Marque',

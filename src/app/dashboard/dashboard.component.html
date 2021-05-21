@@ -1,9 +1,9 @@
 <nz-layout>
-  <nz-sider [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzCollapsible>
+  <nz-sider [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzCollapsible style="min-height: 100vh">
     <div class="logo">
       <img [src]="'/assets/img/logoBollore.jpeg'" width="180" height="35">
     </div>
-    <ul nz-menu nzMode="inline" nzTheme="dark">
+    <ul nz-menu nzMode="inline" nzTheme="dark" >
 
       <li nz-menu-item>
         <a [routerLink]="['/dashboard']">

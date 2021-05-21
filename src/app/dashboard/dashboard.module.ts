@@ -31,6 +31,7 @@ import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 import {NzDescriptionsModule} from 'ng-zorro-antd/descriptions';
+import {NzCardModule} from 'ng-zorro-antd/card';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import {NzDescriptionsModule} from 'ng-zorro-antd/descriptions';
     NzDividerModule,
     NzDrawerModule,
     NzDescriptionsModule,
+    NzCardModule,
 
   ]
 })

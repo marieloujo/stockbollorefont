@@ -1,2 +1,77 @@
 
-  <p>accueil works!</p>
+<h2>Statistiques des demandes</h2>
+
+<!--<div nz-row>
+  <div nz-col nzSpan="24">
+  </div>
+</div>-->
+
+
+<div style="background: #ECECEC;padding:30px;">
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="6">
+      <nz-card nzTitle="Aujourd'hui">
+        <p>0 nouvelle demande</p>
+      </nz-card>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-card nzTitle="Cette semaine">
+        <p>0 nouvelle demande</p>
+      </nz-card>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-card nzTitle="Ce mois">
+        <p>0 nouvelle demande</p>
+      </nz-card>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-card nzTitle="Cette année">
+        <p>0 nouvelle demande</p>
+      </nz-card>
+    </div>
+  </div>
+</div>
+
+
+<nz-divider></nz-divider>
+
+<h2 style="margin-top: 10px">Liste des demandes récentes</h2>
+
+<div nz-row>
+  <div nz-col nzSpan="24">
+
+    <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5">
+      <thead>
+      <tr>
+        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">
+          {{ column.title }}
+
+
+        </th>
+
+        <th> Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of sortTable.data">
+
+        <td>{{ data.produit.numSerie }}</td>
+        <td>{{ data.gamme?.libelle }}</td>
+        <td>{{ data.marque?.libelle }}</td>
+        <td>{{ data.modele?.libelle }}</td>
+        <td>{{ data.personne?.nom + ' ' + data.personne?.prenom }}</td>
+
+        <td>
+          <button [disabled]="data.valider" (click)="validerDemande(data)" nz-button nzType="primary" style="margin-right: 2px;"> Valider
+          </button>
+
+          <button [disabled]="data.livrer" (click)="livrerDemande(data)" nz-button  nzType="primary"> Livrer
+          </button>
+
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+
+  </div>
+</div>

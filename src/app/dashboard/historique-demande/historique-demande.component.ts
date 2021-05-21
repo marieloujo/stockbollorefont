@@ -180,7 +180,8 @@ export class HistoriqueDemandeComponent implements OnInit {
       {
         title: 'Numero Série',
         compare: null,
-        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie - b.produit.numSerie,
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie.localeCompare(b.produit.numSerie),
+        //sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie - b.produit.numSerie,
       },
       {
         title: 'Equipement',
