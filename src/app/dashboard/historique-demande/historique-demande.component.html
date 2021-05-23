@@ -2,19 +2,37 @@
 
 <div nz-row>
 
-  <button nz-button nzBlock nzType="primary" style="margin-bottom: 10px">
+  <button nz-button nzBlock nzType="primary" style="margin-bottom: 10px" *ngIf="can_create">
     <a [routerLink]="['/dashboard/nouvelle-demande']"> Faire une nouvelle demande </a>
   </button>
 
   <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5">
     <thead>
     <tr>
-      <th *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">
+      <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">
         {{ column.title }}
 
+        <nz-filter-trigger *ngIf="column.title == 'Numero Série'" [(nzVisible)]="visibleNumero" [nzActive]="searchValueNumero.length > 0" [nzDropdownMenu]="menuNumero">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+
+        <nz-filter-trigger *ngIf="column.title == 'Equipement'"  [(nzVisible)]="visibleEquipement" [nzActive]="searchValueEquipement.length > 0" [nzDropdownMenu]="menuEquipement">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+
+        <nz-filter-trigger *ngIf="column.title == 'Marque'" [(nzVisible)]="visibleMarque" [nzActive]="searchValueMarque.length > 0" [nzDropdownMenu]="menuMarque">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+
+        <nz-filter-trigger *ngIf="column.title == 'Modele'" [(nzVisible)]="visibleModele" [nzActive]="searchValueModele.length > 0" [nzDropdownMenu]="menuModele">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+
+        <nz-filter-trigger *ngIf="column.title == 'Demandeur'" [(nzVisible)]="visibleDemandeur" [nzActive]="searchValueDemandeur.length > 0" [nzDropdownMenu]="menuDemandeur">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
 
       </th>
-
       <th> Détails</th>
     </tr>
     </thead>
@@ -37,6 +55,67 @@
     </tbody>
   </nz-table>
 </div>
+
+
+<nz-dropdown-menu #menuNumero="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher par numéro de série" [(ngModel)]="searchValueNumero" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchNumero()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetNumero()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuEquipement="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher par equipement" [(ngModel)]="searchValueEquipement" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchEquipement()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetEquipement()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuMarque="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher par marque" [(ngModel)]="searchValueMarque" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchMarque()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetMarque()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuModele="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher par modele" [(ngModel)]="searchValueModele" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchModele()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetModele()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuDemandeur="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher par demandeur" [(ngModel)]="searchValueDemandeur" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchDemandeur()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetDemandeur()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
 
 
 <nz-drawer [nzVisible]="visibleDrawer" [nzWidth]="640" [nzClosable]="false" (nzOnClose)="closeDrawer()">

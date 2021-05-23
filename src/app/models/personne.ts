@@ -1,4 +1,5 @@
 import {Profil} from './profil';
+import { Role } from './role';
 import {ServiceB} from './service-b';
 
 export class Personne {
@@ -12,5 +13,6 @@ export class Personne {
   serviceB: ServiceB;
   username: String;
   password: String;
+  roles: Array<Role>;
 
 }

@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import {BehaviorService} from '../../services/common/behavior.service';
 import {DemandeProduitService} from '../../services/dashboard/demande-produit.service';
 import {DemandeProduit} from '../../models/demande-produit';
-import {Marque} from '../../models/marque';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ProduitService} from '../../services/dashboard/produit.service';
 import {DemandeService} from '../../services/dashboard/demande.service';
 import {Produit} from '../../models/produit';
 import {Demande} from '../../models/demande';
-import {Magasin} from '../../models/magasin';
+import { TokenService } from 'src/app/services/token/token.service';
+import { Token } from 'src/app/models/token.model';
+import {environment} from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-accueil',
@@ -21,13 +23,21 @@ export class AccueilComponent implements OnInit {
 
   listOfColumn: any = [];
   listOfDisplayData;
+  token: Token;
+  environment = environment;
+  livreur: boolean;
+  validateur: boolean;
+
 
   constructor(
     private behaviorService: BehaviorService,
     private demandeProduitService: DemandeProduitService,
     private produitService: ProduitService,
     private demandeService: DemandeService,
-  ) { }
+    private tokenService: TokenService
+  ) {
+    this.token = this.tokenService.getAccessToken(); 
+   }
 
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Tableau de bord']);
@@ -36,7 +46,23 @@ export class AccueilComponent implements OnInit {
 
     this.listOfColumnHeader();
 
+    this.livreur = this.canLivrer();
+    this.validateur = this.canValider();
+    console.log(this.livreur+" "+this.validateur)
+
+
   }
+
+
+  canValider(): boolean {
+    return this.token.roles.indexOf(environment.ROLE_VALIDATEUR) > -1;
+  }
+
+
+  canLivrer(): boolean {
+    return this.token.roles.indexOf(environment.ROLE_GESTIONNAIRE) > -1;
+}
+
 
   validerDemande(demandeProduit: DemandeProduit){
 

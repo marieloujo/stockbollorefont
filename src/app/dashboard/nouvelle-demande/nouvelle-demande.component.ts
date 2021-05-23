@@ -14,6 +14,7 @@ import {MouvementService} from '../../services/common/mouvement.service';
 import {Mouvement} from '../../models/Mouvement';
 import {DemandeService} from '../../services/dashboard/demande.service';
 import {DemandeProduitService} from '../../services/dashboard/demande-produit.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nouvelle-demande',
@@ -44,6 +45,8 @@ export class NouvelleDemandeComponent implements OnInit {
 
   countNew: number = 0;
 
+  
+
   constructor(
     private behaviorService: BehaviorService,
     private produitService: ProduitService,
@@ -52,6 +55,7 @@ export class NouvelleDemandeComponent implements OnInit {
     private demandeService: DemandeService,
     private demandeProduitService: DemandeProduitService,
     private fb: FormBuilder,
+    private router: Router
   ) {
   }
 
@@ -212,9 +216,7 @@ export class NouvelleDemandeComponent implements OnInit {
   faireValiderProduit(){
 
     let demande: Demande = new Demande();
-    console.log("la liste de demande => ");
-    console.log(this.personneDemande);
-    console.log(this.mouvementDemande);
+    let produitList =  this.demandeProduitList;
 
 
     demande.mouvement = this.mouvementDemande;
@@ -226,12 +228,13 @@ export class NouvelleDemandeComponent implements OnInit {
 
     this.demandeService.createDemande(demande).subscribe(
       (data: any) => {
-      console.log('Enregistrement demande => '+data);
+      console.log('Enregistrement demande => '+JSON.stringify(data));
       newDemande = data;
 
       let theDemandeProduit: DemandeProduit = new DemandeProduit();
 
-      for (let dp of this.demandeProduitList){
+
+      for (let dp of produitList){
         theDemandeProduit.description = dp.description;
         theDemandeProduit.livrer = dp.livrer;
         theDemandeProduit.valider = dp.valider;
@@ -240,7 +243,7 @@ export class NouvelleDemandeComponent implements OnInit {
 
         this.demandeProduitService.createDemandeProduit(theDemandeProduit).subscribe(
           (data1: any) => {
-            console.log("Enregistrement demandeProduit => "+data1);
+            console.log("Enregistrement demandeProduit => "+JSON.stringify(data1));
           },
           (error: HttpErrorResponse) => {
             console.log("Enregistrement demandeProduit non effectuer => "+ error.message);
@@ -256,6 +259,9 @@ export class NouvelleDemandeComponent implements OnInit {
     );
 
     this.demandeProduitList = [];
+    this.router.navigate(['/dashboard']).then(() => {
+        window.location.reload();
+    });
 
   }
 

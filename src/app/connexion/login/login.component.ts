@@ -6,6 +6,7 @@ import {CookieService} from 'ngx-cookie-service';
 import { RequestService } from 'src/app/services/request/request.service';
 import { Personne } from 'src/app/models/personne';
 import { TokenService } from 'src/app/services/token/token.service';
+import { Token } from 'src/app/models/token.model';
 declare var $: any;
 
 @Component({
@@ -18,7 +19,6 @@ export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
 
   formSubmitted = false;
-  loading = false;
   erreur_interne = false;
   login_echec = false;
 
@@ -27,18 +27,19 @@ export class LoginComponent implements OnInit {
       private router: Router, 
       private requestService: RequestService, 
       private Cookie: CookieService,
-      private TokenService: TokenService) { 
+      private tokenService: TokenService) { 
 
     this.validateForm = this.formBuilder.group({
-        userName: [null, [Validators.required]],
-        password: [null, [Validators.required]],
-        remember: [true]
+        username: ['', Validators.required],
+        password: ['', Validators.required]
     });
 
   }
 
   ngOnInit(): void {
-    
+      if (this.tokenService.getAccessToken() !== null ) {
+          this.router.navigate(['dashboard']);
+      }
   }
 
   submitForm(): void { // formulaire valider
@@ -48,10 +49,9 @@ export class LoginComponent implements OnInit {
     this.login_echec = false;
 
     if (this.validateForm.valid ) {
-      this.loading = true;
       let user = new Personne();
 
-      user.username = this.validateForm.get('userName').value;
+      user.username = this.validateForm.get('username').value;
       user.password = this.validateForm.get('password').value;
       this.login(user);
 
@@ -63,25 +63,33 @@ export class LoginComponent implements OnInit {
         this.requestService.http_simple_request(user, '/api/auth/login').subscribe({
             next: value => { // success
                 this.erreur_interne = false;
-                //console.log(value);
-                this.TokenService.saveToken(value);
-                /* this.Cookie.set('user', JSON.stringify(user), 1000 * environment.USER_EXPIRE_IN, '/');
-                this.router.navigate(['/app/accueil']);*/
-                //this.getUserConnecteByUsername(user.username);
+
+                let token = new Token();
+                token = value;
+                console.log(token);
+
+                let role_personne = true;
+
+                token.roles.forEach(role => {
+                    if(role != environment.ROLE_PERSONNE) {
+                        role_personne = false;
+                    }
+                });
+
+                if (role_personne) {
+                    this.router.navigate(['/unauthorize']);
+                } else {
+                    this.tokenService.saveToken(value);
+                    this.resetLoginForm();
+                    this.router.navigate(['/dashboard']);
+                }
+
             },
             error: err => { // erreur
-                /*if (err.statusText === environment.STATUS_TEXT_UNKNOW_ERROR) { // erreur interne
-                    this.erreur_interne = true;
-                    this.resetLoginForm();
-                } else { // login echec
-                   this.login_echec = true;
-                   this.loginForm.get('password').setValue('');
-                }
-                this.loading = false;*/
-                console.log(err.status);
+                this.login_echec = true;
+                this.validateForm.get('password').setValue('');
             },
             complete: () => { // fin de la requete
-                this.loading = false;
             }
         });
     } 

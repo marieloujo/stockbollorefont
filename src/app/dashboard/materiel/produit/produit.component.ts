@@ -18,7 +18,9 @@ import {Etat} from '../../../models/etat';
 import {MagasinProduitService} from '../../../services/dashboard/magasin-produit.service';
 import {EtatProduitService} from '../../../services/dashboard/etat-produit.service';
 import {EtatProduit} from '../../../models/etat-produit';
-import {Personne} from '../../../models/personne';
+import { TokenService } from 'src/app/services/token/token.service';
+import { Token } from 'src/app/models/token.model';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-produit',
@@ -51,6 +53,10 @@ export class ProduitComponent implements OnInit {
 
   listOfDisplayData;
 
+  is_admin: boolean;
+
+  token: Token;
+
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
@@ -62,7 +68,8 @@ export class ProduitComponent implements OnInit {
     private etatService: EtatService,
     private magasinProduitService: MagasinProduitService,
     private etatProduitService: EtatProduitService,
-  ) { }
+    private tokenService: TokenService
+  ) { this.token = this.tokenService.getAccessToken(); }
 
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Matériel', 'Produit']);
@@ -78,7 +85,13 @@ export class ProduitComponent implements OnInit {
 
     this.getEtatByCode("NEW");
 
-  }
+    this.is_admin = this.canWrite();  
+
+}
+
+canWrite(): boolean {
+  return this.token.roles.indexOf(environment.ROLE_ADMIN) > -1;
+}
 
   loadMagasinProduit(){
     console.log('Le magasin');
