@@ -1,0 +1,84 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "line-scale-pulse-out" [fullScreen] = "true"><p style="color: white" > Chargement... </p></ngx-spinner>
+
+
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+  <nz-tab [nzTitle]="'Liste des états'">
+    <nz-table #sortTable [nzData]="etatList" nzTableLayout="fixed" [nzPageSize]="5">
+      <thead>
+      <tr>
+        <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" >{{ column.title }}</th>
+        <!--th *ngIf="is_admin"> Actions </th-->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of sortTable.data">
+        <td>{{ data?.code }}</td>
+        <td>{{ data?.libelle }}</td>
+        <!--td *ngIf="is_admin">
+          <nz-space>
+            <nz-space-item>
+              <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            </nz-space-item>
+            <nz-space-item>
+              <button
+                nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                (nzOnConfirm)="confirmMsgDelete(data)"
+                (nzOnCancel)="cancelMsgDelete()"
+                nzPopconfirmPlacement="topRight"
+                nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            </nz-space-item>
+          </nz-space>
+        </td-->
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+  <!--Tabs correspondant au formulaire d'enregistrement d'un etat -->
+  <!--<nz-tab [nzTitle]="'Nouvelle état' " *ngIf="is_admin">
+
+    <form [formGroup]="validateEtatForm" nz-form>
+      <div nz-row>
+        <div nz-col nzSpan="10" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Code</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="code" nz-input placeholder="saisir le code" (keyup)="validateEtatForm.patchValue({code: $event.target.value.toUpperCase()})"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="14">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Libellé</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="libelle" nz-input placeholder="saisir le libellé" (keyup)="validateEtatForm.patchValue({libelle: $event.target.value.toUpperCase()})"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div *ngIf="etatExist" nz-col nzSpan="24">
+          <h4 style="color: red"> Le code ou le libellé saisi a été déjà utilisé !!! Merci de saisir autre chose !</h4>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-space>
+            <nz-space-item>
+              <button (click)="resetEtatForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>
+            </nz-space-item>
+            <nz-space-item>
+              <button (click)="submitEtatForm()" [disabled]="validateEtatForm.invalid" nz-button
+                      nzType="primary"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>
+            </nz-space-item>
+          </nz-space>
+        </div>
+
+      </div>
+
+    </form>
+
+  </nz-tab>-->
+</nz-tabset>

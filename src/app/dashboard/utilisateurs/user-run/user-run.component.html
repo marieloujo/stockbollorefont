@@ -1,0 +1,252 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "line-scale-pulse-out" [fullScreen] = "true"><p style="color: white" > Chargement... </p></ngx-spinner>
+
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+  <nz-tab [nzTitle]="'Liste des personnes'" >
+    <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5" [nzPageIndex]="pageIndex">
+      <thead>
+      <tr>
+        <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">
+          {{ column.title }}
+
+          <nz-filter-trigger *ngIf="column.title == 'Nom'" [(nzVisible)]="visibleNom" [nzActive]="searchValueNom.length > 0" [nzDropdownMenu]="menuNom">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Prénom'"  [(nzVisible)]="visiblePrenom" [nzActive]="searchValuePrenom.length > 0" [nzDropdownMenu]="menuPrenom">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Service'" [(nzVisible)]="visibleService" [nzActive]="searchValueService.length > 0" [nzDropdownMenu]="menuService">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Email'" [(nzVisible)]="visibleEmail" [nzActive]="searchValueEmail.length > 0" [nzDropdownMenu]="menuEmail">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Sexe'" [(nzVisible)]="visibleSexe" [nzActive]="searchValueSexe.length > 0" [nzDropdownMenu]="menuSexe">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+          <nz-filter-trigger *ngIf="column.title == 'Profil'" [(nzVisible)]="visibleProfil" [nzActive]="searchValueProfil.length > 0" [nzDropdownMenu]="menuProfil">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+
+        </th>
+        <th *ngIf="is_admin"> Actions </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of sortTable.data">
+        <td>{{ data?.nom }}</td>
+        <td>{{ data?.prenom }}</td>
+        <td>{{ data?.email }}</td>
+        <td>{{ data?.sexe }}</td>
+        <td> <span *ngFor="let role of data?.roles">{{ role.libelle+", " }}</span> </td>
+        <td>{{ data?.serviceB?.libelle }}</td>
+        <td *ngIf="is_admin">
+          <nz-space>
+            <nz-space-item>
+              <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
+            </nz-space-item>
+            <nz-space-item>
+              <button
+                nz-popconfirm
+                nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                (nzOnConfirm)="confirmMsgDelete(data)"
+                (nzOnCancel)="cancelMsgDelete()"
+                nzPopconfirmPlacement="topRight"
+                nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+            </nz-space-item>
+          </nz-space>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+
+  <nz-dropdown-menu #menuNom="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un nom" [(ngModel)]="searchValueNom" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchNom()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetNom()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuPrenom="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un prenom" [(ngModel)]="searchValuePrenom" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchPrenom()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetPrenom()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuEmail="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un email" [(ngModel)]="searchValueEmail" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchEmail()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetEmail()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuSexe="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un sexe" [(ngModel)]="searchValueSexe" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchSexe()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetSexe()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuProfil="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un profil" [(ngModel)]="searchValueProfil" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchProfil()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetProfil()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuService="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un service" [(ngModel)]="searchValueService" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchService()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetService()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+
+  <nz-tab [nzTitle]="'Nouvelle personne' ">
+
+    <form [formGroup]="validatePersonneForm" nz-form>
+      <div nz-row>
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Nom</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="nom" nz-input placeholder="saisir le nom"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Prénom</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="prenom" nz-input placeholder="saisir le prénom"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Service</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un service" formControlName="serviceB" >
+              <nz-option  *ngFor="let serviceB of serviceBList" [nzLabel]="serviceB.libelle" [nzValue]="serviceB"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Profil</nz-form-label>
+            <!--<nz-select nzShowSearch nzAllowClear nzPlaceHolder="Sélectionner un groupe de profil" formControlName="roles" >
+              <nz-option  *ngFor="let profil of profilList" [nzLabel]="profil.name" [nzValue]="profil"></nz-option>
+              &lt;!&ndash;<nz-option   [nzLabel]="rolePersonne.name" [nzValue]="rolePersonne"></nz-option>&ndash;&gt;
+            </nz-select>-->
+            <nz-select formControlName="roles" [nzSize]="'default'" nzMode="multiple" nzPlaceHolder="Sélectionner un groupe de profil" [nzDisabled]="!adminIsConnect">
+              <nz-option *ngFor="let profil of profilList" [nzLabel]="profil.libelle" [nzValue]="profil"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Sexe</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un sexe" formControlName="sexe" >
+              <nz-option  [nzLabel]="'Masculin'" [nzValue]="'Masculin'"></nz-option>
+              <nz-option  [nzLabel]="'Féminin'" [nzValue]="'Féminin'"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">E-mail</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner un email valide!">
+              <input formControlName="email" nz-input placeholder="saisir le mail" [email]="true"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em" *ngIf="is_admin">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Login</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="username" nz-input placeholder="saisir le login"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em" *ngIf="is_admin">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Mot de passe </nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input nz-input formControlName="password"  placeholder="saisir le mot de passe" type="password"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em" *ngIf="is_admin">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Confirmer le Mot de passe </nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Le mot de passe et la confirmation ne correspondent pas">
+              <input nz-input formControlName="confirm_password" placeholder="re-saisir le mot de passe" type="password"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-space>
+            <nz-space-item>
+              <button (click)="resetPersonneForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>
+            </nz-space-item>
+            <nz-space-item>
+              <button (click)="submitPersonneForm()" [disabled]="validatePersonneForm.invalid" nz-button
+                      nzType="primary"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>
+            </nz-space-item>
+          </nz-space>
+        </div>
+
+      </div>
+
+    </form>
+
+  </nz-tab>
+</nz-tabset>

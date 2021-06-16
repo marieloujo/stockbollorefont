@@ -1,0 +1,127 @@
+<nz-layout>
+  <nz-sider [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzCollapsible style="min-height: 100vh">
+    <div class="logo">
+      <MARQUEE > <img [src]="'./assets/img/logoBollore.jpeg'" width="180" height="35" scrollamount="100"> </MARQUEE>
+    </div>
+    <ul nz-menu nzMode="inline" nzTheme="dark" >
+
+      <li nz-menu-item>
+        <a [routerLink]="['/dashboard']">
+          <i nz-icon nzType="home"></i>
+          <span>Accueil</span>
+        </a>
+      </li>
+
+      <li nz-menu-item>
+        <a [routerLink]="['/dashboard/magasins']">
+          <i nz-icon nzType="shop"></i>
+          <span>Magasin</span>
+        </a>
+      </li>
+
+      <li nz-submenu nzIcon="insert-row-below" nzTitle="Matériel">
+        <ul>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/marque']">
+              Marque
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/gamme']">
+              Equipement
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/modele']">
+            Modèle
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/etat']">
+              Etat
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/materiel/produit']">
+              Produit
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!--<li nz-menu-item>
+        <a [routerLink]="['/dashboard/nouvelle-demande']">
+          <i nz-icon nzType="file-text"></i>
+          <span>Demande</span>
+        </a>
+      </li>-->
+
+      <li nz-submenu nzIcon="file-text" nzTitle="Demande">
+        <ul>
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/historique-demande']">
+              Historique
+            </a>
+          </li>
+          <li nz-menu-item *ngIf="is_access">
+            <a [routerLink]="['/dashboard/nouvelle-demande']">
+              Nouvelle demande
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li *ngIf="is_admin || is_validateur" nz-submenu nzIcon="team" nzTitle="Utilisateur">
+        <ul>
+          <li nz-menu-item *ngIf="is_admin">
+            <a [routerLink]="['/dashboard/utilisateur/service']">
+              Service
+            </a>
+          </li>
+          <!--li nz-menu-item *ngIf="is_admin">
+            <a [routerLink]="['/dashboard/utilisateur/profil']">
+              Profil
+            </a>
+          </li-->
+          <li nz-menu-item>
+            <a [routerLink]="['/dashboard/utilisateur/user']">
+              Utilisateur
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-menu-item>
+        <a [routerLink]="['/dashboard/apropos']">
+        <i nz-icon nzType="info-circle"></i>
+        <span>A propos</span>
+        </a>
+      </li>
+      <li nz-menu-item>
+        <a href="#" (click)="logout()">
+            <i nz-icon nzType="poweroff" nzTheme="outline"></i>
+            <span>Déconnexion</span>
+        </a>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <i (click)="isCollapsed = !isCollapsed" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" class="trigger"
+         nz-icon></i> <span style="font-weight: bold; text-align: center "> BIENVENUE A BOLLORE GROUPE </span>
+
+      <!--<h3>BIENVENUE A BOLLORE GROUPE</h3>-->
+
+    </nz-header>
+    <nz-content>
+      <div style="padding: 10px;">
+        <app-breadcrumb></app-breadcrumb>
+      </div>
+
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer> Gestion de Stock Bollore ©2021 Implement By IT interns </nz-footer>
+  </nz-layout>
+</nz-layout>

@@ -1,0 +1,281 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "line-scale-pulse-out" [fullScreen] = "true"><p style="color: white" > Chargement... </p></ngx-spinner>
+
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+  <!--<div nz-row>
+    <div nz-col nzSpan="24" style="padding-right: 1.5em">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Magasin</nz-form-label>
+        <nz-select>
+          <nz-option [nzLabel]="'&#45;&#45;selectionner un magasin&#45;&#45;'" [nzValue]="null"></nz-option>
+          <nz-option [nzLabel]="'Magasin 01'" [nzValue]="'Home'"></nz-option>
+          <nz-option [nzLabel]="'Magasin 02'" [nzValue]="'Company'"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+  </div>-->
+
+
+    <nz-tab [nzTitle]="'Liste des produits'">
+
+      <!--<div nz-row>
+        <div nz-col nzSpan="14" style="padding-right: 1.5em">
+          <nz-form-item>
+            &lt;!&ndash;<nz-form-label [nzSpan]="24">Sélectionner un magasin</nz-form-label>&ndash;&gt;
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" [(ngModel)]="magasinChoice" [nzSize]="'default'" >
+              <nz-option  *ngFor="let magasin of magasinList" [nzLabel]="magasin.libelle" [nzValue]="magasin"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="10" style="">
+          <button (click)="loadMagasinProduit()" nz-button nzType="primary" nzBlock><i nz-icon nzType="search"></i>Charger produits</button>
+        </div>
+      </div>-->
+
+      <!--<div nz-row *ngIf="produitByMagasinIdList == null || produitByMagasinIdList.length == 0">
+        <div nz-col nzSpan="24" style="">
+          <nz-alert
+            nzType="info"
+            nzMessage="Note Info !"
+            nzDescription="Aucun produit trouvé. Veillez sélectionner un magasin pour voir la liste des produits !"
+            nzShowIcon
+          >
+          </nz-alert>
+        </div>
+      </div>-->
+
+
+      <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5">
+        <thead>
+        <tr>
+          <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">{{ column.title }}
+
+            <nz-filter-trigger *ngIf="column.title == 'Numero Série'" [(nzVisible)]="visibleNumSerie" [nzActive]="searchValueNumSerie.length > 0" [nzDropdownMenu]="menuNumSerie">
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
+
+            <nz-filter-trigger *ngIf="column.title == 'Equipement'"  [(nzVisible)]="visibleGamme" [nzActive]="searchValueGamme.length > 0" [nzDropdownMenu]="menuGamme">
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
+
+            <nz-filter-trigger *ngIf="column.title == 'Marque'" [(nzVisible)]="visibleMarque" [nzActive]="searchValueMarque.length > 0" [nzDropdownMenu]="menuMarque">
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
+
+            <nz-filter-trigger *ngIf="column.title == 'Modele'" [(nzVisible)]="visibleModele" [nzActive]="searchValueModele.length > 0" [nzDropdownMenu]="menuModele">
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
+
+            <nz-filter-trigger *ngIf="column.title == 'Etat'" [(nzVisible)]="visibleEtat" [nzActive]="searchValueEtat.length > 0" [nzDropdownMenu]="menuEtat">
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
+
+            <nz-filter-trigger *ngIf="column.title == 'Magasin'" [(nzVisible)]="visibleMagasin" [nzActive]="searchValueMagasin.length > 0" [nzDropdownMenu]="menuMagasin">
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
+
+          </th>
+          <th *ngIf="is_admin"> Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of sortTable.data">
+          <td>{{ data?.numSerie }}</td>
+          <td>{{ data?.gamme?.libelle }}</td>
+          <td>{{ data?.marque?.libelle }}</td>
+          <td>{{ data?.modele?.libelle }}</td>
+          <td>{{ data?.etat?.libelle }}</td>
+          <td>{{ data?.magasin?.libelle }}</td>
+
+          <td *ngIf="is_admin">
+            <nz-space>
+              <nz-space-item>
+                <button (click)="updateForm(data)"  nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="edit"></i>
+                </button>
+              </nz-space-item>
+              <nz-space-item>
+                <button
+                  nz-popconfirm
+                  nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                  (nzOnConfirm)="confirmMsgDelete(data)"
+                  (nzOnCancel)="cancelMsgDelete()"
+                  nzPopconfirmPlacement="topRight"
+                  nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="delete"></i>
+                </button>
+              </nz-space-item>
+            </nz-space>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </nz-tab>
+
+  <nz-dropdown-menu #menuMarque="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher une marque" [(ngModel)]="searchValueMarque" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchMarque()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetMarque()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuModele="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un modele" [(ngModel)]="searchValueModele" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchModele()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetModele()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuGamme="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un equipement" [(ngModel)]="searchValueGamme" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchGamme()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetGamme()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuNumSerie="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un numero" [(ngModel)]="searchValueNumSerie" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchNumSerie()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetNumSerie()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuEtat="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un etat" [(ngModel)]="searchValueEtat" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchEtat()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetEtat()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuMagasin="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un magasin" [(ngModel)]="searchValueMagasin" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchMagasin()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetMagasin()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-tab [nzTitle]="'Nouveau produit' " *ngIf="is_admin">
+
+    <form [formGroup]="validateProduitForm" nz-form>
+      <div nz-row>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <input formControlName="numSerie" nz-input placeholder="saisir le numero de serie"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Equipement</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un equipement" formControlName="gamme" [compareWith]="compareFn">
+              <nz-option  *ngFor="let gamme of gammeList" [nzLabel]="gamme.libelle" [nzValue]="gamme"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Marque</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une marque" formControlName="marque" [compareWith]="compareFn">
+              <nz-option  *ngFor="let marque of marqueList" [nzLabel]="marque.libelle" [nzValue]="marque"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Modele</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un modele" formControlName="modele" [compareWith]="compareFn">
+              <nz-option  *ngFor="let modele of modeleList" [nzLabel]="modele.libelle" [nzValue]="modele"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Magasin</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin" formControlName="magazin" [compareWith]="compareFn">
+              <nz-option  *ngFor="let magasin of magasinList" [nzLabel]="magasin.libelle" [nzValue]="magasin"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="8" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Etat</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un etat" formControlName="etat" [compareWith]="compareFn">
+              <nz-option  *ngFor="let etat of etatList" [nzLabel]="etat.libelle" [nzValue]="etat"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Description</nz-form-label>
+            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
+              <textarea formControlName="description" nz-input placeholder="saisir une description" rows="4"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="24">
+          <nz-space>
+            
+            <nz-space-item>
+              <button (click)="submitProduitForm()" [disabled]="validateProduitForm.invalid" nz-button
+                      nzType="primary"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>
+              <!--<button nz-button nzType="primary" [disabled]="validateProduitForm.invalid"><i nz-icon nzType="check"></i>
+                Enregistrer
+              </button>-->
+            </nz-space-item>
+            <nz-space-item>
+              <button (click)="resetProduitForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>
+              <!--<button nz-button nzType="default"><i nz-icon nzType="close"></i>
+                Annuler
+              </button>-->
+            </nz-space-item>
+          </nz-space>
+        </div>
+
+      </div>
+
+    </form>
+
+
+  </nz-tab>
+</nz-tabset>
