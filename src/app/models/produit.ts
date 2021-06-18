@@ -23,5 +23,6 @@ export class Produit {
 
   etat: Etat;
   magasin: Magasin;
+  status: string;
 
 }

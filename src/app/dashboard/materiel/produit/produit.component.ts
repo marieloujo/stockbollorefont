@@ -21,6 +21,8 @@ import {EtatProduit} from '../../../models/etat-produit';
 import {TokenService} from 'src/app/services/token/token.service';
 import {Token} from 'src/app/models/token.model';
 import {environment} from '../../../../environments/environment';
+import {ProduitStatus} from "../../../enumerations/produit-status.enum";
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'app-produit',
@@ -62,6 +64,9 @@ export class ProduitComponent implements OnInit {
   searchValueEtat = '';
   visibleEtat = false;
 
+  searchValueStatus = '';
+  visibleStatus = false;
+
   searchValueMagasin = '';
   visibleMagasin = false;
 
@@ -71,6 +76,7 @@ export class ProduitComponent implements OnInit {
 
   token: Token;
 
+  public ProduitStatus = ProduitStatus;
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
@@ -537,9 +543,19 @@ export class ProduitComponent implements OnInit {
     this.searchEtat();
   }
 
+  resetStatus(): void {
+    this.searchValueStatus = '';
+    this.searchStatus();
+  }
+
   searchEtat(): void {
     this.visibleEtat = false;
     this.listOfDisplayData = this.produitList.filter((item: Produit) => item.etat.libelle.indexOf(this.searchValueEtat) !== -1);
+  }
+
+  searchStatus(): void {
+    this.visibleStatus = false;
+    this.listOfDisplayData = this.produitList.filter((item: Produit) => item.status.indexOf(this.searchValueStatus) !== -1);
   }
 
   resetMagasin(): void {
@@ -597,6 +613,11 @@ export class ProduitComponent implements OnInit {
         title: 'Etat',
         compare: null,
         sortFn: (a: Produit, b: Produit) => a.etat.libelle.localeCompare(b.etat.libelle),
+      },
+      {
+        title: 'Status',
+        compare: null,
+        sortFn: (a: Produit, b: Produit) => a.status.localeCompare(b.status),
       },
       {
         title: 'Magasin',

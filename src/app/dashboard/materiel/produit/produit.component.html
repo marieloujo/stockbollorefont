@@ -69,6 +69,10 @@
               <i nz-icon nzType="search"></i>
             </nz-filter-trigger>
 
+            <nz-filter-trigger *ngIf="column.title == 'Status'" [(nzVisible)]="visibleStatus" [nzActive]="searchValueStatus.length > 0" [nzDropdownMenu]="menuStatus">
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
+
             <nz-filter-trigger *ngIf="column.title == 'Magasin'" [(nzVisible)]="visibleMagasin" [nzActive]="searchValueMagasin.length > 0" [nzDropdownMenu]="menuMagasin">
               <i nz-icon nzType="search"></i>
             </nz-filter-trigger>
@@ -84,6 +88,16 @@
           <td>{{ data?.marque?.libelle }}</td>
           <td>{{ data?.modele?.libelle }}</td>
           <td>{{ data?.etat?.libelle }}</td>
+          <td>
+          <ng-container *ngIf="![null, undefined].includes(data?.status)">
+            <span *ngIf="data?.status === 'EN_STOCK'" nz-typography nzType="success">
+              <strong>{{ProduitStatus[data?.status]}}</strong>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="[null, undefined].includes(data?.status)">
+              -
+          </ng-container>
+          </td>
           <td>{{ data?.magasin?.libelle }}</td>
 
           <td *ngIf="is_admin">
@@ -165,6 +179,18 @@
           Chercher
         </button>
         <button nz-button nzSize="small" (click)="resetEtat()">Annuler</button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuStatus="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="chercher un status" [(ngModel)]="searchValueStatus" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchStatus()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetStatus()">Annuler</button>
       </div>
     </div>
   </nz-dropdown-menu>

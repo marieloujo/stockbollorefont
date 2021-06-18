@@ -1,7 +1,7 @@
 <nz-layout>
   <nz-sider [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzCollapsible style="min-height: 100vh">
     <div class="logo">
-      <MARQUEE > <img [src]="'./assets/img/logoBollore.jpeg'" width="180" height="35" scrollamount="100"> </MARQUEE>
+      <img [src]="'./assets/img/logoBollore.jpeg'" width="180" height="35" scrollamount="100">
     </div>
     <ul nz-menu nzMode="inline" nzTheme="dark" >
 
@@ -36,11 +36,11 @@
             Modèle
             </a>
           </li>
-          <li nz-menu-item>
+          <!--li nz-menu-item>
             <a [routerLink]="['/dashboard/materiel/etat']">
               Etat
             </a>
-          </li>
+          </li-->
           <li nz-menu-item>
             <a [routerLink]="['/dashboard/materiel/produit']">
               Produit
