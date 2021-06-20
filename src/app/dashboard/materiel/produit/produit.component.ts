@@ -24,6 +24,7 @@ import {environment} from '../../../../environments/environment';
 import {ProduitStatus} from "../../../enumerations/produit-status.enum";
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
+// @ts-ignore
 @Component({
   selector: 'app-produit',
   templateUrl: './produit.component.html',
@@ -48,6 +49,9 @@ export class ProduitComponent implements OnInit {
   listOfColumn: any = [];
   isMagasinSelect: boolean = false;
   magasinChoice: Magasin = null;
+
+  searchValueDateCreation = '';
+  visibleDateCreation = false;
 
   searchValueNumSerie = '';
   visibleNumSerie = false;
@@ -80,7 +84,7 @@ export class ProduitComponent implements OnInit {
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
-    private produitService: ProduitService,
+    public produitService: ProduitService,
     private magasinService: MagasinService,
     private gammeService: GammeService,
     private marqueService: MarqueService,
@@ -503,6 +507,11 @@ export class ProduitComponent implements OnInit {
     this.searchNumSerie();
   }
 
+  searchDateCreation(): void { //indexOf(this.searchValueDateCreation) !== -1)
+    this.visibleDateCreation = false;
+    this.listOfDisplayData = this.produitList.filter((item: Produit) => item.createdDate.toString().indexOf(this.searchValueDateCreation) !== -1);
+  }
+
   searchNumSerie(): void { //indexOf(this.searchValueNumSerie) !== -1)
     this.visibleNumSerie = false;
     this.listOfDisplayData = this.produitList.filter((item: Produit) => item.numSerie.toString().indexOf(this.searchValueNumSerie) !== -1);
@@ -588,6 +597,12 @@ export class ProduitComponent implements OnInit {
 
   listOfColumnHeader() {
     this.listOfColumn = [
+      {
+        title: 'Date création',
+        compare: null,
+        sortFn: (a: Produit, b: Produit) => a.createdDate.localeCompare(b.createdDate),
+        //sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
+      },
       {
         title: 'Numero Série',
         compare: null,

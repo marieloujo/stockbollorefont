@@ -49,7 +49,11 @@
         <tr>
           <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">{{ column.title }}
 
-            <nz-filter-trigger *ngIf="column.title == 'Numero Série'" [(nzVisible)]="visibleNumSerie" [nzActive]="searchValueNumSerie.length > 0" [nzDropdownMenu]="menuNumSerie">
+            <nz-filter-trigger *ngIf="column.title == 'Date création'" [(nzVisible)]="visibleDateCreation" [nzActive]="searchValueDateCreation.length > 0" [nzDropdownMenu]="menuDateCreation">
+              <!--i nz-icon nzType="search"></i-->
+            </nz-filter-trigger>
+
+              <nz-filter-trigger *ngIf="column.title == 'Numero Série'" [(nzVisible)]="visibleNumSerie" [nzActive]="searchValueNumSerie.length > 0" [nzDropdownMenu]="menuNumSerie">
               <i nz-icon nzType="search"></i>
             </nz-filter-trigger>
 
@@ -83,6 +87,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let data of sortTable.data">
+          <td>{{ data?.createdDate | date: 'dd/MM/yyyy à HH:mm'}}</td>
           <td>{{ data?.numSerie }}</td>
           <td>{{ data?.gamme?.libelle }}</td>
           <td>{{ data?.marque?.libelle }}</td>
@@ -90,9 +95,9 @@
           <td>{{ data?.etat?.libelle }}</td>
           <td>
           <ng-container *ngIf="![null, undefined].includes(data?.status)">
-            <span *ngIf="data?.status === 'EN_STOCK'" nz-typography nzType="success">
-              <strong>{{ProduitStatus[data?.status]}}</strong>
-            </span>
+              <strong nz-typography [nzType]="produitService.getTextColorByStatusProduit(data?.status)">
+                {{ProduitStatus[data?.status]}}
+              </strong>
           </ng-container>
           <ng-container *ngIf="[null, undefined].includes(data?.status)">
               -
@@ -113,7 +118,7 @@
                   (nzOnConfirm)="confirmMsgDelete(data)"
                   (nzOnCancel)="cancelMsgDelete()"
                   nzPopconfirmPlacement="topRight"
-                  nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="delete"></i>
+                  nz-button nzShape="circle" nzType="danger"><i nz-icon nzTheme="outline" nzType="delete"></i>
                 </button>
               </nz-space-item>
             </nz-space>
@@ -156,6 +161,12 @@
         </button>
         <button nz-button nzSize="small" (click)="resetGamme()">Annuler</button>
       </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuDateCreation="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+
     </div>
   </nz-dropdown-menu>
 

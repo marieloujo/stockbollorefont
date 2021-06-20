@@ -79,4 +79,21 @@ getAccessToken(): Token {
     return token;
 }
 
+    public getTextColorByStatusProduit(status: string): 'secondary' | 'warning' | 'danger' | 'success' {
+        // 'secondary' | 'warning' | 'danger' | 'success'
+        if (status === 'EN_STOCK'){
+            return 'success';
+        }
+        if (['EN_ATTENTE_DE_RETOUR', 'EN_ATTENTE_DE_MISE_AU_REBUT', 'EN_ATTENTE_ENVOIE_REPARATION',
+            'EN_ATTENTE_VALIDATION', 'EN_ATTENTE_LIVRAISON'].includes(status)){
+            return 'warning';
+        }
+        if (['EN_UTILISAION', 'EN_REPARATION'].includes(status)){
+            return 'secondary';
+        }
+        if (status === 'MISE_AU_REBUT'){
+            return 'danger';
+        }
+    }
+
 }

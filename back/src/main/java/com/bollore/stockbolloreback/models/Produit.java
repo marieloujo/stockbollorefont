@@ -29,7 +29,8 @@ public class Produit extends AbstractAuditingEntity {
     @NotNull
     @Column(name = "num_serie", nullable = false, unique = true)
     private String numSerie;
-    //private Long numSerie;
+
+
 
     /*@NotNull
     @Column(name = "libelle", nullable = false)

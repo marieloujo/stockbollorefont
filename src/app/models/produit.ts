@@ -24,5 +24,7 @@ export class Produit {
   etat: Etat;
   magasin: Magasin;
   status: string;
+  createdDate: string;
+  lastModifiedDate: string;
 
 }

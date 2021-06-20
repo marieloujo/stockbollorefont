@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+  font-size: 13px;
+}
 .inner-content {
   padding: 24px;
   background: #fff;

@@ -71,7 +71,7 @@ public class ProduitController {
         if (produit.getId() != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        // defaut status product
+        // default status product
         produit.setStatus(ProduitStatus.EN_STOCK);
         Produit newProduit = produitRepository.save(produit);
 
@@ -89,7 +89,11 @@ public class ProduitController {
         if (!produitRepository.existsById(produit.getId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
+        Produit oldProduit = produitRepository.findById(produit.getId()).orElse(null);
+        if(oldProduit != null) {
+            // ne pas permettre de changer le status à la modification du produit
+            produit.setStatus(oldProduit.getStatus());
+        }
         Produit produitToUpdate = produitRepository.saveAndFlush(produit);
 
         return ResponseEntity.ok().body(produitToUpdate);

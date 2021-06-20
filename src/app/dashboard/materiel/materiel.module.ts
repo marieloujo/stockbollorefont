@@ -25,33 +25,35 @@ import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzPaginationModule} from 'ng-zorro-antd/pagination';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
+import {NzTypographyModule} from 'ng-zorro-antd/typography';
 
 
 @NgModule({
   declarations: [MaterielComponent, MarqueComponent, ModeleComponent, GammeComponent, EtatComponent, ProduitComponent],
-  imports: [
-    NgxSpinnerModule,
-    CommonModule,
-    MaterielRoutingModule,
-    ReactiveFormsModule,
-    NzGridModule,
-    NzTabsModule,
-    NzSpaceModule,
-    NzTableModule,
-    NzInputModule,
-    NzFormModule,
-    NzButtonModule,
-    NzLayoutModule,
-    NzIconModule,
-    FormsModule,
-    NzSelectModule,
-    NzPopconfirmModule,
-    NzAlertModule,
-    NzDropDownModule,
-    NzModalModule,
-    NzDividerModule,
-    NzPaginationModule,
-  ]
+    imports: [
+        NgxSpinnerModule,
+        CommonModule,
+        MaterielRoutingModule,
+        ReactiveFormsModule,
+        NzGridModule,
+        NzTabsModule,
+        NzSpaceModule,
+        NzTableModule,
+        NzInputModule,
+        NzFormModule,
+        NzButtonModule,
+        NzLayoutModule,
+        NzIconModule,
+        FormsModule,
+        NzSelectModule,
+        NzPopconfirmModule,
+        NzAlertModule,
+        NzDropDownModule,
+        NzModalModule,
+        NzDividerModule,
+        NzPaginationModule,
+        NzTypographyModule,
+    ]
 })
 export class MaterielModule { }
