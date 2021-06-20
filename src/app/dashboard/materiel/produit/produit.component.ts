@@ -79,6 +79,7 @@ export class ProduitComponent implements OnInit {
   is_admin: boolean;
 
   token: Token;
+  public produitSelected: Produit;
 
   public ProduitStatus = ProduitStatus;
   constructor(
@@ -313,13 +314,13 @@ export class ProduitComponent implements OnInit {
             console.log(this.produitList);
 
             let newUpdateEtatProduit: EtatProduit = new EtatProduit();
-            let newUpdateEtatProd = data.etatProduits.find(ep => ep.actuel == true);
+          // old let newUpdateEtatProd = data.etatProduits.find(ep => ep.actuel == true);
+            let newUpdateEtatProd = this.produitSelected.etatProduits.find(ep => ep.actuel === true);
             newUpdateEtatProduit.etat = formData.etat;
             newUpdateEtatProduit.produit = data;
             newUpdateEtatProduit.dateHeure = new Date();
             newUpdateEtatProduit.actuel = true;
             newUpdateEtatProduit.id = newUpdateEtatProd.id;
-
             console.log('le new Update de EtatProduit');
             console.log(newUpdateEtatProduit);
             console.log(newUpdateEtatProd);
@@ -337,7 +338,8 @@ export class ProduitComponent implements OnInit {
             );
 
             let newUpdateMagasinProduit: MagasinProduit = new MagasinProduit();
-            let newUpdateMagProd = data.magazinProduits.find(mp => mp.actuel == true);
+          // old let newUpdateMagProd = data.magazinProduits.find(mp => mp.actuel == true);
+            let newUpdateMagProd = this.produitSelected.magazinProduits.find(mp => mp.actuel === true);
             newUpdateMagasinProduit.magazin = formData.magazin;
             newUpdateMagasinProduit.produit = data;
             newUpdateMagasinProduit.dateHeure = new Date();
@@ -379,6 +381,7 @@ export class ProduitComponent implements OnInit {
   }
 
   updateForm(data: Produit) {
+    this.produitSelected = data;
     console.log('la data de update');
     console.log(data);
 
