@@ -26,6 +26,5 @@ export class Produit {
   status: string;
   createdDate: string;
   lastModifiedDate: string;
-  quantiteStock: number;
 
 }

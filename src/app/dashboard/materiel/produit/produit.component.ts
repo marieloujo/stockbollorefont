@@ -21,7 +21,7 @@ import {EtatProduit} from '../../../models/etat-produit';
 import {TokenService} from 'src/app/services/token/token.service';
 import {Token} from 'src/app/models/token.model';
 import {environment} from '../../../../environments/environment';
-import {ProduitStatus} from "../../../enumerations/produit-status.enum";
+import {ProduitStatus} from '../../../enumerations/produit-status.enum';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 // @ts-ignore
@@ -47,7 +47,7 @@ export class ProduitComponent implements OnInit {
   pageIndex;
 
   listOfColumn: any = [];
-  isMagasinSelect: boolean = false;
+  isMagasinSelect = false;
   magasinChoice: Magasin = null;
 
   searchValueDateCreation = '';
@@ -67,6 +67,9 @@ export class ProduitComponent implements OnInit {
 
   searchValueEtat = '';
   visibleEtat = false;
+
+  searchValueStock = '';
+  visibleStock = false;
 
   searchValueStatus = '';
   visibleStatus = false;
@@ -132,19 +135,14 @@ export class ProduitComponent implements OnInit {
   makeProduitForm(produit: Produit) {
     this.validateProduitForm = this.fb.group({
       id: [produit != null ? produit.id : null],
-      numSerie: [produit != null ? produit.numSerie : null,
-        [Validators.required]],
-      modele: [produit != null ? produit.modele : null,
-        [Validators.required]],
-      marque: [produit != null ? produit.marque : null,
-        [Validators.required]],
-      gamme: [produit != null ? produit.gamme : null,
-        [Validators.required]],
-      etat: [produit != null ? produit.etat : null,
-        [Validators.required]],
+      numSerie: [produit != null ? produit.numSerie : null, [Validators.required]],
+      modele: [produit != null ? produit.modele : null, [Validators.required]],
+      marque: [produit != null ? produit.marque : null, [Validators.required]],
+      gamme: [produit != null ? produit.gamme : null, [Validators.required]],
+      etat: [produit != null ? produit.etat : null, [Validators.required]],
+      quantiteStock: [produit != null ? this.produitService.getQuantiteStockByMagasinAndProduit(produit.id, produit.magazinProduits) : null, [Validators.required]],
       description: [produit != null ? produit.description : null],
-      magazin: [produit != null ? produit.magasin : null,
-        [Validators.required]],
+      magazin: [produit != null ? produit.magasin : null, [Validators.required]],
       /*idMP: [magasinProduit != null ? magasinProduit.id : null],*/
     });
   }
@@ -171,7 +169,7 @@ export class ProduitComponent implements OnInit {
     }
     this.makeProduitForm(null);
     this.indexOfTab = 0;
-    //this.pageIndex = 1;
+    // this.pageIndex = 1;
   }
 
 
@@ -190,7 +188,7 @@ export class ProduitComponent implements OnInit {
 
         console.log(formData.numSerie);
 
-        let newProduit: Produit = new Produit();
+        const newProduit: Produit = new Produit();
         newProduit.numSerie = formData.numSerie;
         newProduit.marque = formData.marque;
         newProduit.modele = formData.modele;
@@ -202,16 +200,17 @@ export class ProduitComponent implements OnInit {
         this.produitService.createProduit(newProduit).subscribe(
           (data: any) => {
             this.produitList.unshift(data);
-            //this.magasinList.push(data)
+            // this.magasinList.push(data)
             this.produitList = [...this.produitList];
             this.listOfDisplayData = [...this.produitList];
 
             // Enregistrement Magasin Produit
 
-            let newMagasinProduit: MagasinProduit = new MagasinProduit();
+            const newMagasinProduit: MagasinProduit = new MagasinProduit();
             newMagasinProduit.magazin = formData.magazin;
             newMagasinProduit.actuel = true;
             newMagasinProduit.produit = data;
+            newMagasinProduit.quantiteStock = formData.quantiteStock;
             console.log('LE NEW MAGASIN PRODUIT');
             console.log(newMagasinProduit);
 
@@ -220,7 +219,7 @@ export class ProduitComponent implements OnInit {
                 console.log('Enregistrement magasin produit ok');
                 console.log(data);
 
-                //chargement liste Produit pour affichage
+                // chargement liste Produit pour affichage
                 this.list();
 
               },
@@ -231,9 +230,9 @@ export class ProduitComponent implements OnInit {
 
             // Enregistrement Etat Produit
 
-            let newEtatProduit: EtatProduit = new EtatProduit();
+            const newEtatProduit: EtatProduit = new EtatProduit();
             newEtatProduit.actuel = true;
-            //newEtatProduit.etat = this.etatCourant;
+            // newEtatProduit.etat = this.etatCourant;
             newEtatProduit.etat = formData.etat;
 
             newEtatProduit.produit = data;
@@ -244,7 +243,7 @@ export class ProduitComponent implements OnInit {
                 console.log('Enregistrement etat produit ok');
                 console.log(data);
 
-                //chargement liste Produit pour affichage
+                // chargement liste Produit pour affichage
                 this.list();
 
               },
@@ -252,8 +251,8 @@ export class ProduitComponent implements OnInit {
                 console.log('Enregistrement de etat produit non ok');
               });
 
-            //Modification de la gamme (equipement) concerné
-            //let gm: Gamme[] = this.gammeList.filter(g => g.id == newProduit.gamme.id);
+            // Modification de la gamme (equipement) concerné
+            // let gm: Gamme[] = this.gammeList.filter(g => g.id == newProduit.gamme.id);
             let gm: Gamme = new Gamme();
             this.gammeService.getGammeById(newProduit.gamme.id).subscribe(
               (data: Gamme) => {
@@ -279,10 +278,10 @@ export class ProduitComponent implements OnInit {
 
             this.makeProduitForm(null);
             console.log('Enregistrement produit ok');
-            //chargement liste Produit pour affichage
+            // chargement liste Produit pour affichage
             this.list();
             this.indexOfTab = 0;
-            //this.pageIndex = 1;
+            // this.pageIndex = 1;
 
           },
           (error: HttpErrorResponse) => {
@@ -294,7 +293,7 @@ export class ProduitComponent implements OnInit {
         const i = this.magasinList.findIndex(p => p.id == formData.id);
         console.log(i);
 
-        let newUpdateProduit: Produit = new Produit();
+        const newUpdateProduit: Produit = new Produit();
         newUpdateProduit.id = formData.id;
         newUpdateProduit.numSerie = formData.numSerie;
         newUpdateProduit.marque = formData.marque;
@@ -313,9 +312,9 @@ export class ProduitComponent implements OnInit {
             this.listOfDisplayData = [...this.produitList];
             console.log(this.produitList);
 
-            let newUpdateEtatProduit: EtatProduit = new EtatProduit();
+            const newUpdateEtatProduit: EtatProduit = new EtatProduit();
           // old let newUpdateEtatProd = data.etatProduits.find(ep => ep.actuel == true);
-            let newUpdateEtatProd = this.produitSelected.etatProduits.find(ep => ep.actuel === true);
+            const newUpdateEtatProd = this.produitSelected.etatProduits.find(ep => ep.actuel === true);
             newUpdateEtatProduit.etat = formData.etat;
             newUpdateEtatProduit.produit = data;
             newUpdateEtatProduit.dateHeure = new Date();
@@ -329,7 +328,7 @@ export class ProduitComponent implements OnInit {
                 console.log('Update ok pour etatProduit ');
                 console.log(dataEP);
 
-                //chargement liste Produit pour affichage
+                // chargement liste Produit pour affichage
                 this.list();
 
               }, (error: HttpErrorResponse) => {
@@ -337,13 +336,14 @@ export class ProduitComponent implements OnInit {
               }
             );
 
-            let newUpdateMagasinProduit: MagasinProduit = new MagasinProduit();
+            const newUpdateMagasinProduit: MagasinProduit = new MagasinProduit();
           // old let newUpdateMagProd = data.magazinProduits.find(mp => mp.actuel == true);
-            let newUpdateMagProd = this.produitSelected.magazinProduits.find(mp => mp.actuel === true);
+            const newUpdateMagProd = this.produitSelected.magazinProduits.find(mp => mp.actuel === true);
             newUpdateMagasinProduit.magazin = formData.magazin;
             newUpdateMagasinProduit.produit = data;
             newUpdateMagasinProduit.dateHeure = new Date();
             newUpdateMagasinProduit.actuel = true;
+            newUpdateMagasinProduit.quantiteStock = formData.quantiteStock;
             newUpdateMagasinProduit.id = newUpdateMagProd.id;
 
             console.log('le new Update de MagasinPoduit');
@@ -354,7 +354,7 @@ export class ProduitComponent implements OnInit {
                 console.log('Update ok pour MagasinProduit ');
                 console.log(dataMP);
 
-                //chargement liste Produit pour affichage
+                // chargement liste Produit pour affichage
                 this.list();
 
               }, (error: HttpErrorResponse) => {
@@ -363,7 +363,7 @@ export class ProduitComponent implements OnInit {
             );
 
             this.makeProduitForm(null);
-            //chargement liste Produit pour affichage
+            // chargement liste Produit pour affichage
             this.list();
             this.indexOfTab = 0;
 
@@ -397,15 +397,15 @@ export class ProduitComponent implements OnInit {
         this.produitList = [...data];
         console.log('Produit List ==>', this.produitList);
 
-        for (let prod of this.produitList) {
-          //let eP: EtatProduit[] = [];
+        for (const prod of this.produitList) {
+          // let eP: EtatProduit[] = [];
           console.log('le produit ==> ');
           console.log(prod);
-          //let etatProd: EtatProduit = prod.etatProduits.find(p => p.actuel == true);
+          // let etatProd: EtatProduit = prod.etatProduits.find(p => p.actuel == true);
 
           console.log('Le dernier -----');
-          console.log(prod.etatProduits[prod.etatProduits.length-1]);
-          let etatProd: EtatProduit = prod.etatProduits[prod.etatProduits.length-1];
+          console.log(prod.etatProduits[prod.etatProduits.length - 1]);
+          const etatProd: EtatProduit = prod.etatProduits[prod.etatProduits.length - 1];
 
           console.log(etatProd);
 
@@ -419,7 +419,7 @@ export class ProduitComponent implements OnInit {
               console.log('error get by id etatProduit ==>', error.message, ' ', error.status, ' ', error.statusText);
             });
 
-          let magProd: MagasinProduit = prod.magazinProduits.find(m => m.actuel == true);
+          const magProd: MagasinProduit = prod.magazinProduits.find(m => m.actuel == true);
           this.magasinProduitService.getMagasinProduitById(magProd?.id).subscribe(
             (dataMagProd: MagasinProduit) => {
               console.log('DataMagProd');
@@ -432,7 +432,7 @@ export class ProduitComponent implements OnInit {
         }
 
         this.listOfDisplayData = [...this.produitList];
-        //this.pageIndex = 1;
+        // this.pageIndex = 1;
       },
       (error: HttpErrorResponse) => {
         console.log('error getList Produit ==>', error.message, ' ', error.status, ' ', error.statusText);
@@ -510,14 +510,24 @@ export class ProduitComponent implements OnInit {
     this.searchNumSerie();
   }
 
-  searchDateCreation(): void { //indexOf(this.searchValueDateCreation) !== -1)
+  resetStock(): void {
+    this.searchValueStock = '';
+    this.searchStock();
+  }
+
+  searchDateCreation(): void { // indexOf(this.searchValueDateCreation) !== -1)
     this.visibleDateCreation = false;
     this.listOfDisplayData = this.produitList.filter((item: Produit) => item.createdDate.toString().indexOf(this.searchValueDateCreation) !== -1);
   }
 
-  searchNumSerie(): void { //indexOf(this.searchValueNumSerie) !== -1)
+  searchNumSerie(): void { // indexOf(this.searchValueNumSerie) !== -1)
     this.visibleNumSerie = false;
     this.listOfDisplayData = this.produitList.filter((item: Produit) => item.numSerie.toString().indexOf(this.searchValueNumSerie) !== -1);
+  }
+
+  searchStock(): void { // indexOf(this.searchValueStock) !== -1)
+    this.visibleStock = false;
+    // todo :
   }
 
   resetMarque(): void {
@@ -584,8 +594,8 @@ export class ProduitComponent implements OnInit {
     this.produitService.deleteProduit(data.id).subscribe(
       (data01: any) => {
         console.log('data du delete Produit==>', data01);
-        //this.indexOfTab = 0;
-        //this.nzMessageService.info('click cancel');
+        // this.indexOfTab = 0;
+        // this.nzMessageService.info('click cancel');
         this.list();
       },
       (error: HttpErrorResponse) => {
@@ -595,7 +605,7 @@ export class ProduitComponent implements OnInit {
   }
 
   cancelMsgDelete(): void {
-    //this.nzMessageService.info('click confirm');
+    // this.nzMessageService.info('click confirm');
   }
 
   listOfColumnHeader() {
@@ -604,13 +614,13 @@ export class ProduitComponent implements OnInit {
         title: 'Date création',
         compare: null,
         sortFn: (a: Produit, b: Produit) => a.createdDate.localeCompare(b.createdDate),
-        //sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
+        // sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
       },
       {
         title: 'Numero Série',
         compare: null,
         sortFn: (a: Produit, b: Produit) => a.numSerie.localeCompare(b.numSerie),
-        //sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
+        // sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
       },
       {
         title: 'Equipement',
@@ -631,6 +641,11 @@ export class ProduitComponent implements OnInit {
         title: 'Etat',
         compare: null,
         sortFn: (a: Produit, b: Produit) => a.etat.libelle.localeCompare(b.etat.libelle),
+      },
+      {
+        title: 'Stock',
+        compare: null,
+        sortFn: (a: Produit, b: Produit) => this.produitService.getQuantiteStockByMagasinAndProduit(a.id, a.magazinProduits).toString().localeCompare(this.produitService.getQuantiteStockByMagasinAndProduit(b.id, b.magazinProduits).toString()),
       },
       {
         title: 'Status',

@@ -7,6 +7,7 @@ import {Produit} from '../../models/produit';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Token } from 'src/app/models/token.model';
+import {MagasinProduit} from "../../models/magasin-produit";
 
 @Injectable({
   providedIn: 'root'
@@ -94,6 +95,14 @@ getAccessToken(): Token {
         if (status === 'MISE_AU_REBUT'){
             return 'danger';
         }
+    }
+
+    public getQuantiteStockByMagasinAndProduit(produitId: number, produitsMagasin: Array<MagasinProduit>): number{
+      const produitMagasin = produitsMagasin.find(proMaga => proMaga.actuel === true);
+      if (![null, undefined].includes(produitMagasin)){
+          return produitMagasin.quantiteStock;
+      }
+      return 0;
     }
 
 }
