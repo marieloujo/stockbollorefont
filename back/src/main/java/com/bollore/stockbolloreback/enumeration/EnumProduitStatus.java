@@ -1,6 +1,6 @@
 package com.bollore.stockbolloreback.enumeration;
 
-public enum ProduitStatus {
+public enum EnumProduitStatus {
     EN_STOCK,
     EN_UTILISAION,
     EN_ATTENTE_DE_RETOUR,

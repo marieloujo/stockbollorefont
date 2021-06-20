@@ -1,6 +1,6 @@
 package com.bollore.stockbolloreback.controller;
 
-import com.bollore.stockbolloreback.enumeration.ProduitStatus;
+import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
 import com.bollore.stockbolloreback.models.DemandeProduit;
 import com.bollore.stockbolloreback.models.EtatProduit;
 import com.bollore.stockbolloreback.models.MagazinProduit;
@@ -72,7 +72,7 @@ public class ProduitController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         // default status product
-        produit.setStatus(ProduitStatus.EN_STOCK);
+        produit.setStatus(EnumProduitStatus.EN_STOCK);
         Produit newProduit = produitRepository.save(produit);
 
         return ResponseEntity.created(new URI("/produit/creer-produit"+ newProduit.getId())).body(newProduit);

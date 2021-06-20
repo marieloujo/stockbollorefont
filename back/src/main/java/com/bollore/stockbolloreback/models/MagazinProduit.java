@@ -37,6 +37,9 @@ public class MagazinProduit extends AbstractAuditingEntity {
     @JsonIgnoreProperties(value = { "magazinProduits" }, allowSetters = true)
     private Magazin magazin;
 
+    @Column(name = "quantite_stock")
+    private Double quantiteStock;
+
     public Long getId() {
         return id;
     }
@@ -125,5 +128,13 @@ public class MagazinProduit extends AbstractAuditingEntity {
                 ", dateHeure=" + dateHeure +
                 ", actuel=" + actuel +
                 '}';
+    }
+
+    public Double getQuantiteStock() {
+        return quantiteStock;
+    }
+
+    public void setQuantiteStock(Double quantiteStock) {
+        this.quantiteStock = quantiteStock;
     }
 }
