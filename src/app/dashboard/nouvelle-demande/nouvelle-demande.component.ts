@@ -20,6 +20,11 @@ import {EtatService} from '../../services/dashboard/etat.service';
 import {Gamme} from '../../models/gamme';
 import {EtatProduit} from '../../models/etat-produit';
 import {EtatProduitService} from '../../services/dashboard/etat-produit.service';
+import {GammeService} from '../../services/dashboard/gamme.service';
+import {Modele} from '../../models/modele';
+import {MarqueService} from '../../services/dashboard/marque.service';
+import {ModeleService} from '../../services/dashboard/modele.service';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'app-nouvelle-demande',
@@ -27,6 +32,22 @@ import {EtatProduitService} from '../../services/dashboard/etat-produit.service'
   styleUrls: ['./nouvelle-demande.component.css']
 })
 export class NouvelleDemandeComponent implements OnInit {
+  constructor(
+    private behaviorService: BehaviorService,
+    private produitService: ProduitService,
+    private personneService: PersonneService,
+    private mouvementService: MouvementService,
+    private demandeService: DemandeService,
+    private demandeProduitService: DemandeProduitService,
+    private fb: FormBuilder,
+    private router: Router,
+    private etatService: EtatService,
+    private etatProduitService: EtatProduitService,
+    private gammeService: GammeService,
+    private marqueService: MarqueService,
+    private modeleService: ModeleService,
+  ) {
+  }
 
   validateNewDemandeForm!: FormGroup;
 
@@ -40,7 +61,7 @@ export class NouvelleDemandeComponent implements OnInit {
   produitChoice: Produit;
   personneDemande: Personne;
   mouvementDemande: any;
-  //etatSelectedValue: Etat;
+  // etatSelectedValue: Etat;
   etatSelectedValue;
 
   modele: string;
@@ -51,33 +72,24 @@ export class NouvelleDemandeComponent implements OnInit {
 
   listOfColumn: any = [];
 
-  countNew: number = 0;
+  countNew = 0;
 
-  showFieldEtat: boolean = false;
+  showFieldEtat = false;
 
-  //compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
+  myProduitSelected: Array<Produit> = [];
+  myProduitListToSelected: Array<Produit> = [];
+  listOfColumnProduitToBeSelected: any = [];
+  gammeList: Array<Gamme> = [];
+  marqueList: Array<Marque> = [];
+  modeleList: Array<Modele> = [];
+
+  // compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2);
-
-  constructor(
-    private behaviorService: BehaviorService,
-    private produitService: ProduitService,
-    private personneService: PersonneService,
-    private mouvementService: MouvementService,
-    private demandeService: DemandeService,
-    private demandeProduitService: DemandeProduitService,
-    private fb: FormBuilder,
-    private router: Router,
-    private etatService: EtatService,
-    private etatProduitService: EtatProduitService,
-  ) {
-  }
 
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Demande', 'Nouvelle demande']);
 
     this.makeDemandeForm(null);
-
-    this.listProduit();
 
     this.listPersonne();
 
@@ -87,6 +99,47 @@ export class NouvelleDemandeComponent implements OnInit {
 
     this.listEtat();
 
+    this.listOfColumnProduitToBeSelectedHeader();
+
+    this.listGamme();
+
+    this.listMarque();
+
+    this.listModele();
+
+  }
+
+  listMarque(): void {
+    this.marqueService.getList().subscribe(
+        (data: Marque[]) => {
+          this.marqueList = data;
+          console.log('MarqueList ==>', this.marqueList);
+        },
+        (error: HttpErrorResponse) => {
+          console.log('error getList marque ==>', error.message, ' ', error.status, ' ', error.statusText);
+        });
+  }
+
+  listModele(): void {
+    this.modeleService.getList().subscribe(
+        (data: Modele[]) => {
+          this.modeleList = data;
+          console.log('ModeleList ==>', this.modeleList);
+        },
+        (error: HttpErrorResponse) => {
+          console.log('error getList modele ==>', error.message, ' ', error.status, ' ', error.statusText);
+        });
+  }
+
+  listGamme(): void {
+    this.gammeService.getList().subscribe(
+        (data: Gamme[]) => {
+          this.gammeList = data;
+          console.log('GammeList ==>', this.gammeList);
+        },
+        (error: HttpErrorResponse) => {
+          console.log('error getList Gamme ==>', error.message, ' ', error.status, ' ', error.statusText);
+        });
   }
 
   listEtat(): void {
@@ -94,6 +147,7 @@ export class NouvelleDemandeComponent implements OnInit {
       (data: Etat[]) => {
         this.etatList = [...data];
         console.log('EtatList ==>', this.etatList);
+        this.listProduit();
       },
       (error: HttpErrorResponse) => {
         console.log('error getList etat ==>', error.message, ' ', error.status, ' ', error.statusText);
@@ -101,12 +155,21 @@ export class NouvelleDemandeComponent implements OnInit {
   }
 
   listProduit(): void {
+    this.produitList = [];
     this.produitService.getList().subscribe(
       (data: Produit[]) => {
-        this.produitList = [...data];
+        console.log('=========');
+        console.log(data);
+        console.log('=========');
+        data.forEach(item => {
+          // les produits à l'état => stock, new
+          if (item.status === 'EN_STOCK') {
+            this.produitList.push(item);
+          }
+        });
         console.log('Produit List ==>', this.produitList);
-        //this.listOfDisplayData = [...this.produitList];
-        //this.pageIndex = 1;
+        // this.listOfDisplayData = [...this.produitList];
+        // this.pageIndex = 1;
       },
       (error: HttpErrorResponse) => {
         console.log('error getList Produit ==>', error.message, ' ', error.status, ' ', error.statusText);
@@ -146,9 +209,8 @@ export class NouvelleDemandeComponent implements OnInit {
   makeDemandeForm(demandeProduit: DemandeProduit) {
     this.validateNewDemandeForm = this.fb.group({
       id: [demandeProduit != null ? demandeProduit.id : null],
-      produit: [demandeProduit != null ? demandeProduit.produit : null,
-        [Validators.required]],
-      demande: [demandeProduit != null ? demandeProduit.demande : null],
+     // produit: [demandeProduit != null ? demandeProduit.produit : null, [Validators.required]],
+     // demande: [demandeProduit != null ? demandeProduit.demande : null],
       /*personne: [demandeProduit != null ? demandeProduit.demande.personne : null, {value: this.countNew, disabled: true},
         [Validators.required]],*/
       personne: [demandeProduit != null ? demandeProduit.demande.personne : null,
@@ -156,9 +218,12 @@ export class NouvelleDemandeComponent implements OnInit {
       description: [demandeProduit != null ? demandeProduit.description : null],
       valider: [demandeProduit != null ? demandeProduit.valider : null],
       livrer: [demandeProduit != null ? demandeProduit.livrer : null],
-      //mouvement: [demandeProduit != null ? demandeProduit.demande.mouvement : null, {value: this.countNew, disabled: true}],
-      mouvement: [demandeProduit != null ? demandeProduit.demande.mouvement : null],
+      // mouvement: [demandeProduit != null ? demandeProduit.demande.mouvement : null, {value: this.countNew, disabled: true}],
+     // mouvement: [demandeProduit != null ? demandeProduit.demande.mouvement : null],
       etat: [demandeProduit != null ? demandeProduit.etat : null],
+      gamme: [],
+      model: [],
+      marque: [],
     });
   }
 
@@ -174,7 +239,7 @@ export class NouvelleDemandeComponent implements OnInit {
     this.gamme = '';
     this.modele = '';
     this.indexOfTab = 0;
-    //this.pageIndex = 1;
+    // this.pageIndex = 1;
   }
 
   listPersonne(): void {
@@ -182,8 +247,8 @@ export class NouvelleDemandeComponent implements OnInit {
       (data: Personne[]) => {
         this.personneList = [...data];
         console.log('Personne List ==>', this.personneList);
-        //this.listOfDisplayData = [...this.produitList];
-        //this.pageIndex = 1;
+        // this.listOfDisplayData = [...this.produitList];
+        // this.pageIndex = 1;
       },
       (error: HttpErrorResponse) => {
         console.log('error getList Personne ==>', error.message, ' ', error.status, ' ', error.statusText);
@@ -215,13 +280,13 @@ export class NouvelleDemandeComponent implements OnInit {
     /*const mouvementChoice = this.validateNewDemandeForm.get('mouvement').value;
     console.log(mouvementChoice);*/
     console.log(event);
-    let mouv = this.mouvementList.find(mv => mv.value == event);
-    if (event == 'ENTRER') this.showFieldEtat = true ;
-    else this.showFieldEtat = false;
+    const mouv = this.mouvementList.find(mv => mv.value == event);
+    if (event == 'ENTRER') { this.showFieldEtat = true ; }
+    else { this.showFieldEtat = false; }
   }
 
   validerProduit() {
-    //this.indexOfTab = 1;
+    // this.indexOfTab = 1;
 
     for (const i in this.validateNewDemandeForm.controls) {
       this.validateNewDemandeForm.controls[i].markAsDirty();
@@ -252,10 +317,10 @@ export class NouvelleDemandeComponent implements OnInit {
       }
 
       if (this.countNew == 1 || this.demandeProduitList.length == 1){
-        let demandeProduitFixed: DemandeProduit = new DemandeProduit();
+        const demandeProduitFixed: DemandeProduit = new DemandeProduit();
         this.validateNewDemandeForm.get('personne').setValue(this.personneDemande);
         this.validateNewDemandeForm.get('mouvement').setValue(this.mouvementDemande);
-        //this.makeDemandeForm(null);
+        // this.makeDemandeForm(null);
       }
 
     }
@@ -286,7 +351,41 @@ export class NouvelleDemandeComponent implements OnInit {
   }
 
   cancelMsgDelete(): void {
-    //this.nzMessageService.info('click confirm');
+    // this.nzMessageService.info('click confirm');
+  }
+
+
+  myValiderSelectionProduit(): void {
+    for (const i in this.validateNewDemandeForm.controls) {
+      this.validateNewDemandeForm.controls[i].markAsDirty();
+      this.validateNewDemandeForm.controls[i].updateValueAndValidity();
+    }
+    if (this.validateNewDemandeForm.valid) {
+      this.myProduitSelected.forEach(produitSelected => {
+        const formData = this.validateNewDemandeForm.value;
+        this.personneDemande = formData.personne;
+        this.mouvementDemande = formData.mouvement;
+        formData.valider = false;
+        formData.livrer = false;
+        formData.produit = produitSelected;
+        console.log('FormData -- Formulaire valide');
+        console.log(formData);
+        if (formData.id == null) {
+          this.demandeProduitList.push(formData);
+          this.demandeProduitList = [...this.demandeProduitList];
+          console.log('demandeProduitList ==> ');
+          console.log(this.demandeProduitList);
+          this.countNew ++;
+        }
+      });
+      this.makeDemandeForm(null);
+      this.marque = '';
+      this.gamme = '';
+      this.modele = '';
+      this.myProduitListToSelected = [];
+      this.goToListDemandeProduit();
+    }
+
   }
 
 
@@ -294,7 +393,7 @@ export class NouvelleDemandeComponent implements OnInit {
 
     if (this.demandeProduitList != null && this.demandeProduitList.length > 0) {
 
-      let demande: Demande = new Demande();
+      const demande: Demande = new Demande();
       console.log('la liste de demande => ');
       console.log(this.personneDemande);
       console.log(this.mouvementDemande);
@@ -312,9 +411,9 @@ export class NouvelleDemandeComponent implements OnInit {
           console.log('Enregistrement demande => ' + data);
           newDemande = data;
 
-          let theDemandeProduit: DemandeProduit = new DemandeProduit();
+          const theDemandeProduit: DemandeProduit = new DemandeProduit();
 
-          for (let dp of this.demandeProduitList) {
+          for (const dp of this.demandeProduitList) {
             theDemandeProduit.description = dp.description;
             theDemandeProduit.livrer = dp.livrer;
             theDemandeProduit.valider = dp.valider;
@@ -335,7 +434,7 @@ export class NouvelleDemandeComponent implements OnInit {
             if (this.showFieldEtat == true){
               if (dp.etat != null || dp.etat != undefined){
 
-                let newEtatProduit: EtatProduit = new EtatProduit();
+                const newEtatProduit: EtatProduit = new EtatProduit();
                 newEtatProduit.actuel = false;
                 newEtatProduit.etat = dp.etat;
                 newEtatProduit.produit = dp.produit;
@@ -379,7 +478,7 @@ export class NouvelleDemandeComponent implements OnInit {
         title: 'Numero Série',
         compare: null,
         sortFn: (a: Produit, b: Produit) => a.numSerie.localeCompare(b.numSerie),
-        //sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
+        // sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
       },
       {
         title: 'Marque',
@@ -420,4 +519,75 @@ export class NouvelleDemandeComponent implements OnInit {
   }
 
 
+  listOfColumnProduitToBeSelectedHeader() {
+    this.listOfColumnProduitToBeSelected = [
+      {
+        title: 'Numero Série',
+        compare: null,
+        sortFn: (a: Produit, b: Produit) => a.numSerie.localeCompare(b.numSerie),
+        // sortFn: (a: Produit, b: Produit) => a.numSerie - b.numSerie,
+      },
+      {
+        title: 'Equipement',
+        compare: null,
+        sortFn: (a: Produit, b: Produit) => a.gamme.libelle.localeCompare(b.gamme.libelle),
+      },
+      {
+        title: 'Marque',
+        compare: null,
+        sortFn: (a: Produit, b: Produit) => a.marque.libelle.localeCompare(b.marque.libelle),
+      },
+      {
+        title: 'Modele',
+        compare: null,
+        sortFn: (a: Produit, b: Produit) => a.modele.libelle.localeCompare(b.modele.libelle),
+      },
+      {
+        title: 'Description',
+        compare: null,
+        sortFn: null,
+      },
+    ];
+  }
+
+  equipementSelectChange(equipement: Gamme): void {
+    console.log('gamme selected');
+    console.log(equipement);
+    this.myProduitSelected = [];
+    this.myProduitListToSelected = this.produitList.filter(produit => produit.gamme.id === equipement.id);
+  }
+  modelSelectChange(model: Modele): void {
+    console.log('model selected');
+    console.log(model);
+    if (this.myProduitListToSelected.length > 0) {
+      this.myProduitListToSelected = this.produitList.filter(
+          produit => produit.modele.id === model.id &&
+          this.myProduitListToSelected[0].gamme.id === produit.gamme.id
+      );
+    }
+  }
+
+
+  marqueSelectChange(marque: Marque): void {
+    console.log('marque selected');
+    console.log(marque);
+    if (this.myProduitListToSelected.length > 0) {
+      this.myProduitListToSelected = this.produitList.filter(
+          produit => produit.marque.id === marque.id &&
+              this.myProduitListToSelected[0].modele.id === produit.modele.id &&
+              this.myProduitListToSelected[0].gamme.id === produit.gamme.id
+      );
+    }
+  }
+
+  produitSelectChange(data: Produit, $target: any): void {
+    console.log(data);
+    console.log($target.target.checked);
+    if ($target.target.checked) {
+      this.myProduitSelected.push(data);
+    } else {
+      const index = this.myProduitSelected.indexOf(data);
+      this.myProduitSelected.slice(index, 1);
+    }
+  }
 }

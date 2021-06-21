@@ -29,9 +29,8 @@
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
-            <!--<nz-form-label [nzSpan]="24">Demandeur</nz-form-label>-->
-            <nz-form-label [nzSpan]="24">Personne concerné</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une personne"  formControlName="personne" [nzDisabled]="demandeProduitList.length > 0">
+            <nz-form-label [nzSpan]="24">Personne concernée</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une personne"  formControlName="personne">
               <nz-option *ngFor="let pers of personneList" [nzLabel]=" pers.serviceB? pers.nom + ' ' + pers.prenom + ' --- '+pers.serviceB?.libelle :  pers.nom + ' ' + pers.prenom " [nzValue]="pers"></nz-option>
             </nz-select>
           </nz-form-item>
@@ -39,66 +38,66 @@
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
-            <nz-form-label [nzSpan]="24">Nature du mouvement</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un mouvement" formControlName="mouvement" [nzDisabled]="demandeProduitList.length > 0" (ngModelChange)="loadStateFieldEtat($event)">
-              <nz-option *ngFor="let mouv of mouvementList" [nzLabel]="mouv.description" [nzValue]="mouv.value"></nz-option>
+            <nz-form-label [nzSpan]="24">Equipement</nz-form-label>
+            <nz-select (ngModelChange)="equipementSelectChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Selectionner l'équipement" formControlName="gamme">
+              <nz-option *ngFor="let equipement of gammeList" [nzLabel]=" equipement.libelle" [nzValue]="equipement"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>
-
-        <nz-divider></nz-divider>
-
-        <div nz-col nzSpan="12" style="padding-right: 1.5em">
-          <nz-form-item>
-            <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série" formControlName="produit" name="produitChoice"  (ngModelChange)="loadDetailProduit()">
-              <nz-option *ngFor="let produit of produitList" [nzLabel]="produit.numSerie" [nzValue]="produit"></nz-option>
-            </nz-select>
-          </nz-form-item>
-        </div>
-
-        <!--<div nz-col nzSpan="2" style="padding-top: 2.8em">
-          <button nz-button nzType="primary" (click)="loadDetailProduit()"><i nz-icon nzType="check"></i>
-          </button>
-        </div>-->
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Modele</nz-form-label>
-            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input nz-input placeholder="" disabled value="{{modele}}"/>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-
-        <div nz-col nzSpan="12" style="padding-right: 1.5em">
-          <nz-form-item>
-            <nz-form-label [nzSpan]="24">Equipement</nz-form-label>
-            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input nz-input placeholder="" disabled value="{{gamme}}"/>
-            </nz-form-control>
+            <nz-select (ngModelChange)="modelSelectChange($event)"  nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le model" formControlName="model">
+              <nz-option *ngFor="let model of modeleList" [nzLabel]=" model.libelle" [nzValue]="model"></nz-option>
+            </nz-select>
           </nz-form-item>
         </div>
 
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Marque</nz-form-label>
-            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input nz-input placeholder="" disabled value="{{marque}}"/>
-            </nz-form-control>
+            <nz-select (ngModelChange)="marqueSelectChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une marque" formControlName="marque">
+              <nz-option *ngFor="let marque of marqueList" [nzLabel]="marque.libelle" [nzValue]="marque"></nz-option>
+            </nz-select>
           </nz-form-item>
         </div>
 
-        <div nz-col nzSpan="24" style="padding-right: 1.5em" *ngIf="showFieldEtat">
+        <!--div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Nature du mouvement</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un mouvement" formControlName="mouvement" [nzDisabled]="demandeProduitList.length > 0" (ngModelChange)="loadStateFieldEtat($event)">
+              <nz-option *ngFor="let mouv of mouvementList" [nzLabel]="mouv.description" [nzValue]="mouv.value"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div-->
+
+        <!--nz-divider></nz-divider-->
+
+        <!--div nz-col nzSpan="12" style="padding-right: 1.5em">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série" formControlName="produit" name="produitChoice"  (ngModelChange)="loadDetailProduit()">
+              <nz-option *ngFor="let produit of produitList" [nzLabel]="produit.numSerie" [nzValue]="produit"></nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div-->
+
+        <!--<div nz-col nzSpan="2" style="padding-top: 2.8em">
+          <button nz-button nzType="primary" (click)="loadDetailProduit()"><i nz-icon nzType="check"></i>
+          </button>
+        </div>-->
+
+
+
+        <!--div nz-col nzSpan="24" style="padding-right: 1.5em" *ngIf="showFieldEtat">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Etat</nz-form-label>
             <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un etat" formControlName="etat">
               <nz-option  *ngFor="let etat of etatList" [nzLabel]="etat.libelle" [nzValue]="etat"></nz-option>
             </nz-select>
           </nz-form-item>
-        </div>
-
-
+        </div-->
         <div nz-col nzSpan="24">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Description</nz-form-label>
@@ -107,34 +106,48 @@
             </nz-form-control>
           </nz-form-item>
         </div>
-
-        <div nz-col nzSpan="24">
-          <nz-space>
-
-            <nz-space-item>
-              <!--<button (click)="submitEtatForm()" [disabled]="validateEtatForm.invalid" nz-button
-                      nzType="primary"><i nz-icon nzType="check"></i>
-                Enregistrer
-              </button>-->
-              <button nz-button nzType="primary" (click)="validerProduit()" [disabled]="validateNewDemandeForm.invalid"><i nz-icon nzType="check"></i>
-                Valider
-              </button>
-            </nz-space-item>
-            <nz-space-item>
-              <button (click)="resetDemandeForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
-                Annuler
-              </button>
-              <!--<button nz-button nzType="default"><i nz-icon nzType="check"></i>
-                Soumettre
-              </button>-->
-            </nz-space-item>
-          </nz-space>
-        </div>
-
-
       </div>
-
     </form>
+
+    <div nz-row>
+      <nz-table #sortTable2 [nzData]="myProduitListToSelected" nzTableLayout="fixed">
+        <thead>
+        <tr>
+          <th *ngFor="let column of listOfColumnProduitToBeSelected" [nzSortFn]="column.sortFn">{{ column.title }}</th>
+          <th> Actions </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of sortTable2.data">
+          <td>{{ data.numSerie }}</td>
+          <td>{{ data.gamme?.libelle }}</td>
+          <td>{{ data.marque?.libelle }}</td>
+          <td>{{ data.modele?.libelle }}</td>
+          <td>{{ data.description }}</td>
+          <td>
+            <input title="sélectionner" style="cursor: pointer" type="checkbox" (change)="produitSelectChange(data, $event)">
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div nz-row style="margin-top: 10px;">
+      <div nz-col nzSpan="24">
+        <nz-space>
+
+          <nz-space-item>
+            <button nz-button nzType="primary" (click)="myValiderSelectionProduit()" [disabled]="myProduitSelected.length == 0">
+              VALIDER
+            </button>
+          </nz-space-item>
+          <nz-space-item>
+            <button nz-button nzType="danger">
+              ANULLER
+            </button>
+          </nz-space-item>
+        </nz-space>
+      </div>
+    </div>
 
   </nz-tab>
 
@@ -172,7 +185,7 @@
                   (nzOnConfirm)="confirmMsgDelete(data)"
                   (nzOnCancel)="cancelMsgDelete()"
                   nzPopconfirmPlacement="topRight"
-                  nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="delete"></i>
+                  nz-button nzShape="circle" nzType="danger"><i nz-icon nzTheme="outline" nzType="delete"></i>
                 </button>
               </nz-space-item>
             </nz-space>
@@ -190,11 +203,11 @@
               Faire valider
             </button>
           </nz-space-item>
-          <nz-space-item>
+          <!--nz-space-item>
             <button nz-button nzType="default" (click)="addNewProduit()"><i nz-icon nzType="check"></i>
               Rajouter un nouveau produit
             </button>
-          </nz-space-item>
+          </nz-space-item-->
         </nz-space>
       </div>
     </div>
