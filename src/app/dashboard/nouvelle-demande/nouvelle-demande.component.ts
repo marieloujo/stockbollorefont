@@ -25,6 +25,8 @@ import {Modele} from '../../models/modele';
 import {MarqueService} from '../../services/dashboard/marque.service';
 import {ModeleService} from '../../services/dashboard/modele.service';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import {MagasinProduit} from "../../models/magasin-produit";
+import {MagasinProduitService} from "../../services/dashboard/magasin-produit.service";
 
 @Component({
   selector: 'app-nouvelle-demande',
@@ -43,6 +45,7 @@ export class NouvelleDemandeComponent implements OnInit {
     private router: Router,
     private etatService: EtatService,
     private etatProduitService: EtatProduitService,
+    private magasinProduitService: MagasinProduitService,
     private gammeService: GammeService,
     private marqueService: MarqueService,
     private modeleService: ModeleService,
@@ -147,33 +150,62 @@ export class NouvelleDemandeComponent implements OnInit {
       (data: Etat[]) => {
         this.etatList = [...data];
         console.log('EtatList ==>', this.etatList);
-        this.listProduit();
+        this.listProduits();
       },
       (error: HttpErrorResponse) => {
         console.log('error getList etat ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
   }
 
-  listProduit(): void {
-    this.produitList = [];
+  listProduits(): void {
     this.produitService.getList().subscribe(
-      (data: Produit[]) => {
-        console.log('=========');
-        console.log(data);
-        console.log('=========');
-        data.forEach(item => {
-          // les produits à l'état => stock, new
-          if (item.status === 'EN_STOCK') {
-            this.produitList.push(item);
+        (data: Produit[]) => {
+          this.produitList = [...data];
+          console.log('Produit List ==>', this.produitList);
+
+          for (const prod of this.produitList) {
+            // let eP: EtatProduit[] = [];
+            console.log('le produit ==> ');
+            console.log(prod);
+            // let etatProd: EtatProduit = prod.etatProduits.find(p => p.actuel == true);
+
+            console.log('Le dernier -----');
+            console.log(prod.etatProduits[prod.etatProduits.length - 1]);
+            const etatProd: EtatProduit = prod.etatProduits[prod.etatProduits.length - 1];
+
+            console.log(etatProd);
+
+            this.etatProduitService.getEtatProduitById(etatProd?.id).subscribe(
+                (dataEtatProd: EtatProduit) => {
+                  console.log('DataEtatProd');
+                  console.log(dataEtatProd.etat.libelle);
+                  prod.etat = dataEtatProd.etat;
+                },
+                (error: HttpErrorResponse) => {
+                  console.log('error get by id etatProduit ==>', error.message, ' ', error.status, ' ', error.statusText);
+                });
+
+            const magProd: MagasinProduit = prod.magazinProduits.find(m => m.actuel == true);
+            this.magasinProduitService.getMagasinProduitById(magProd?.id).subscribe(
+                (dataMagProd: MagasinProduit) => {
+                  console.log('DataMagProd');
+                  console.log(dataMagProd.magazin.libelle);
+                  prod.magasin = dataMagProd.magazin;
+                },
+                (error: HttpErrorResponse) => {
+                  console.log('error get by id magasinProduit ==>', error.message, ' ', error.status, ' ', error.statusText);
+                });
           }
+
+          this.produitList = [...this.produitList];
+          console.log('@@@@@@@@@@@@');
+          console.log(this.produitList);
+          console.log('@@@@@@@@@@@@');
+          // this.pageIndex = 1;
+        },
+        (error: HttpErrorResponse) => {
+          console.log('error getList Produit ==>', error.message, ' ', error.status, ' ', error.statusText);
         });
-        console.log('Produit List ==>', this.produitList);
-        // this.listOfDisplayData = [...this.produitList];
-        // this.pageIndex = 1;
-      },
-      (error: HttpErrorResponse) => {
-        console.log('error getList Produit ==>', error.message, ' ', error.status, ' ', error.statusText);
-      });
   }
 
   listMouvement(): void {
@@ -554,7 +586,9 @@ export class NouvelleDemandeComponent implements OnInit {
     console.log('gamme selected');
     console.log(equipement);
     this.myProduitSelected = [];
-    this.myProduitListToSelected = this.produitList.filter(produit => produit.gamme.id === equipement.id);
+    this.myProduitListToSelected = this.produitList.filter(produit => produit.gamme.id === equipement.id &&
+        produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code)
+    );
   }
   modelSelectChange(model: Modele): void {
     console.log('model selected');
@@ -562,6 +596,7 @@ export class NouvelleDemandeComponent implements OnInit {
     if (this.myProduitListToSelected.length > 0) {
       this.myProduitListToSelected = this.produitList.filter(
           produit => produit.modele.id === model.id &&
+          produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code) &&
           this.myProduitListToSelected[0].gamme.id === produit.gamme.id
       );
     }
@@ -574,6 +609,7 @@ export class NouvelleDemandeComponent implements OnInit {
     if (this.myProduitListToSelected.length > 0) {
       this.myProduitListToSelected = this.produitList.filter(
           produit => produit.marque.id === marque.id &&
+          produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code) &&
               this.myProduitListToSelected[0].modele.id === produit.modele.id &&
               this.myProduitListToSelected[0].gamme.id === produit.gamme.id
       );
