@@ -85,6 +85,9 @@ export class NouvelleDemandeComponent implements OnInit {
   gammeList: Array<Gamme> = [];
   marqueList: Array<Marque> = [];
   modeleList: Array<Modele> = [];
+  private currentMarqueSelected: Marque;
+  private currentEquipementSelected: Gamme;
+  private currentModelSelected: Modele;
 
   // compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2);
@@ -583,38 +586,46 @@ export class NouvelleDemandeComponent implements OnInit {
   }
 
   equipementSelectChange(equipement: Gamme): void {
+    this.currentEquipementSelected = equipement;
     console.log('gamme selected');
-    console.log(equipement);
-    this.myProduitSelected = [];
-    this.myProduitListToSelected = this.produitList.filter(produit => produit.gamme.id === equipement.id &&
-        produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code)
-    );
+    console.log(this.currentEquipementSelected);
+    this.myProduitListToSelected = this.applyFiltre();
   }
   modelSelectChange(model: Modele): void {
+    this.currentModelSelected = model;
     console.log('model selected');
-    console.log(model);
-    if (this.myProduitListToSelected.length > 0) {
-      this.myProduitListToSelected = this.produitList.filter(
-          produit => produit.modele.id === model.id &&
-          produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code) &&
-          this.myProduitListToSelected[0].gamme.id === produit.gamme.id
-      );
-    }
+    console.log(this.currentModelSelected);
+    this.myProduitListToSelected = this.applyFiltre();
   }
-
 
   marqueSelectChange(marque: Marque): void {
+    this.currentMarqueSelected = marque;
     console.log('marque selected');
-    console.log(marque);
-    if (this.myProduitListToSelected.length > 0) {
-      this.myProduitListToSelected = this.produitList.filter(
-          produit => produit.marque.id === marque.id &&
-          produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code) &&
-              this.myProduitListToSelected[0].modele.id === produit.modele.id &&
-              this.myProduitListToSelected[0].gamme.id === produit.gamme.id
-      );
-    }
+    console.log(this.currentMarqueSelected);
+    this.myProduitListToSelected = this.applyFiltre();
   }
+
+
+  // apply filtre on produitList
+  applyFiltre(): Array<Produit> {
+    let result: Array<Produit> = this.produitList.filter( produit =>
+        produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code)
+    );
+    // equipement
+    if (this.currentEquipementSelected !== undefined) {
+      result = result.filter(produit => produit.gamme.id === this.currentEquipementSelected.id);
+    }
+    // model
+    if (this.currentModelSelected !== undefined) {
+      result = result.filter(produit => produit.modele.id === this.currentModelSelected.id);
+    }// marque
+    if (this.currentMarqueSelected !== undefined) {
+      result = result.filter(produit => produit.marque.id === this.currentMarqueSelected.id);
+    }
+    // return result
+    return result;
+  }
+
 
   produitSelectChange(data: Produit, $target: any): void {
     console.log(data);
