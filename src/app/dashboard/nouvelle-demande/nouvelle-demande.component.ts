@@ -398,7 +398,9 @@ export class NouvelleDemandeComponent implements OnInit {
     if (this.validateNewDemandeForm.valid) {
       this.myProduitSelected.forEach(produitSelected => {
         const formData = this.validateNewDemandeForm.value;
-        this.personneDemande = formData.personne;
+        if([null, undefined].includes(this.personneDemande)){
+          this.personneDemande = formData.personne;
+        }
         this.mouvementDemande = formData.mouvement;
         formData.valider = false;
         formData.livrer = false;

@@ -30,7 +30,7 @@
         <div nz-col nzSpan="12" style="padding-right: 1.5em">
           <nz-form-item>
             <nz-form-label [nzSpan]="24">Personne concernée</nz-form-label>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une personne"  formControlName="personne">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une personne"  formControlName="personne" [nzDisabled]="demandeProduitList.length > 0">
               <nz-option *ngFor="let pers of personneList" [nzLabel]=" pers.serviceB? pers.nom + ' ' + pers.prenom + ' --- '+pers.serviceB?.libelle :  pers.nom + ' ' + pers.prenom " [nzValue]="pers"></nz-option>
             </nz-select>
           </nz-form-item>
