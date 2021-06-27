@@ -8,6 +8,4 @@ export class MagasinProduit {
   actuel: boolean;
   produit: Produit;
   magazin: Magasin;
-  quantiteStock: number;
-
 }

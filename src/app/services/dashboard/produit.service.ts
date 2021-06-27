@@ -97,12 +97,4 @@ getAccessToken(): Token {
         }
     }
 
-    public getQuantiteStockByMagasinAndProduit(produitId: number, produitsMagasin: Array<MagasinProduit>): number{
-      const produitMagasin = produitsMagasin.find(proMaga => proMaga.actuel === true);
-      if (![null, undefined].includes(produitMagasin)){
-          return produitMagasin.quantiteStock;
-      }
-      return 0;
-    }
-
 }

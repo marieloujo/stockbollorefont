@@ -244,17 +244,10 @@ export class NouvelleDemandeComponent implements OnInit {
   makeDemandeForm(demandeProduit: DemandeProduit) {
     this.validateNewDemandeForm = this.fb.group({
       id: [demandeProduit != null ? demandeProduit.id : null],
-     // produit: [demandeProduit != null ? demandeProduit.produit : null, [Validators.required]],
-     // demande: [demandeProduit != null ? demandeProduit.demande : null],
-      /*personne: [demandeProduit != null ? demandeProduit.demande.personne : null, {value: this.countNew, disabled: true},
-        [Validators.required]],*/
-      personne: [demandeProduit != null ? demandeProduit.demande.personne : null,
-        [Validators.required]],
+      personne: [demandeProduit != null ? demandeProduit.demande.personne : null, [Validators.required]],
       description: [demandeProduit != null ? demandeProduit.description : null],
       valider: [demandeProduit != null ? demandeProduit.valider : null],
       livrer: [demandeProduit != null ? demandeProduit.livrer : null],
-      // mouvement: [demandeProduit != null ? demandeProduit.demande.mouvement : null, {value: this.countNew, disabled: true}],
-     // mouvement: [demandeProduit != null ? demandeProduit.demande.mouvement : null],
       etat: [demandeProduit != null ? demandeProduit.etat : null],
       gamme: [],
       model: [],
@@ -371,18 +364,22 @@ export class NouvelleDemandeComponent implements OnInit {
   }
 
 
-  confirmMsgDelete(data: any) {
+  confirmMsgDelete(data: DemandeProduit) {
 
     console.log('data dans confirm suppression ');
     console.log(data);
     console.log(this.demandeProduitList.length);
-    this.demandeProduitList = this.demandeProduitList.filter(dp => dp !== data);
+    this.demandeProduitList = this.demandeProduitList.filter(dp => dp.produit.id !== data.produit.id);
     this.demandeProduitList = [...this.demandeProduitList];
     console.log(this.demandeProduitList.length);
     this.countNew -= 1;
-    this.makeDemandeForm(null);
 
-
+    // refresh myProduitSelected
+   /* this.myProduitSelected = [];
+    this.demandeProduitList.forEach(demandeProduit => {
+        this.myProduitSelected.push(demandeProduit.produit);
+    });
+    this.myProduitSelected = [...this.myProduitSelected];*/
   }
 
   cancelMsgDelete(): void {
@@ -395,34 +392,60 @@ export class NouvelleDemandeComponent implements OnInit {
       this.validateNewDemandeForm.controls[i].markAsDirty();
       this.validateNewDemandeForm.controls[i].updateValueAndValidity();
     }
-    if (this.validateNewDemandeForm.valid) {
+    if (this.validateNewDemandeForm.valid || ![null, undefined].includes(this.personneDemande)) {
+      console.log('############');
+      console.log(this.validateNewDemandeForm.get('personne').value);
+      console.log('############');
       this.myProduitSelected.forEach(produitSelected => {
         const formData = this.validateNewDemandeForm.value;
         if([null, undefined].includes(this.personneDemande)){
           this.personneDemande = formData.personne;
         }
         this.mouvementDemande = formData.mouvement;
-        formData.valider = false;
-        formData.livrer = false;
-        formData.produit = produitSelected;
+       // formData.valider = false;
+       // formData.livrer = false;
+       // formData.produit = produitSelected;
         console.log('FormData -- Formulaire valide');
         console.log(formData);
-        if (formData.id == null) {
+        const newDemandeProduit = new DemandeProduit();
+        newDemandeProduit.produit = produitSelected;
+        newDemandeProduit.personne = this.personneDemande;
+        newDemandeProduit.description = this.validateNewDemandeForm.get('description').value;
+        newDemandeProduit.valider = false;
+        newDemandeProduit.livrer = false;
+        this.demandeProduitList.push(newDemandeProduit);
+        this.demandeProduitList = [...this.demandeProduitList];
+        console.log('demandeProduitList ==> ');
+        console.log(this.demandeProduitList);
+        this.countNew ++;
+       /* if (formData.id == null) {
           this.demandeProduitList.push(formData);
           this.demandeProduitList = [...this.demandeProduitList];
           console.log('demandeProduitList ==> ');
           console.log(this.demandeProduitList);
           this.countNew ++;
-        }
+        }*/
       });
-      this.makeDemandeForm(null);
+
+     // this.makeDemandeForm(formData);
+      this.resetData();
+      this.goToListDemandeProduit();
+    }
+
+  }
+
+
+  resetData(): void {
       this.marque = '';
       this.gamme = '';
       this.modele = '';
       this.myProduitListToSelected = [];
-      this.goToListDemandeProduit();
-    }
-
+      this.validateNewDemandeForm.get('gamme').setValue(null);
+      this.validateNewDemandeForm.get('model').setValue(null);
+      this.validateNewDemandeForm.get('marque').setValue(null);
+      this.currentEquipementSelected = null;
+      this.currentModelSelected = null;
+      this.currentMarqueSelected = null;
   }
 
 
@@ -592,12 +615,14 @@ export class NouvelleDemandeComponent implements OnInit {
     console.log('gamme selected');
     console.log(this.currentEquipementSelected);
     this.myProduitListToSelected = this.applyFiltre();
+    this.myProduitSelected = [];
   }
   modelSelectChange(model: Modele): void {
     this.currentModelSelected = model;
     console.log('model selected');
     console.log(this.currentModelSelected);
     this.myProduitListToSelected = this.applyFiltre();
+    this.myProduitSelected = [];
   }
 
   marqueSelectChange(marque: Marque): void {
@@ -605,6 +630,7 @@ export class NouvelleDemandeComponent implements OnInit {
     console.log('marque selected');
     console.log(this.currentMarqueSelected);
     this.myProduitListToSelected = this.applyFiltre();
+    this.myProduitSelected = [];
   }
 
 
@@ -614,16 +640,22 @@ export class NouvelleDemandeComponent implements OnInit {
         produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code)
     );
     // equipement
-    if (this.currentEquipementSelected !== undefined) {
+    if (![null, undefined].includes(this.currentEquipementSelected)) {
       result = result.filter(produit => produit.gamme.id === this.currentEquipementSelected.id);
     }
     // model
-    if (this.currentModelSelected !== undefined) {
+    if (![null, undefined].includes(this.currentModelSelected)) {
       result = result.filter(produit => produit.modele.id === this.currentModelSelected.id);
     }// marque
-    if (this.currentMarqueSelected !== undefined) {
+    if (![null, undefined].includes(this.currentMarqueSelected)) {
       result = result.filter(produit => produit.marque.id === this.currentMarqueSelected.id);
     }
+
+    // remove old selected product
+    this.demandeProduitList.forEach(data => {
+        result = result.filter(p => p.id !== data.produit.id);
+    });
+
     // return result
     return result;
   }
@@ -635,8 +667,10 @@ export class NouvelleDemandeComponent implements OnInit {
     if ($target.target.checked) {
       this.myProduitSelected.push(data);
     } else {
-      const index = this.myProduitSelected.indexOf(data);
-      this.myProduitSelected.slice(index, 1);
+      this.myProduitSelected = this.myProduitSelected.filter(p => p.id !== data.id);
     }
+    console.log('### Products selected ###');
+    console.log(this.myProduitSelected);
+    console.log('### Products selected ###');
   }
 }

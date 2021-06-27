@@ -73,10 +73,6 @@
               <i nz-icon nzType="search"></i>
             </nz-filter-trigger>
 
-            <nz-filter-trigger *ngIf="column.title == 'Stock'" [(nzVisible)]="visibleStock" [nzActive]="searchValueStock.length > 0" [nzDropdownMenu]="menuStock">
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
-
             <nz-filter-trigger *ngIf="column.title == 'Status'" [(nzVisible)]="visibleStatus" [nzActive]="searchValueStatus.length > 0" [nzDropdownMenu]="menuStatus">
               <i nz-icon nzType="search"></i>
             </nz-filter-trigger>
@@ -97,7 +93,6 @@
           <td>{{ data?.marque?.libelle }}</td>
           <td>{{ data?.modele?.libelle }}</td>
           <td>{{ data?.etat?.libelle }}</td>
-          <td>{{ produitService.getQuantiteStockByMagasinAndProduit(data?.id, data?.magazinProduits)}}</td>
           <td>
           <ng-container *ngIf="![null, undefined].includes(data?.status)">
               <strong nz-typography [nzType]="produitService.getTextColorByStatusProduit(data?.status)">
@@ -199,17 +194,6 @@
     </div>
   </nz-dropdown-menu>
 
-  <nz-dropdown-menu #menuStock="nzDropdownMenu">
-    <div class="ant-table-filter-dropdown">
-      <div class="search-box">
-        <input type="text" nz-input placeholder="chercher un stock" [(ngModel)]="searchValueStock" />
-        <button nz-button nzSize="small" nzType="primary" (click)="searchStock()" class="search-button">
-          Chercher
-        </button>
-        <button nz-button nzSize="small" (click)="resetStock()">Annuler</button>
-      </div>
-    </div>
-  </nz-dropdown-menu>
 
   <nz-dropdown-menu #menuStatus="nzDropdownMenu">
     <div class="ant-table-filter-dropdown">
@@ -245,15 +229,6 @@
             <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
             <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
               <input formControlName="numSerie" nz-input placeholder="saisir le numero de serie"/>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-
-        <div nz-col nzSpan="8" style="padding-right: 1.5em">
-          <nz-form-item>
-            <nz-form-label [nzSpan]="24">Quantité en stock</nz-form-label>
-            <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!">
-              <input formControlName="quantiteStock" nz-input placeholder="saisir la quantité en stock"/>
             </nz-form-control>
           </nz-form-item>
         </div>

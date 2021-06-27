@@ -68,9 +68,6 @@ export class ProduitComponent implements OnInit {
   searchValueEtat = '';
   visibleEtat = false;
 
-  searchValueStock = '';
-  visibleStock = false;
-
   searchValueStatus = '';
   visibleStatus = false;
 
@@ -140,7 +137,6 @@ export class ProduitComponent implements OnInit {
       marque: [produit != null ? produit.marque : null, [Validators.required]],
       gamme: [produit != null ? produit.gamme : null, [Validators.required]],
       etat: [produit != null ? produit.etat : null, [Validators.required]],
-      quantiteStock: [produit != null ? this.produitService.getQuantiteStockByMagasinAndProduit(produit.id, produit.magazinProduits) : null, [Validators.required]],
       description: [produit != null ? produit.description : null],
       magazin: [produit != null ? produit.magasin : null, [Validators.required]],
       /*idMP: [magasinProduit != null ? magasinProduit.id : null],*/
@@ -210,7 +206,6 @@ export class ProduitComponent implements OnInit {
             newMagasinProduit.magazin = formData.magazin;
             newMagasinProduit.actuel = true;
             newMagasinProduit.produit = data;
-            newMagasinProduit.quantiteStock = formData.quantiteStock;
             console.log('LE NEW MAGASIN PRODUIT');
             console.log(newMagasinProduit);
 
@@ -343,7 +338,6 @@ export class ProduitComponent implements OnInit {
             newUpdateMagasinProduit.produit = data;
             newUpdateMagasinProduit.dateHeure = new Date();
             newUpdateMagasinProduit.actuel = true;
-            newUpdateMagasinProduit.quantiteStock = formData.quantiteStock;
             newUpdateMagasinProduit.id = newUpdateMagProd.id;
 
             console.log('le new Update de MagasinPoduit');
@@ -510,10 +504,6 @@ export class ProduitComponent implements OnInit {
     this.searchNumSerie();
   }
 
-  resetStock(): void {
-    this.searchValueStock = '';
-    this.searchStock();
-  }
 
   searchDateCreation(): void { // indexOf(this.searchValueDateCreation) !== -1)
     this.visibleDateCreation = false;
@@ -525,10 +515,6 @@ export class ProduitComponent implements OnInit {
     this.listOfDisplayData = this.produitList.filter((item: Produit) => item.numSerie.toString().indexOf(this.searchValueNumSerie) !== -1);
   }
 
-  searchStock(): void { // indexOf(this.searchValueStock) !== -1)
-    this.visibleStock = false;
-    // todo :
-  }
 
   resetMarque(): void {
     this.searchValueMarque = '';
@@ -641,11 +627,6 @@ export class ProduitComponent implements OnInit {
         title: 'Etat',
         compare: null,
         sortFn: (a: Produit, b: Produit) => a.etat.libelle.localeCompare(b.etat.libelle),
-      },
-      {
-        title: 'Stock',
-        compare: null,
-        sortFn: (a: Produit, b: Produit) => this.produitService.getQuantiteStockByMagasinAndProduit(a.id, a.magazinProduits).toString().localeCompare(this.produitService.getQuantiteStockByMagasinAndProduit(b.id, b.magazinProduits).toString()),
       },
       {
         title: 'Status',
