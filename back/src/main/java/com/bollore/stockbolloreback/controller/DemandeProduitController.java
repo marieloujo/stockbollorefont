@@ -1,7 +1,10 @@
 package com.bollore.stockbolloreback.controller;
 
+import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
 import com.bollore.stockbolloreback.models.DemandeProduit;
+import com.bollore.stockbolloreback.models.Produit;
 import com.bollore.stockbolloreback.repository.DemandeProduitRepository;
+import com.bollore.stockbolloreback.repository.ProduitRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ public class DemandeProduitController {
 
     @Autowired
     private DemandeProduitRepository demandeProduitRepository;
+
+    @Autowired
+    private ProduitRepository produitRepository;
 
     private static final String ENTITY_NAME = "stockBollore_DemandeProduit";
 
@@ -70,7 +76,12 @@ public class DemandeProduitController {
         if (demandeProduit.getId() != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
+        // update status produit
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+          if(produit != null) {
+              produit.setStatus(EnumProduitStatus.EN_ATTENTE_VALIDATION);
+              produitRepository.save(produit);
+          }
         DemandeProduit newDemandeProduit = demandeProduitRepository.save(demandeProduit);
 
         return ResponseEntity.created(new URI("/demande-produit/creer-demande-produit"+ newDemandeProduit.getId())).body(newDemandeProduit);
