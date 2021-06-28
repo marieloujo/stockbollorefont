@@ -17,6 +17,8 @@ import {EtatService} from '../../services/dashboard/etat.service';
 import {EtatProduitService} from '../../services/dashboard/etat-produit.service';
 import {EtatProduit} from '../../models/etat-produit';
 import {Gamme} from '../../models/gamme';
+import {NzMessageService} from "ng-zorro-antd/message";
+import {DemandeStatus} from "../../enumerations/demande-status.enum";
 
 interface StatsPer_dayWeekMonthYear {
   day: number;
@@ -44,6 +46,7 @@ export class AccueilComponent implements OnInit {
   etatList: Etat[] = [];
   etatProduitList: EtatProduit[] = [];
   etatProduitListSortByProduit: EtatProduit[] = [];
+  DemandeStatus = DemandeStatus;
 
   statsCOunt: StatsPer_dayWeekMonthYear = new class implements StatsPer_dayWeekMonthYear {
     day: number;
@@ -54,13 +57,13 @@ export class AccueilComponent implements OnInit {
 
   constructor(
     private behaviorService: BehaviorService,
-    private demandeProduitService: DemandeProduitService,
     private produitService: ProduitService,
     private demandeService: DemandeService,
     private tokenService: TokenService,
     private gammeService: GammeService,
     private etatService: EtatService,
     private etatProduitService: EtatProduitService,
+    private demandeProduitService: DemandeProduitService,
   ) {
     this.token = this.tokenService.getAccessToken();
   }
@@ -132,107 +135,39 @@ export class AccueilComponent implements OnInit {
   }
 
 
-  validerDemande(demandeProduit: DemandeProduit) {
 
-    demandeProduit.valider = true;
-    demandeProduit.validateur = String(this.token.username);
-    demandeProduit.validationDate = new Date();
-
-    console.log('update demande Produit');
-    console.log(demandeProduit);
-
-    this.demandeProduitService.updateDemandeProduit(demandeProduit).subscribe(
-      (data: any) => {
-        console.log('Demande Produit update ==>', data);
-
-        this.listDemandeProduitDescCreatedDate();
-
+  livrerDemande(id: number) {
+    this.demandeService.livrerDemande(id).subscribe(
+        (data: Demande) => {
+        console.log('Demande livree  ==>', data);
+        window.location.reload();
       },
       (error: HttpErrorResponse) => {
-        console.log('error demande Produit update ==>', error.message, ' ', error.status, ' ', error.statusText);
-      },
-    );
+        console.log('error ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
 
   }
 
-  livrerDemande(demandeProduit: DemandeProduit) {
-
-    console.log('Demande Produit dans livrer');
-    console.log(demandeProduit.produit);
-    let ifOneFalsePresent: boolean = false;
-
-
-    demandeProduit.livrer = true;
-    demandeProduit.gestionnaire = String(this.token.username);
-    demandeProduit.dateLivraison = new Date();
-
-    this.demandeProduitService.updateDemandeProduit(demandeProduit).subscribe(
-      (data: any) => {
-        console.log('Demande Produit update ==>', data);
-
-        this.listDemandeProduitDescCreatedDate();
-
-        //Modification de la gamme (equipement) concerné
-        //let gm: Gamme[] = this.gammeList.filter(g => g.id == newProduit.gamme.id);
-        let gm: Gamme = new Gamme();
-        this.gammeService.getGammeById(demandeProduit.gamme.id).subscribe(
-          (data: Gamme) => {
-
-            gm = data;
-            gm.nbrStock -= 1;
-
-            this.gammeService.updateGamme(gm).subscribe(
-              (data: Gamme) => {
-                console.log('Update ok');
-                console.log(data);
-              },
-              (error: HttpErrorResponse) => {
-                console.log('Update non ok');
-              });
-
-            console.log('Recherche By Id de Gamme ok');
-
-
-          },
-          (error: HttpErrorResponse) => {
-            console.log('Recherche By Id de Gamme non ok');
-          });
-
-        //modification de l'etat courant dans etat Produit
-        for (let etProd of this.etatProduitList) {
-          if (etProd.produit.id === demandeProduit.produit.id) {
-            console.log('Dans le if du for de livrer');
-            console.log(etProd);
-            if (etProd.actuel == false) {
-              ifOneFalsePresent = true;
-            }
-            this.etatProduitListSortByProduit.push(etProd);
-          }
-        }
-
-        console.log('Affichage liste secondaire');
-        console.log(this.etatProduitListSortByProduit);
-        if (ifOneFalsePresent == true) {
-          for (let etProdSort of this.etatProduitListSortByProduit) {
-            if (etProdSort.actuel == false) {
-              etProdSort.actuel = true;
-
-              this.etatProduitService.updateEtatProduit(etProdSort).subscribe(
-                (data: EtatProduit) => {
-                  console.log('Update etat Produit ok');
-                  console.log(data);
-                },
-                (error: HttpErrorResponse) => {
-                  console.log('Update etat Produit non ok');
-                });
-            }
-          }
-        }
-
-
+  validerDemande(id: number) {
+    this.demandeService.validerDemande(id).subscribe(
+        (data: Demande) => {
+        console.log('Demande validee  ==>', data);
+        window.location.reload();
       },
       (error: HttpErrorResponse) => {
-        console.log('error demande Produit update ==>', error.message, ' ', error.status, ' ', error.statusText);
+        console.log('error ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+
+  }
+
+  rejeterDemande(id: number) {
+    this.demandeService.rejeterDemande(id).subscribe(
+      (data: Demande) => {
+        console.log('Demande rejetee  ==>', data);
+        window.location.reload();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error ==>', error.message, ' ', error.status, ' ', error.statusText);
       });
 
   }
@@ -295,6 +230,11 @@ export class AccueilComponent implements OnInit {
       },
       {
         title: 'Modele',
+        compare: null,
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.modele.libelle.localeCompare(b.produit.modele.libelle),
+      },
+      {
+        title: 'Statut',
         compare: null,
         sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.modele.libelle.localeCompare(b.produit.modele.libelle),
       },

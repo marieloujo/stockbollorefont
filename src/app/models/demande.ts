@@ -10,5 +10,6 @@ export class Demande {
   personne: Personne;
   valider: boolean;
   url: String;
+  status: string;
 
 }

@@ -1,12 +1,16 @@
 package com.bollore.stockbolloreback.models;
 
+import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
 import com.bollore.stockbolloreback.enumeration.Mouvement;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -28,8 +32,22 @@ public class Demande extends AbstractAuditingEntity {
     @Column(name = "valider")
     private Boolean valider;
 
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private EnumDemandeStatus status;
+
     @Column(name = "date_heure")
     private Instant dateHeure;
+
+    @Column(name = "date_validation")
+    private Date dateValidation;
+
+    @Column(name = "date_livraison")
+    private Date dateLivraison;
+
+    @Column(name = "date_rejet")
+    private Date dateRejet;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "mouvement")
@@ -201,5 +219,35 @@ public class Demande extends AbstractAuditingEntity {
                 '}';
     }
 
+    public EnumDemandeStatus getStatus() {
+        return status;
+    }
 
+    public void setStatus(EnumDemandeStatus status) {
+        this.status = status;
+    }
+
+    public Date getDateValidation() {
+        return dateValidation;
+    }
+
+    public void setDateValidation(Date dateValidation) {
+        this.dateValidation = dateValidation;
+    }
+
+    public Date getDateLivraison() {
+        return dateLivraison;
+    }
+
+    public void setDateLivraison(Date dateLivraison) {
+        this.dateLivraison = dateLivraison;
+    }
+
+    public Date getDateRejet() {
+        return dateRejet;
+    }
+
+    public void setDateRejet(Date dateRejet) {
+        this.dateRejet = dateRejet;
+    }
 }

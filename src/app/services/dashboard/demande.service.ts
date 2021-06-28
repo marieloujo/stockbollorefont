@@ -28,6 +28,18 @@ export class DemandeService {
     return this.http.post(`${this.url}/creer-demande`, demande, this.http_get_request());
   }
 
+  rejeterDemande(id: number): Observable<Object> {
+    return this.http.post(`${this.url}/rejeter/` + id, {}, this.http_get_request());
+  }
+
+  validerDemande(id: number): Observable<Object> {
+    return this.http.post(`${this.url}/valider/` + id, {}, this.http_get_request());
+  }
+
+  livrerDemande(id: number): Observable<Object> {
+    return this.http.post(`${this.url}/livrer/` + id, {}, this.http_get_request());
+  }
+
   updateDemande(demande: Demande): Observable<Object> {
     return this.http.put(`${this.url}/modifier-demande`, demande, this.http_get_request());
   }

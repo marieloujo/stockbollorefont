@@ -1,10 +1,14 @@
 package com.bollore.stockbolloreback.controller;
 
+import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
+import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
 import com.bollore.stockbolloreback.models.Demande;
 import com.bollore.stockbolloreback.models.DemandeProduit;
 import com.bollore.stockbolloreback.models.Etat;
+import com.bollore.stockbolloreback.models.Produit;
 import com.bollore.stockbolloreback.repository.DemandeProduitRepository;
 import com.bollore.stockbolloreback.repository.DemandeRepository;
+import com.bollore.stockbolloreback.repository.ProduitRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,9 @@ public class DemandeController {
 
     @Autowired
     private DemandeRepository demandeRepository;
+
+    @Autowired
+    private ProduitRepository produitRepository;
 
     @Autowired
     private DemandeProduitRepository demandeProduitRepository;
@@ -59,7 +66,7 @@ public class DemandeController {
         if (demande.getId() != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
+        demande.setStatus(EnumDemandeStatus.EN_ATTENTE);
         Demande newDemande = demandeRepository.save(demande);
 
         return ResponseEntity.created(new URI("/demande/creer-demande"+ newDemande.getId())).body(newDemande);
@@ -105,6 +112,94 @@ public class DemandeController {
 
         return ResponseEntity.noContent().build();
 
+    }
+
+    @ApiOperation(value = "cette ressource permet de rejeter une demande")
+    @PostMapping(value = "/rejeter/{id}")
+    public ResponseEntity<Demande> rejeterDemande(@PathVariable("id") Long id){
+        if (id == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        List<DemandeProduit> demandeProduitList;
+        demandeProduitList = demandeProduitRepository.findByDemande_Id(id);
+        Demande demande = demandeRepository.findById(id).orElse(null);
+        if (demandeProduitList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        if (demande == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demande.setStatus(EnumDemandeStatus.REJETEE);
+        demande.setDateRejet(new Date());
+        demandeRepository.save(demande);
+        for(DemandeProduit demandeProduit: demandeProduitList){
+            Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+            if(produit != null) {
+                produit.setStatus(EnumProduitStatus.EN_STOCK);
+                produitRepository.save(produit);
+            }
+        }
+        return new ResponseEntity<Demande>(demande, HttpStatus.OK);
+    }
+
+
+    @ApiOperation(value = "cette ressource permet de livrer une demande")
+    @PostMapping(value = "/livrer/{id}")
+    public ResponseEntity<Demande> livrerDemande(@PathVariable("id") Long id){
+        if (id == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        List<DemandeProduit> demandeProduitList;
+        demandeProduitList = demandeProduitRepository.findByDemande_Id(id);
+        Demande demande = demandeRepository.findById(id).orElse(null);
+        if (demandeProduitList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        if (demande == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demande.setStatus(EnumDemandeStatus.LIVREE);
+        demande.setDateLivraison(new Date());
+        demandeRepository.save(demande);
+        for(DemandeProduit demandeProduit: demandeProduitList){
+            Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+            if(produit != null) {
+                produit.setStatus(EnumProduitStatus.EN_UTILISAION);
+                produitRepository.save(produit);
+            }
+        }
+        return new ResponseEntity<Demande>(demande, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "cette ressource permet de valider une demande")
+    @PostMapping(value = "/valider/{id}")
+    public ResponseEntity<Demande> validerDemande(@PathVariable("id") Long id){
+        if (id == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        List<DemandeProduit> demandeProduitList;
+        demandeProduitList = demandeProduitRepository.findByDemande_Id(id);
+        Demande demande = demandeRepository.findById(id).orElse(null);
+        if (demandeProduitList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        if (demande == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demande.setStatus(EnumDemandeStatus.VALIDEE);
+        demande.setDateValidation(new Date());
+        demandeRepository.save(demande);
+        for(DemandeProduit demandeProduit: demandeProduitList){
+            Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+            if(produit != null) {
+                produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
+                produitRepository.save(produit);
+            }
+        }
+        return new ResponseEntity<Demande>(demande, HttpStatus.OK);
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir les stats des demandes par jour.semaine.mois.annee")
