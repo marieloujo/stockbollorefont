@@ -76,7 +76,7 @@ export class ProduitComponent implements OnInit {
 
   listOfDisplayData;
 
-  is_admin: boolean;
+  is_gestionnaire: boolean;
 
   token: Token;
   public produitSelected: Produit;
@@ -115,12 +115,12 @@ export class ProduitComponent implements OnInit {
 
     this.getEtatByCode('NEW');
 
-    this.is_admin = this.canWrite();
+    this.is_gestionnaire = this.canWrite();
 
   }
 
   canWrite(): boolean {
-    return this.token.roles.indexOf(environment.ROLE_ADMIN) > -1;
+    return this.token.roles.indexOf(environment.ROLE_GESTIONNAIRE) > -1;
   }
 
   loadMagasinProduit() {

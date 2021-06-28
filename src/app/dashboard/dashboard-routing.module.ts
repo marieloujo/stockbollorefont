@@ -7,6 +7,7 @@ import {NouvelleDemandeComponent} from './nouvelle-demande/nouvelle-demande.comp
 import {AproposComponent} from './apropos/apropos.component';
 import {HistoriqueDemandeComponent} from './historique-demande/historique-demande.component';
 import { AuthGuard } from '../auth.guard';
+import { MagaGuard } from '../maga.guard';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
       {
         path: 'magasins',
         component: MagasinComponent,
+        canActivate: [ MagaGuard ],
       },
       {
         path: 'nouvelle-demande',

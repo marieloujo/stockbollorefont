@@ -1,0 +1,58 @@
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Router, } from '@angular/router';
+import { Token } from './models/token.model';
+import { TokenService } from './services/token/token.service';
+import {environment} from '../environments/environment';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MagaGuard implements CanActivate {
+  environnement = environment;
+  token: Token;
+
+  constructor(private router: Router, private tokenService: TokenService) { }
+
+  canActivate() {
+
+      this.token = this.tokenService.getAccessToken();
+
+      if (this.token !== null) {
+          return this.canAccess();
+          //return false;
+      }
+      // not logged in so redirect to login page
+      this.tokenService.deleteToken();
+      this.router.navigate(['/login']);
+      return false;
+  }
+
+
+  isAdmin(): boolean {
+      return this.token.roles.indexOf(environment.ROLE_ADMIN) > -1;
+  }
+
+
+  isDemandeur(): boolean {
+      return this.token.roles.indexOf(environment.ROLE_DEMANDEUR) > -1;
+  }
+
+
+  isGestionnaire(): boolean {
+      return this.token.roles.indexOf(environment.ROLE_GESTIONNAIRE) > -1;
+  }
+
+  isValidateur(): boolean {
+      return this.token.roles.indexOf(environment.ROLE_VALIDATEUR) > -1;
+  }
+
+
+  canAccess(): boolean {
+      return this.isGestionnaire();
+  }
+
+
+}

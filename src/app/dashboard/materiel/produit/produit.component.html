@@ -82,7 +82,7 @@
             </nz-filter-trigger>
 
           </th>
-          <th *ngIf="is_admin"> Actions</th>
+          <th *ngIf="is_gestionnaire"> Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -105,7 +105,7 @@
           </td>
           <td>{{ data?.magasin?.libelle }}</td>
 
-          <td *ngIf="is_admin">
+          <td *ngIf="is_gestionnaire">
             <nz-space>
               <nz-space-item>
                 <button (click)="updateForm(data)"  nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="edit"></i>
@@ -219,7 +219,7 @@
     </div>
   </nz-dropdown-menu>
 
-  <nz-tab [nzTitle]="'Nouveau produit' " *ngIf="is_admin">
+  <nz-tab [nzTitle]="'Nouveau produit' " *ngIf="is_gestionnaire">
 
     <form [formGroup]="validateProduitForm" nz-form>
       <div nz-row>

@@ -1,6 +1,7 @@
 package com.bollore.stockbolloreback.models;
 
 import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
+import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
@@ -79,6 +80,12 @@ public class Produit extends AbstractAuditingEntity {
     @Enumerated(EnumType.STRING)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private EnumProduitStatus status;
+
+    @Column(name = "etat")
+    @Enumerated(EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private EnumProduitEtat etat;
+    
 
     /**
      * Instantiates a new Produit.
@@ -568,6 +575,15 @@ public class Produit extends AbstractAuditingEntity {
         return status;
     }
 
+     /**
+     * Gets etat.
+     *
+     * @return the etat
+     */
+    public EnumProduitEtat getEtat() {
+        return etat;
+    }
+
     /**
      * Sets status.
      *
@@ -575,5 +591,14 @@ public class Produit extends AbstractAuditingEntity {
      */
     public void setStatus(EnumProduitStatus status) {
         this.status = status;
+    }
+
+    /**
+     * Sets etat.
+     *
+     * @param etat the etat
+     */
+    public void setEtat(EnumProduitEtat etat) {
+        this.etat = etat;
     }
 }

@@ -32,8 +32,8 @@ export class GammeComponent implements OnInit {
   listOfColumn: any = [];
 
   textValue: string | null = null;
-
-  is_admin: boolean;
+  is_admin
+  is_gestionnaire: boolean;
   token: Token;
 
   constructor(
@@ -54,13 +54,13 @@ export class GammeComponent implements OnInit {
 
     this.listOfColumnHeadeer();
 
-    this.is_admin = this.canWrite();
-    console.log(this.is_admin);
+    this.is_gestionnaire = this.canWrite();
+    console.log(this.is_gestionnaire);
 
   }
 
   canWrite(): boolean {
-    return this.token.roles.indexOf(environment.ROLE_ADMIN) > -1;
+    return this.token.roles.indexOf(environment.ROLE_GESTIONNAIRE) > -1;
   }
 
   makeGammeForm(gamme: Gamme) {

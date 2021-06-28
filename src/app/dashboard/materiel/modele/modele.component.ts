@@ -31,7 +31,7 @@ export class ModeleComponent implements OnInit {
 
   listOfColumn: any = [];
 
-  is_admin: boolean;
+  is_gestionnaire: boolean;
 
   token: Token;
 
@@ -51,12 +51,12 @@ export class ModeleComponent implements OnInit {
 
     this.listOfColumnHeadeer();
 
-    this.is_admin = this.canWrite();
+    this.is_gestionnaire = this.canWrite();
 
 }
 
 canWrite(): boolean {
-  return this.token.roles.indexOf(environment.ROLE_ADMIN) > -1;
+  return this.token.roles.indexOf(environment.ROLE_GESTIONNAIRE) > -1;
 }
 
   makeModeleForm(modele: Modele){

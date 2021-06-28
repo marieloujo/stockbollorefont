@@ -14,7 +14,7 @@
             <i nz-icon nzType="search"></i>
           </nz-filter-trigger>
         </th>
-        <th *ngIf="is_admin"> Actions </th>
+        <th *ngIf="is_gestionnaire"> Actions </th>
       </tr>
       </thead>
       <tbody>
@@ -22,7 +22,7 @@
         <td>{{ data?.libelle }}</td>
         <td>{{ data?.description }}</td>
         <td>{{ data?.stockMin }}</td>
-        <td *ngIf="is_admin">
+        <td *ngIf="is_gestionnaire">
           <nz-space>
             <nz-space-item>
               <button (click)="updateForm(data)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="edit" nzTheme="outline"></i></button>
@@ -70,7 +70,7 @@
 
 
 
-  <nz-tab [nzTitle]="'Nouveau équipement' " *ngIf="is_admin">
+  <nz-tab [nzTitle]="'Nouveau équipement' " *ngIf="is_gestionnaire">
 
     <form [formGroup]="validateMagasinForm" nz-form>
       <div nz-row>

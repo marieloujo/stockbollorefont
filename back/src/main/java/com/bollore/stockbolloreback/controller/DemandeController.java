@@ -2,6 +2,7 @@ package com.bollore.stockbolloreback.controller;
 
 import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
 import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
+import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
 import com.bollore.stockbolloreback.models.Demande;
 import com.bollore.stockbolloreback.models.DemandeProduit;
 import com.bollore.stockbolloreback.models.Etat;
@@ -196,6 +197,7 @@ public class DemandeController {
             Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
             if(produit != null) {
                 produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
+                produit.setEtat(EnumProduitEtat.ETAT);
                 produitRepository.save(produit);
             }
         }
