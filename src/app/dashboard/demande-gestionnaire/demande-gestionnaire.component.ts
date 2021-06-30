@@ -1,3 +1,5 @@
+import { Magasin } from './../../models/magasin';
+import { MagasinService } from 'src/app/services/dashboard/magasin.service';
 import {Component, OnInit} from '@angular/core';
 import {BehaviorService} from '../../services/common/behavior.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -28,16 +30,19 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import {MagasinProduit} from "../../models/magasin-produit";
 import {MagasinProduitService} from "../../services/dashboard/magasin-produit.service";
 
+
 @Component({
-  selector: 'app-nouvelle-demande',
-  templateUrl: './nouvelle-demande.component.html',
-  styleUrls: ['./nouvelle-demande.component.css']
+  selector: 'app-demande-gestionnaire',
+  templateUrl: './demande-gestionnaire.component.html',
+  styleUrls: ['./demande-gestionnaire.component.css']
 })
-export class NouvelleDemandeComponent implements OnInit {
+export class DemandeGestionnaireComponent implements OnInit {
+
   constructor(
     private behaviorService: BehaviorService,
     private produitService: ProduitService,
     private personneService: PersonneService,
+    private magasinService: MagasinService,
     private mouvementService: MouvementService,
     private demandeService: DemandeService,
     private demandeProduitService: DemandeProduitService,
@@ -59,11 +64,15 @@ export class NouvelleDemandeComponent implements OnInit {
   newDemandeList: NewDemande[];
   mouvementList: Mouvement[];
   demandeProduitList: DemandeProduit[] = [];
+  magasinProduitList: MagasinProduit[] = [];
   etatList: Etat[];
+  magasinList: Magasin[];
 
   produitChoice: Produit;
   personneDemande: Personne;
+  magProduit: MagasinProduit;
   mouvementDemande: any;
+
   // etatSelectedValue: Etat;
   etatSelectedValue;
 
@@ -98,6 +107,8 @@ export class NouvelleDemandeComponent implements OnInit {
     this.makeDemandeForm(null);
 
     this.listPersonne();
+
+    this.listMagasin();
 
     this.listOfColumnHeader();
 
@@ -283,6 +294,20 @@ export class NouvelleDemandeComponent implements OnInit {
       });
   }
 
+
+
+  listMagasin(): void {
+    this.magasinService.getList().subscribe(
+      (data: Magasin[]) => {
+        this.magasinList = [...data];
+        console.log('MagasinList ==>', this.magasinList);
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error getList Magasin ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+  }
+
+
   loadDetailProduit() {
     /*this.marque = this.produitChoice.marque.libelle;
     this.gamme = this.produitChoice.gamme.libelle;
@@ -387,6 +412,53 @@ export class NouvelleDemandeComponent implements OnInit {
   }
 
 
+ /* myValiderSelectionProduitMag(): void {
+    for (const i in this.validateNewDemandeForm.controls) {
+      this.validateNewDemandeForm.controls[i].markAsDirty();
+      this.validateNewDemandeForm.controls[i].updateValueAndValidity();
+    }
+    if (this.validateNewDemandeForm.valid || ![null, undefined].includes(this.magProduit)) {
+      console.log('############');
+      console.log(this.validateNewDemandeForm.get('magasin').value);
+      console.log('############');
+      this.myProduitSelected.forEach(produitSelected => {
+        const formData = this.validateNewDemandeForm.value;
+        if([null, undefined].includes(this.magProduit)){
+          this.magProduit = formData.magasin;
+        }
+        this.mouvementDemande = formData.mouvement;
+       // formData.valider = false;
+       // formData.livrer = false;
+       // formData.produit = produitSelected;
+        console.log('FormData -- Formulaire valide');
+        console.log(formData);
+        const newDemandeProduit = new DemandeProduit();
+        newDemandeProduit.produit = produitSelected;
+        //newDemandeProduit.personne = this.personneDemande;
+        newDemandeProduit.magasinProduit = this.magProduit;
+        newDemandeProduit.description = this.validateNewDemandeForm.get('description').value;
+        newDemandeProduit.valider = false;
+        newDemandeProduit.livrer = false;
+        this.demandeProduitList.push(newDemandeProduit);
+        this.demandeProduitList = [...this.demandeProduitList];
+        console.log('demandeProduitList ==> ');
+        console.log(this.demandeProduitList);
+        this.countNew ++; */
+       /* if (formData.id == null) {
+          this.demandeProduitList.push(formData);
+          this.demandeProduitList = [...this.demandeProduitList];
+          console.log('demandeProduitList ==> ');
+          console.log(this.demandeProduitList);
+          this.countNew ++;
+        } --
+      });
+
+     // this.makeDemandeForm(formData);
+      this.resetData();
+      this.goToListDemandeProduit();
+    }
+
+  } */
   myValiderSelectionProduit(): void {
     for (const i in this.validateNewDemandeForm.controls) {
       this.validateNewDemandeForm.controls[i].markAsDirty();
@@ -431,9 +503,7 @@ export class NouvelleDemandeComponent implements OnInit {
       this.resetData();
       this.goToListDemandeProduit();
     }
-
   }
-
 
   resetData(): void {
       this.marque = '';
@@ -637,7 +707,7 @@ export class NouvelleDemandeComponent implements OnInit {
   // apply filtre on produitList
   applyFiltre(): Array<Produit> {
     let result: Array<Produit> = this.produitList.filter( produit =>
-        produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code)
+        produit.status === 'EN_STOCK' && ['ETAT', 'HS'].includes(produit.etat?.code)
     );
     // equipement
     if (![null, undefined].includes(this.currentEquipementSelected)) {

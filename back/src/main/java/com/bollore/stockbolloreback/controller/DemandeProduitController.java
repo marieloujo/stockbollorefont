@@ -87,6 +87,25 @@ public class DemandeProduitController {
         return ResponseEntity.created(new URI("/demande-produit/creer-demande-produit"+ newDemandeProduit.getId())).body(newDemandeProduit);
     }
 
+    @ApiOperation(value = "cette ressource permet d'ajouter des produits a une demande")
+    @PostMapping(value = "/creer-demande-produit-rep")
+    public ResponseEntity<DemandeProduit> createDemandeProduitRep(@Valid @RequestBody DemandeProduit demandeProduit) throws URISyntaxException {
+        //si id dans l'objet ==> BadRequest ..On ne peut pas creer un magazin avec un id existant
+        if (demandeProduit.getId() != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // update status produit
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+          if(produit != null) {
+              produit.setStatus(EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION);
+              produitRepository.save(produit);
+          }
+        DemandeProduit newDemandeProduit = demandeProduitRepository.save(demandeProduit);
+
+        return ResponseEntity.created(new URI("/demande-produit/creer-demande-produit-rep"+ newDemandeProduit.getId())).body(newDemandeProduit);
+    }
+
+
     @ApiOperation(value = "cette ressource permet de modifier une demande ayant rapport a un produit")
     @PutMapping(value = "/modifier-demande-produit")
     public ResponseEntity<DemandeProduit> updateDemandeProduit(@RequestBody DemandeProduit demandeProduit){

@@ -1,0 +1,270 @@
+<nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
+
+    <nz-tab [nzTitle]="'Nouvelle demande' ">
+  
+      <div nz-row>
+        <div nz-col nzSpan="8">
+  
+        </div>
+        <div nz-col nzSpan="8" nzOffset="8" style="padding-left: 26%">
+          <nz-badge (click)="goToListDemandeProduit()" [nzCount]="countNew"> </nz-badge>
+          <!--<button nz-button nzType="primary" nzShape="circle" style="margin-left: 80%" >A</button>  <span [(ngModel)]="countNew">  </span>-->
+          <!--<button nz-button nzType="danger" nzShape="circle" (click)="countAdd()"> <nz-badge [nzCount]="countNew"> </nz-badge> </button>-->
+        </div>
+      </div>
+  
+      <!--<div nz-row>
+  
+        <div nz-col nzSpan="12">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série" [(ngModel)]="produitChoice" name="produitChoice" (change)="loadDetailProduit()">
+            <nz-option *ngFor="let produit of produitList" [nzLabel]="produit.numSerie" [nzValue]="produit"></nz-option>
+          </nz-select>
+        </div>
+  
+      </div>-->
+  
+      <form [formGroup]="validateNewDemandeForm" nz-form>
+  
+        <div nz-row>
+  
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Magasin concerné</nz-form-label>
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin"  formControlName="magasin" [nzDisabled]="magasinProduitList.length > 0">
+                <nz-option *ngFor="let magasin of magasinList" [nzLabel]=" magasin.libelle " [nzValue]="magasin"></nz-option>
+              </nz-select>
+            </nz-form-item>
+          </div>
+  
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Equipement</nz-form-label>
+              <nz-select (ngModelChange)="equipementSelectChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Selectionner l'équipement" formControlName="gamme">
+                <nz-option *ngFor="let equipement of gammeList" [nzLabel]=" equipement.libelle" [nzValue]="equipement"></nz-option>
+              </nz-select>
+            </nz-form-item>
+          </div>
+  
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Modele</nz-form-label>
+              <nz-select (ngModelChange)="modelSelectChange($event)"  nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le model" formControlName="model">
+                <nz-option *ngFor="let model of modeleList" [nzLabel]=" model.libelle" [nzValue]="model"></nz-option>
+              </nz-select>
+            </nz-form-item>
+          </div>
+  
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Marque</nz-form-label>
+              <nz-select (ngModelChange)="marqueSelectChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une marque" formControlName="marque">
+                <nz-option *ngFor="let marque of marqueList" [nzLabel]="marque.libelle" [nzValue]="marque"></nz-option>
+              </nz-select>
+            </nz-form-item>
+          </div>
+  
+          <!--div nz-col nzSpan="12" style="padding-right: 1.5em">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Nature du mouvement</nz-form-label>
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un mouvement" formControlName="mouvement" [nzDisabled]="demandeProduitList.length > 0" (ngModelChange)="loadStateFieldEtat($event)">
+                <nz-option *ngFor="let mouv of mouvementList" [nzLabel]="mouv.description" [nzValue]="mouv.value"></nz-option>
+              </nz-select>
+            </nz-form-item>
+          </div-->
+  
+          <!--nz-divider></nz-divider-->
+  
+          <!--div nz-col nzSpan="12" style="padding-right: 1.5em">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Num de série</nz-form-label>
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le numero de série" formControlName="produit" name="produitChoice"  (ngModelChange)="loadDetailProduit()">
+                <nz-option *ngFor="let produit of produitList" [nzLabel]="produit.numSerie" [nzValue]="produit"></nz-option>
+              </nz-select>
+            </nz-form-item>
+          </div-->
+  
+          <!--<div nz-col nzSpan="2" style="padding-top: 2.8em">
+            <button nz-button nzType="primary" (click)="loadDetailProduit()"><i nz-icon nzType="check"></i>
+            </button>
+          </div>-->
+  
+  
+  
+          <!--div nz-col nzSpan="24" style="padding-right: 1.5em" *ngIf="showFieldEtat">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Etat</nz-form-label>
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un etat" formControlName="etat">
+                <nz-option  *ngFor="let etat of etatList" [nzLabel]="etat.libelle" [nzValue]="etat"></nz-option>
+              </nz-select>
+            </nz-form-item>
+          </div-->
+          <div nz-col nzSpan="24">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">Description</nz-form-label>
+              <nz-form-control [nzSpan]="24" nzErrorTip="Merci de renseigner ce champs!" >
+                <textarea nz-input placeholder="saisir une description" rows="4" formControlName="description"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </form>
+  
+      <div nz-row>
+        <nz-table #sortTable2 [nzData]="myProduitListToSelected" nzTableLayout="fixed">
+          <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumnProduitToBeSelected" [nzSortFn]="column.sortFn">{{ column.title }}</th>
+            <th> Actions </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of sortTable2.data">
+            <td>{{ data.numSerie }}</td>
+            <td>{{ data.gamme?.libelle }}</td>
+            <td>{{ data.marque?.libelle }}</td>
+            <td>{{ data.modele?.libelle }}</td>
+            <td>{{ data.description }}</td>
+            <td>
+              <input title="sélectionner" style="cursor: pointer" type="checkbox" (change)="produitSelectChange(data, $event)">
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <div nz-row style="margin-top: 10px;">
+        <div nz-col nzSpan="24">
+          <nz-space>
+  
+            <nz-space-item>
+              <button nz-button nzType="primary" (click)="myValiderSelectionProduit()" [disabled]="myProduitSelected.length == 0">
+                VALIDER
+              </button>
+            </nz-space-item>
+            <nz-space-item>
+              <button nz-button nzType="danger" >
+                ANULLER
+              </button>
+            </nz-space-item>
+          </nz-space>
+        </div>
+      </div>
+  
+    </nz-tab>
+  
+    <nz-tab [nzTitle]="'Liste des produits pour nouvelle demande'">
+  
+      <div nz-row>
+        <nz-table #sortTable [nzData]="demandeProduitList" nzTableLayout="fixed">
+          <thead>
+          <tr>
+            <th *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">
+              {{ column.title }}</th>
+  
+            <th> Actions </th>
+  
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of sortTable.data">
+            <td>{{ data.produit.numSerie }}</td>
+            <td>{{ data.produit.marque.libelle }}</td>
+            <td>{{ data.produit.modele.libelle }}</td>
+            <td>{{ data.produit.gamme.libelle }}</td>
+            <td>{{ data.personne.nom }}</td>
+            <td>{{ data.livrer }}</td>
+            <td>
+              <nz-space>
+                <nz-space-item>
+                  <!--<button nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="edit"></i>
+                  </button>-->
+                </nz-space-item>
+                <nz-space-item>
+                  <button
+                    nz-popconfirm
+                    nzPopconfirmTitle="Voulez-vous vraiment retirer de la liste?"
+                    (nzOnConfirm)="confirmMsgDelete(data)"
+                    (nzOnCancel)="cancelMsgDelete()"
+                    nzPopconfirmPlacement="topRight"
+                    nz-button nzShape="circle" nzType="danger"><i nz-icon nzTheme="outline" nzType="delete"></i>
+                  </button>
+                </nz-space-item>
+              </nz-space>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <div nz-row style="margin-top: 10px;">
+        <div nz-col nzSpan="24">
+          <nz-space>
+            
+            <nz-space-item>
+              <button nz-button nzType="primary" (click)="faireValiderProduit()" [disabled]="demandeProduitList.length == 0 || demandeProduitList == null"><i nz-icon nzType="check"></i>
+                Faire valider
+              </button>
+            </nz-space-item>
+            <!--nz-space-item>
+              <button nz-button nzType="default" (click)="addNewProduit()"><i nz-icon nzType="check"></i>
+                Rajouter un nouveau produit
+              </button>
+            </nz-space-item-->
+          </nz-space>
+        </div>
+      </div>
+    </nz-tab>
+  
+  </nz-tabset>
+  
+  
+  <!--
+  <p>nouvelle-demande works!</p>
+  
+  <h3 nz-typography>Fournisseur</h3>
+  <form nz-form class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="10">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Le nom du fournisseur est requis">
+            <input nz-input type="text" name="fournisseur" id="fournisseur" placeholder="Nom du fournisseur " />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="10">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Adresse est requise">
+            <input nz-input type="text" name="adresse" id="adresse" placeholder="Adresse du fournisseur" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="10">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Le téléphone est requis">
+            <input nz-input type="text" name="telephone" id="telephone" placeholder="Téléphone" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="10">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="L\'email est requis">
+            <input nz-input type="email" name="email" id="email" placeholder="Email" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <nz-form-item>
+      <nz-form-control>
+        <nz-space>
+          <nz-space-item>
+            <button nz-button [nzType]="'danger'" >Annuler</button>
+          </nz-space-item>
+          <nz-space-item>
+            <button nz-button [nzType]="'primary'">Enregistrer</button>
+          </nz-space-item>
+        </nz-space>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  -->
+  

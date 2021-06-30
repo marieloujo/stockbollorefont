@@ -35,9 +35,11 @@ import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { DemandeGestionnaireComponent } from './demande-gestionnaire/demande-gestionnaire.component';
+
 
 @NgModule({
-  declarations: [DashboardComponent, AccueilComponent, MagasinComponent, NouvelleDemandeComponent, AproposComponent, HistoriqueDemandeComponent],
+  declarations: [DashboardComponent, AccueilComponent, MagasinComponent, NouvelleDemandeComponent, AproposComponent, HistoriqueDemandeComponent, DemandeGestionnaireComponent],
   imports: [
     NgxSpinnerModule,
     CommonModule,

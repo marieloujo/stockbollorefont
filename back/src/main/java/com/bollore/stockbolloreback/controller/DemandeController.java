@@ -166,10 +166,19 @@ public class DemandeController {
         demandeRepository.save(demande);
         for(DemandeProduit demandeProduit: demandeProduitList){
             Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
-            if(produit != null) {
+            
+            
+            if(produit != null && produit.getStatus() == EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION) {
+                produit.setEtat(EnumProduitEtat.HS);
+                produit.setStatus(EnumProduitStatus.EN_REPARATION);
+            }
+
+            else {
+                produit.setEtat(EnumProduitEtat.ETAT);
                 produit.setStatus(EnumProduitStatus.EN_UTILISAION);
                 produitRepository.save(produit);
             }
+
         }
         return new ResponseEntity<Demande>(demande, HttpStatus.OK);
     }
@@ -195,13 +204,21 @@ public class DemandeController {
         demandeRepository.save(demande);
         for(DemandeProduit demandeProduit: demandeProduitList){
             Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
-            if(produit != null) {
-                produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
-                produit.setEtat(EnumProduitEtat.ETAT);
-                produitRepository.save(produit);
+            
+            if (produit != null) {
+                if(produit.getStatus().equals(EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION)) {
+                produit.setEtat(EnumProduitEtat.HS);
+                produit.setStatus(EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION);
+                }
+                else {
+                    produit.setEtat(EnumProduitEtat.ETAT);
+                    produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
+                    produitRepository.save(produit);
+                }
             }
         }
-        return new ResponseEntity<Demande>(demande, HttpStatus.OK);
+        return new ResponseEntity<Demande>(demande, HttpStatus.OK); 
+        
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir les stats des demandes par jour.semaine.mois.annee")

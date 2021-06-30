@@ -4,6 +4,7 @@ import {Marque} from './marque';
 import {Modele} from './modele';
 import {Gamme} from './gamme';
 import {Personne} from './personne';
+//import {MagasinProduit} from './magasin-produit';
 import {Etat} from './etat';
 
 export class DemandeProduit {
@@ -22,7 +23,8 @@ export class DemandeProduit {
   validationDate: Date;
   gestionnaire: string;
   dateLivraison: Date;
-
+  
+ // magasinProduit: MagasinProduit;
   marque: Marque;
   modele: Modele;
   gamme: Gamme;

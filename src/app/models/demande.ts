@@ -11,5 +11,6 @@ export class Demande {
   valider: boolean;
   url: String;
   status: string;
+  etat: string;
 
 }

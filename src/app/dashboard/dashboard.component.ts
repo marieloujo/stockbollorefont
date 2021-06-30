@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   canAccess(): boolean {
 
-    return this.token.roles.indexOf(environment.ROLE_DEMANDEUR) > -1 || this.token.roles.indexOf(environment.ROLE_ADMIN) > -1 || this.token.roles.indexOf(environment.ROLE_VALIDATEUR) > -1;
+    return this.token.roles.indexOf(environment.ROLE_DEMANDEUR) > -1 //|| this.token.roles.indexOf(environment.ROLE_ADMIN) > -1 || this.token.roles.indexOf(environment.ROLE_VALIDATEUR) > -1;
 
   }
 

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {DashboardComponent} from './dashboard.component';
 import {AccueilComponent} from './accueil/accueil.component';
@@ -8,7 +8,7 @@ import {AproposComponent} from './apropos/apropos.component';
 import {HistoriqueDemandeComponent} from './historique-demande/historique-demande.component';
 import { AuthGuard } from '../auth.guard';
 import { MagaGuard } from '../maga.guard';
-
+import { DemandeGestionnaireComponent } from './demande-gestionnaire/demande-gestionnaire.component';
 
 const routes: Routes = [
   {
@@ -26,6 +26,10 @@ const routes: Routes = [
       {
         path: 'nouvelle-demande',
         component: NouvelleDemandeComponent,
+      },
+      {
+        path: 'demande-gestionnaire',
+        component: DemandeGestionnaireComponent,
       },
       {
         path: 'apropos',
