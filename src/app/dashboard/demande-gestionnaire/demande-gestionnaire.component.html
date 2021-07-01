@@ -29,9 +29,9 @@
   
           <div nz-col nzSpan="12" style="padding-right: 1.5em">
             <nz-form-item>
-              <nz-form-label [nzSpan]="24">Magasin concerné</nz-form-label>
-              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un magasin"  formControlName="magasin" [nzDisabled]="magasinProduitList.length > 0">
-                <nz-option *ngFor="let magasin of magasinList" [nzLabel]=" magasin.libelle " [nzValue]="magasin"></nz-option>
+              <nz-form-label [nzSpan]="24">Personne concernée</nz-form-label>
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Physique ou Morale"  formControlName="personne" [nzDisabled]="demandeProduitList.length > 0">
+                <nz-option *ngFor="let pers of personneList" [nzLabel]=" pers.serviceB? pers.nom + ' ' + pers.prenom + ' --- '+pers.serviceB?.libelle :  pers.nom + ' ' + pers.prenom " [nzValue]="pers"></nz-option>
               </nz-select>
             </nz-form-item>
           </div>
@@ -141,7 +141,7 @@
               </button>
             </nz-space-item>
             <nz-space-item>
-              <button nz-button nzType="danger" >
+              <button nz-button nzType="danger">
                 ANULLER
               </button>
             </nz-space-item>
@@ -199,7 +199,7 @@
           <nz-space>
             
             <nz-space-item>
-              <button nz-button nzType="primary" (click)="faireValiderProduit()" [disabled]="demandeProduitList.length == 0 || demandeProduitList == null"><i nz-icon nzType="check"></i>
+              <button nz-button nzType="primary" (click)="faireValiderProduitGest()" [disabled]="demandeProduitList.length == 0 || demandeProduitList == null"><i nz-icon nzType="check"></i>
                 Faire valider
               </button>
             </nz-space-item>

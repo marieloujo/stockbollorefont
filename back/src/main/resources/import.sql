@@ -14,8 +14,6 @@ INSERT INTO public.etat (id, created_by, created_date, last_modified_by, last_mo
 
 INSERT INTO public.etat (id, created_by, created_date, last_modified_by, last_modified_date, code, libelle) VALUES (6, 'system', '2021-05-24 10:05:05.672', 'system', '2020-08-11 10:05:05.672', 'REBUT', 'REBUT');
 
-INSERT INTO public.etat (id, created_by, created_date, last_modified_by, last_modified_date, code, libelle) VALUES (7, 'system', '2021-05-24 10:05:05.672', 'system', '2020-08-11 10:05:05.672', 'ETAT', 'EN ETAT');
-
 
 INSERT INTO public.roles (name) values ('ROLE_PERSONNE'), ('ROLE_GESTIONNAIRE'), ('ROLE_DEMANDEUR'), ('ROLE_VALIDATEUR'), ('ROLE_ADMIN')
 

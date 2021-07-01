@@ -46,6 +46,7 @@ public class CommonController {
         enumFormatList2.add(new EnumFormat(UserRoles.ROLE_GESTIONNAIRE.toString(), "Gestionnaire"));
         enumFormatList2.add(new EnumFormat(UserRoles.ROLE_PERSONNE.toString(), "Personnel"));
         enumFormatList2.add(new EnumFormat(UserRoles.ROLE_VALIDATEUR.toString(), "Validateur"));
+        enumFormatList2.add(new EnumFormat(UserRoles.ROLE_AUDITEUR.toString(), "Auditeur"));
 
         return ResponseEntity.status(HttpStatus.OK).body(enumFormatList2);
     }

@@ -673,8 +673,4 @@ export class NouvelleDemandeComponent implements OnInit {
     console.log(this.myProduitSelected);
     console.log('### Products selected ###');
   }
-
-
-  
-
 }

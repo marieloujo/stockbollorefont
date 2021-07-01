@@ -25,6 +25,13 @@ export class DemandeProduitService {
     return this.http.post(`${this.url}/creer-demande-produit`, demandeProduit, this.requestService.http_get_request() );
   }
 
+
+  createDemandeProduitRep(demandeProduit: DemandeProduit): Observable<Object> {
+
+    return this.http.post(`${this.url}/creer-demande-produit-rep`, demandeProduit, this.requestService.http_get_request() );
+  }
+
+  
   updateDemandeProduit(demandeProduit: DemandeProduit): Observable<Object> {
     return this.http.put(`${this.url}/modifier-demande-produit`, demandeProduit, this.requestService.http_get_request());
   }
