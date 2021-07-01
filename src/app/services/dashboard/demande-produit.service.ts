@@ -58,4 +58,18 @@ export class DemandeProduitService {
     return this.http.get(`${this.url}/list/between-created-date?startDate=${date01}&endDate=${date02}`, this.requestService.http_get_request());
   }
 
+
+  rejeterDemande(id: number): Observable<Object> {
+    return this.http.post(`${this.url}/rejeter/` + id, {}, this.requestService.http_get_request());
+  }
+
+  validerDemande(id: number): Observable<Object> {
+    return this.http.post(`${this.url}/valider/` + id, {}, this.requestService.http_get_request());
+  }
+
+  livrerDemande(id: number): Observable<Object> {
+    return this.http.post(`${this.url}/livrer/` + id, {}, this.requestService.http_get_request());
+  }
+
+
 }

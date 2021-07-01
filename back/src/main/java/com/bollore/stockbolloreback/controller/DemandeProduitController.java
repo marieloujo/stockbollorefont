@@ -1,6 +1,9 @@
 package com.bollore.stockbolloreback.controller;
 
+import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
+import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
 import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
+import com.bollore.stockbolloreback.models.Demande;
 import com.bollore.stockbolloreback.models.DemandeProduit;
 import com.bollore.stockbolloreback.models.Produit;
 import com.bollore.stockbolloreback.repository.DemandeProduitRepository;
@@ -21,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,6 +137,89 @@ public class DemandeProduitController {
                 : startDate.atTime(LocalTime.of(23, 59, 59)).toInstant(ZoneOffset.UTC);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findAllByCreatedByIsBetween(instant01, instant02));
+    }
+
+
+
+    @ApiOperation(value = "cette ressource permet de rejeter une demande")
+    @PostMapping(value = "/rejeter/{id}")
+    public ResponseEntity<DemandeProduit> rejeterDemande(@PathVariable("id") Long id){
+        if (id == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        DemandeProduit demandeProduit = demandeProduitRepository.findById(id).orElse(null);
+        if (demandeProduit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demandeProduit.setStatus(EnumDemandeStatus.REJETEE);
+        demandeProduit.setDateRejet(new Date());
+        demandeProduit = demandeProduitRepository.save(demandeProduit);
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+            if(produit != null) {
+                produit.setStatus(EnumProduitStatus.EN_STOCK);
+                produitRepository.save(produit);
+        }
+        return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
+    }
+
+
+    @ApiOperation(value = "cette ressource permet de livrer une demande")
+    @PostMapping(value = "/livrer/{id}")
+    public ResponseEntity<DemandeProduit> livrerDemande(@PathVariable("id") Long id){
+        if (id == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        DemandeProduit demandeProduit = demandeProduitRepository.findById(id).orElse(null);
+        if (demandeProduit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demandeProduit.setStatus(EnumDemandeStatus.LIVREE);
+        demandeProduit.setDateLivraison(new Date());
+        demandeProduit = demandeProduitRepository.save(demandeProduit);
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+        if(produit != null) {
+            if(produit.getStatus() == EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION) {
+                produit.setEtat(EnumProduitEtat.HS);
+                produit.setStatus(EnumProduitStatus.EN_REPARATION);
+            } else {
+                produit.setEtat(EnumProduitEtat.ETAT);
+                produit.setStatus(EnumProduitStatus.EN_UTILISAION);
+            }
+            produitRepository.save(produit);
+        }
+        return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "cette ressource permet de valider une demande")
+    @PostMapping(value = "/valider/{id}")
+    public ResponseEntity<DemandeProduit> validerDemande(@PathVariable("id") Long id){
+        if (id == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        DemandeProduit demandeProduit = demandeProduitRepository.findById(id).orElse(null);
+        if (demandeProduit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demandeProduit.setStatus(EnumDemandeStatus.VALIDEE);
+        demandeProduit.setDateValidation(new Date());
+        demandeProduit = demandeProduitRepository.save(demandeProduit);
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+        if (produit != null) {
+            if(produit.getStatus().equals(EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION)) {
+                produit.setEtat(EnumProduitEtat.HS);
+                produit.setStatus(EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION);
+            }
+            else {
+                produit.setEtat(EnumProduitEtat.ETAT);
+                produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
+                produitRepository.save(produit);
+            }
+            produitRepository.save(produit);
+        }
+        return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
 
 }

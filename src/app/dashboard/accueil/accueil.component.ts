@@ -137,7 +137,7 @@ export class AccueilComponent implements OnInit {
 
 
   livrerDemande(id: number) {
-    this.demandeService.livrerDemande(id).subscribe(
+    this.demandeProduitService.livrerDemande(id).subscribe(
         (data: Demande) => {
         console.log('Demande livree  ==>', data);
         window.location.reload();
@@ -149,7 +149,7 @@ export class AccueilComponent implements OnInit {
   }
 
   validerDemande(id: number) {
-    this.demandeService.validerDemande(id).subscribe(
+    this.demandeProduitService.validerDemande(id).subscribe(
         (data: Demande) => {
         console.log('Demande validee  ==>', data);
         window.location.reload();
@@ -161,7 +161,7 @@ export class AccueilComponent implements OnInit {
   }
 
   rejeterDemande(id: number) {
-    this.demandeService.rejeterDemande(id).subscribe(
+    this.demandeProduitService.rejeterDemande(id).subscribe(
       (data: Demande) => {
         console.log('Demande rejetee  ==>', data);
         window.location.reload();

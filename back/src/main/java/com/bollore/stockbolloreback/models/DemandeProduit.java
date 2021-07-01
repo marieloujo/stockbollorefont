@@ -1,12 +1,15 @@
 package com.bollore.stockbolloreback.models;
 
 
+import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Date;
 
 /**
  * A DemandeProduit.
@@ -41,8 +44,20 @@ public class DemandeProduit extends AbstractAuditingEntity {
     @Column(name = "gestionnaire")
     private String gestionnaire;
 
-    @Column(name = "dateLivraison")
-    private Instant dateLivraison;
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private EnumDemandeStatus status;
+
+
+    @Column(name = "date_validation")
+    private Date dateValidation;
+
+    @Column(name = "date_livraison")
+    private Date dateLivraison;
+
+    @Column(name = "date_rejet")
+    private Date dateRejet;
 
 
     @ManyToOne
@@ -127,14 +142,6 @@ public class DemandeProduit extends AbstractAuditingEntity {
         this.validationDate = validationDate;
     }
 
-    public Instant getDateLivraison() {
-        return dateLivraison;
-    }
-
-    public void setDateLivraison(Instant dateLivraison) {
-        this.dateLivraison = dateLivraison;
-    }
-
     public Produit getProduit() {
         return this.produit;
     }
@@ -205,5 +212,33 @@ public class DemandeProduit extends AbstractAuditingEntity {
                 ", produit=" + produit +
                 ", demande=" + demande +
                 '}';
+    }
+
+    public EnumDemandeStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EnumDemandeStatus status) {
+        this.status = status;
+    }
+
+    public Date getDateValidation() {
+        return dateValidation;
+    }
+
+    public void setDateValidation(Date dateValidation) {
+        this.dateValidation = dateValidation;
+    }
+
+    public void setDateLivraison(Date dateLivraison) {
+        this.dateLivraison = dateLivraison;
+    }
+
+    public Date getDateRejet() {
+        return dateRejet;
+    }
+
+    public void setDateRejet(Date dateRejet) {
+        this.dateRejet = dateRejet;
     }
 }

@@ -22,7 +22,6 @@ export class DemandeProduit {
   validateur: string;
   validationDate: Date;
   gestionnaire: string;
-  dateLivraison: Date;
   
  // magasinProduit: MagasinProduit;
   marque: Marque;
@@ -30,6 +29,8 @@ export class DemandeProduit {
   gamme: Gamme;
   personne: Personne;
   etat: Etat;
-
+  dateValidation: string;
+  dateLivraison: string;
+  dateRejet: string;
 
 }
