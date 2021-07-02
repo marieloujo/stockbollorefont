@@ -86,6 +86,7 @@ public class DemandeProduitController {
               produit.setStatus(EnumProduitStatus.EN_ATTENTE_VALIDATION);
               produitRepository.save(produit);
           }
+        demandeProduit.setStatus(EnumDemandeStatus.EN_ATTENTE);
         DemandeProduit newDemandeProduit = demandeProduitRepository.save(demandeProduit);
 
         return ResponseEntity.created(new URI("/demande-produit/creer-demande-produit"+ newDemandeProduit.getId())).body(newDemandeProduit);

@@ -16,9 +16,9 @@ import {Etat} from '../../models/etat';
 import {EtatService} from '../../services/dashboard/etat.service';
 import {EtatProduitService} from '../../services/dashboard/etat-produit.service';
 import {EtatProduit} from '../../models/etat-produit';
-import {Gamme} from '../../models/gamme';
-import {NzMessageService} from "ng-zorro-antd/message";
-import {DemandeStatus} from "../../enumerations/demande-status.enum";
+import {DemandeStatus} from '../../enumerations/demande-status.enum';
+import { ProduitStatus } from 'src/app/enumerations/produit-status.enum';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 interface StatsPer_dayWeekMonthYear {
   day: number;
@@ -47,6 +47,7 @@ export class AccueilComponent implements OnInit {
   etatProduitList: EtatProduit[] = [];
   etatProduitListSortByProduit: EtatProduit[] = [];
   DemandeStatus = DemandeStatus;
+  ProduitStatus = ProduitStatus;
 
   statsCOunt: StatsPer_dayWeekMonthYear = new class implements StatsPer_dayWeekMonthYear {
     day: number;
@@ -57,7 +58,7 @@ export class AccueilComponent implements OnInit {
 
   constructor(
     private behaviorService: BehaviorService,
-    private produitService: ProduitService,
+    public produitService: ProduitService,
     private demandeService: DemandeService,
     private tokenService: TokenService,
     private gammeService: GammeService,
@@ -213,6 +214,12 @@ export class AccueilComponent implements OnInit {
   listOfColumnHeader() {
     this.listOfColumn = [
       {
+        title: 'Date de la demande',
+        compare: null,
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.demande.dateHeure.toString().localeCompare(b.demande.dateHeure.toString()),
+        //sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie - b.produit.numSerie,
+      },
+      {
         title: 'Numero Série',
         compare: null,
         sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie.localeCompare(b.produit.numSerie),
@@ -236,7 +243,12 @@ export class AccueilComponent implements OnInit {
       {
         title: 'Statut',
         compare: null,
-        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.modele.libelle.localeCompare(b.produit.modele.libelle),
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.status.localeCompare(b.produit.status),
+      },
+      {
+        title: 'Etat',
+        compare: null,
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.etat?.libelle?.localeCompare(b.produit.etat?.libelle),
       },
       {
         title: 'Demandeur',
@@ -254,6 +266,15 @@ export class AccueilComponent implements OnInit {
         priority: 1
       }*/
     ];
+  }
+
+
+  getEtatProduitById(id): string {
+  const etatProduit: EtatProduit = this.etatProduitList.find(etat => etat.produit.id === id);
+  if ([null, undefined].includes(etatProduit)){
+    return '';
+  }
+  return etatProduit.etat.libelle;
   }
 
 }

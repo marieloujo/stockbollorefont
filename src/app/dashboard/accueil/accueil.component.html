@@ -57,11 +57,17 @@
       <tbody>
       <tr *ngFor="let data of sortTable.data">
 
+        <td>{{ data.demande.dateHeure | date: 'dd/MM/yyyy à HH:mm' }}</td>
         <td>{{ data.produit.numSerie }}</td>
         <td>{{ data.gamme?.libelle }}</td>
         <td>{{ data.marque?.libelle }}</td>
         <td>{{ data.modele?.libelle }}</td>
-        <td>{{ DemandeStatus[data.demande?.status] }}</td>
+        <td>
+          <strong nz-typography [nzType]="produitService.getTextColorByStatusProduit(data.produit?.status)">
+            {{ ProduitStatus[data.produit.status] }}
+          </strong>
+        </td>
+        <td>{{ getEtatProduitById(data.produit.id) }}</td>
         <td>{{ data.personne?.nom + ' ' + data.personne?.prenom }}</td>
 
         <td *ngIf="validateur || livreur">
