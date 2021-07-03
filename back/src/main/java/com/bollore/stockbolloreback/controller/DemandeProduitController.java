@@ -181,14 +181,9 @@ public class DemandeProduitController {
         demandeProduit = demandeProduitRepository.save(demandeProduit);
         Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
         if(produit != null) {
-            if(produit.getStatus() == EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION) {
-                produit.setEtat(EnumProduitEtat.HS);
-                produit.setStatus(EnumProduitStatus.EN_REPARATION);
-            } else {
                 produit.setEtat(EnumProduitEtat.ETAT);
                 produit.setStatus(EnumProduitStatus.EN_UTILISAION);
-            }
-            produitRepository.save(produit);
+                produitRepository.save(produit);
         }
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
@@ -209,16 +204,8 @@ public class DemandeProduitController {
         demandeProduit = demandeProduitRepository.save(demandeProduit);
         Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
         if (produit != null) {
-            if(produit.getStatus().equals(EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION)) {
-                produit.setEtat(EnumProduitEtat.HS);
-                produit.setStatus(EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION);
-            }
-            else {
-                produit.setEtat(EnumProduitEtat.ETAT);
                 produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
                 produitRepository.save(produit);
-            }
-            produitRepository.save(produit);
         }
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
