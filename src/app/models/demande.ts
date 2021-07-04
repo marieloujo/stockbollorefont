@@ -12,4 +12,5 @@ export class Demande {
   url: string;
   status: string;
   etat: string;
+  typeDemande: string;
 }

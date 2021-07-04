@@ -1,6 +1,7 @@
 package com.bollore.stockbolloreback.models;
 
 import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
+import com.bollore.stockbolloreback.enumeration.EnumDemandeType;
 import com.bollore.stockbolloreback.enumeration.Mouvement;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
@@ -52,6 +53,10 @@ public class Demande extends AbstractAuditingEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "mouvement")
     private Mouvement mouvement;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_demande")
+    private EnumDemandeType typeDemande;
 
 
     private String url;
@@ -249,5 +254,13 @@ public class Demande extends AbstractAuditingEntity {
 
     public void setDateRejet(Date dateRejet) {
         this.dateRejet = dateRejet;
+    }
+
+    public EnumDemandeType getTypeDemande() {
+        return typeDemande;
+    }
+
+    public void setTypeDemande(EnumDemandeType typeDemande) {
+        this.typeDemande = typeDemande;
     }
 }

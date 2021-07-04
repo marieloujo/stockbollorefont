@@ -88,6 +88,7 @@ export class NouvelleDemandeComponent implements OnInit {
   private currentMarqueSelected: Marque;
   private currentEquipementSelected: Gamme;
   private currentModelSelected: Modele;
+  public typeDemande = '';
 
   // compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2);
@@ -112,6 +113,9 @@ export class NouvelleDemandeComponent implements OnInit {
     this.listMarque();
 
     this.listModele();
+
+    // set the type demande
+    this.typeDemande = 'SORTIE';
 
   }
 
@@ -434,6 +438,8 @@ export class NouvelleDemandeComponent implements OnInit {
       demande.dateHeure = new Date();
       demande.personne = this.personneDemande;
       demande.valider = false;
+      // set the type demande
+      demande.typeDemande = this.typeDemande;
 
       let newDemande: Demande = new Demande();
 
