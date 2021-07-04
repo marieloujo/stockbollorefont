@@ -181,7 +181,7 @@ public class DemandeProduitController {
         demandeProduit = demandeProduitRepository.save(demandeProduit);
         Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
         if(produit != null) {
-                produit.setEtat(EnumProduitEtat.ETAT);
+                produit.setEtatActuel(EnumProduitEtat.ETAT);
                 produit.setStatus(EnumProduitStatus.EN_UTILISAION);
                 produitRepository.save(produit);
         }

@@ -92,7 +92,7 @@
           <td>{{ data?.gamme?.libelle }}</td>
           <td>{{ data?.marque?.libelle }}</td>
           <td>{{ data?.modele?.libelle }}</td>
-          <td>{{ data?.etat?.libelle }}</td>
+          <td>{{ ProduitEtat[data?.etatActuel] }}</td>
           <td>
           <ng-container *ngIf="![null, undefined].includes(data?.status)">
               <strong nz-typography [nzType]="produitService.getTextColorByStatusProduit(data?.status)">

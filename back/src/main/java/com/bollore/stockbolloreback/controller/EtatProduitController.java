@@ -1,8 +1,11 @@
 package com.bollore.stockbolloreback.controller;
 
+import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
 import com.bollore.stockbolloreback.models.EtatProduit;
+import com.bollore.stockbolloreback.models.Produit;
 import com.bollore.stockbolloreback.repository.EtatProduitRepository;
 import com.bollore.stockbolloreback.repository.EtatRepository;
+import com.bollore.stockbolloreback.repository.ProduitRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,9 @@ public class EtatProduitController {
 
     @Autowired
     private EtatProduitRepository etatProduitRepository;
+
+    @Autowired
+    private ProduitRepository produitRepository;
 
     private static final String ENTITY_NAME = "stockBollore_EtatProduit";
 
@@ -55,9 +61,13 @@ public class EtatProduitController {
         if (etatProduit.getId() != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
         EtatProduit newEtatProduit = etatProduitRepository.save(etatProduit);
-
+        Produit produit = produitRepository.findById(etatProduit.getProduit().getId()).orElse(null);
+        if(produit != null) {
+            // set the etat
+            produit.setEtatActuel(EnumProduitEtat.valueOf(etatProduit.getEtat().getCode()));
+            produitRepository.save(produit);
+        }
         return ResponseEntity.created(new URI("/etat-produit/creer-etat-produit"+ newEtatProduit.getId())).body(newEtatProduit);
     }
 
@@ -74,6 +84,12 @@ public class EtatProduitController {
         }
 
         EtatProduit etatProduitToUpdate = etatProduitRepository.saveAndFlush(etatProduit);
+        Produit produit = produitRepository.findById(etatProduit.getProduit().getId()).orElse(null);
+        if(produit != null) {
+            // set the etat
+            produit.setEtatActuel(EnumProduitEtat.valueOf(etatProduit.getEtat().getCode()));
+            produitRepository.save(produit);
+        }
 
         return ResponseEntity.ok().body(etatProduitToUpdate);
 

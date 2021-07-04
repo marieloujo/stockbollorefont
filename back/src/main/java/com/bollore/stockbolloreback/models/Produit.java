@@ -81,10 +81,10 @@ public class Produit extends AbstractAuditingEntity {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private EnumProduitStatus status;
 
-    @Column(name = "etat")
+    @Column(name = "etat_actuel")
     @Enumerated(EnumType.STRING)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private EnumProduitEtat etat;
+    private EnumProduitEtat etatActuel;
     
 
     /**
@@ -575,14 +575,7 @@ public class Produit extends AbstractAuditingEntity {
         return status;
     }
 
-     /**
-     * Gets etat.
-     *
-     * @return the etat
-     */
-    public EnumProduitEtat getEtat() {
-        return etat;
-    }
+
 
     /**
      * Sets status.
@@ -593,12 +586,11 @@ public class Produit extends AbstractAuditingEntity {
         this.status = status;
     }
 
-    /**
-     * Sets etat.
-     *
-     * @param etat the etat
-     */
-    public void setEtat(EnumProduitEtat etat) {
-        this.etat = etat;
+    public EnumProduitEtat getEtatActuel() {
+        return etatActuel;
+    }
+
+    public void setEtatActuel(EnumProduitEtat etatActuel) {
+        this.etatActuel = etatActuel;
     }
 }

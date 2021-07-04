@@ -22,6 +22,7 @@ export class Produit {
   magazinProduits: MagasinProduit[];
 
   etat: Etat;
+  etatActuel: string;
   magasin: Magasin;
   status: string;
   createdDate: string;

@@ -23,6 +23,7 @@ import {Token} from 'src/app/models/token.model';
 import {environment} from '../../../../environments/environment';
 import {ProduitStatus} from '../../../enumerations/produit-status.enum';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import {ProduitEtat} from "../../../enumerations/produit-etat.enum";
 
 // @ts-ignore
 @Component({
@@ -82,6 +83,7 @@ export class ProduitComponent implements OnInit {
   public produitSelected: Produit;
 
   public ProduitStatus = ProduitStatus;
+  public ProduitEtat = ProduitEtat;
   constructor(
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
@@ -390,6 +392,9 @@ export class ProduitComponent implements OnInit {
       (data: Produit[]) => {
         this.produitList = [...data];
         console.log('Produit List ==>', this.produitList);
+          console.log('@@@@@@@ ------ @@@@@@@');
+          console.log(this.produitList);
+          console.log('@@@@@@@ ------ @@@@@@@');
 
         for (const prod of this.produitList) {
           // let eP: EtatProduit[] = [];

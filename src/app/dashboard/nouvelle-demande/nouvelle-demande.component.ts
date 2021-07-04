@@ -103,7 +103,7 @@ export class NouvelleDemandeComponent implements OnInit {
 
     this.listMouvement();
 
-    this.listEtat();
+    this.listProduits();
 
     this.listOfColumnProduitToBeSelectedHeader();
 
@@ -148,18 +148,6 @@ export class NouvelleDemandeComponent implements OnInit {
         });
   }
 
-  listEtat(): void {
-    this.etatService.getList().subscribe(
-      (data: Etat[]) => {
-        this.etatList = [...data];
-        console.log('EtatList ==>', this.etatList);
-        this.listProduits();
-      },
-      (error: HttpErrorResponse) => {
-        console.log('error getList etat ==>', error.message, ' ', error.status, ' ', error.statusText);
-      });
-  }
-
   listProduits(): void {
     this.produitService.getList().subscribe(
         (data: Produit[]) => {
@@ -170,23 +158,6 @@ export class NouvelleDemandeComponent implements OnInit {
             // let eP: EtatProduit[] = [];
             console.log('le produit ==> ');
             console.log(prod);
-            // let etatProd: EtatProduit = prod.etatProduits.find(p => p.actuel == true);
-
-            console.log('Le dernier -----');
-            console.log(prod.etatProduits[prod.etatProduits.length - 1]);
-            const etatProd: EtatProduit = prod.etatProduits[prod.etatProduits.length - 1];
-
-            console.log(etatProd);
-
-            this.etatProduitService.getEtatProduitById(etatProd?.id).subscribe(
-                (dataEtatProd: EtatProduit) => {
-                  console.log('DataEtatProd');
-                  console.log(dataEtatProd.etat.libelle);
-                  prod.etat = dataEtatProd.etat;
-                },
-                (error: HttpErrorResponse) => {
-                  console.log('error get by id etatProduit ==>', error.message, ' ', error.status, ' ', error.statusText);
-                });
 
             const magProd: MagasinProduit = prod.magazinProduits.find(m => m.actuel == true);
             this.magasinProduitService.getMagasinProduitById(magProd?.id).subscribe(
@@ -637,7 +608,7 @@ export class NouvelleDemandeComponent implements OnInit {
   // apply filtre on produitList
   applyFiltre(): Array<Produit> {
     let result: Array<Produit> = this.produitList.filter( produit =>
-        produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etat?.code)
+        produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etatActuel)
     );
     // equipement
     if (![null, undefined].includes(this.currentEquipementSelected)) {

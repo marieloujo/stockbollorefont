@@ -19,6 +19,7 @@ import {EtatProduit} from '../../models/etat-produit';
 import {DemandeStatus} from '../../enumerations/demande-status.enum';
 import { ProduitStatus } from 'src/app/enumerations/produit-status.enum';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { ProduitEtat } from 'src/app/enumerations/produit-etat.enum';
 
 interface StatsPer_dayWeekMonthYear {
   day: number;
@@ -48,6 +49,7 @@ export class AccueilComponent implements OnInit {
   etatProduitListSortByProduit: EtatProduit[] = [];
   DemandeStatus = DemandeStatus;
   ProduitStatus = ProduitStatus;
+  public ProduitEtat = ProduitEtat;
 
   statsCOunt: StatsPer_dayWeekMonthYear = new class implements StatsPer_dayWeekMonthYear {
     day: number;
@@ -270,7 +272,7 @@ export class AccueilComponent implements OnInit {
 
 
   getEtatProduitById(id): string {
-  const etatProduit: EtatProduit = this.etatProduitList.find(etat => etat.produit.id === id);
+  const etatProduit: EtatProduit = this.etatProduitList.find(etat => etat.produit.id === id && etat.actuel === true);
   if ([null, undefined].includes(etatProduit)){
     return '';
   }
