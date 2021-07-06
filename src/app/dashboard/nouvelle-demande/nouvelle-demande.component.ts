@@ -14,7 +14,7 @@ import {MouvementService} from '../../services/common/mouvement.service';
 import {Mouvement} from '../../models/Mouvement';
 import {DemandeService} from '../../services/dashboard/demande.service';
 import {DemandeProduitService} from '../../services/dashboard/demande-produit.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Etat} from '../../models/etat';
 import {EtatService} from '../../services/dashboard/etat.service';
 import {Gamme} from '../../models/gamme';
@@ -27,6 +27,8 @@ import {ModeleService} from '../../services/dashboard/modele.service';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import {MagasinProduit} from "../../models/magasin-produit";
 import {MagasinProduitService} from "../../services/dashboard/magasin-produit.service";
+import {TokenService} from "../../services/token/token.service";
+import {DemandeType} from "../../enumerations/demande-type.enum";
 
 @Component({
   selector: 'app-nouvelle-demande',
@@ -43,12 +45,14 @@ export class NouvelleDemandeComponent implements OnInit {
     private demandeProduitService: DemandeProduitService,
     private fb: FormBuilder,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private etatService: EtatService,
     private etatProduitService: EtatProduitService,
     private magasinProduitService: MagasinProduitService,
     private gammeService: GammeService,
     private marqueService: MarqueService,
     private modeleService: ModeleService,
+    private tokenService: TokenService,
   ) {
   }
 
@@ -88,13 +92,21 @@ export class NouvelleDemandeComponent implements OnInit {
   private currentMarqueSelected: Marque;
   private currentEquipementSelected: Gamme;
   private currentModelSelected: Modele;
-  public typeDemande = '';
+  public typeDemande: 'SORTIE' | 'SORTIE_REPARATION' | 'SORTIE_REBUT' = 'SORTIE';
+  public EnumDemandeType = DemandeType;
 
   // compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.value === o2.value : o1 === o2);
   compareFn = (o1: any, o2: any) => (o1 && o2 ? o1.id === o2.id : o1 === o2);
 
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Demande', 'Nouvelle demande']);
+
+    this.getParamValue();
+  }
+
+  public initData(): void {
+
+    this.resetData();
 
     this.makeDemandeForm(null);
 
@@ -113,10 +125,27 @@ export class NouvelleDemandeComponent implements OnInit {
     this.listMarque();
 
     this.listModele();
+  }
 
-    // set the type demande
-    this.typeDemande = 'SORTIE';
-
+  public getParamValue(): void {
+    this.activatedRoute.params.subscribe( params => {
+       if (['rebut', 'reparation', 'sortie'].includes(params.type)) {
+          switch (params.type){
+            case 'rebut':
+              this.typeDemande = 'SORTIE_REBUT';
+              break;
+            case 'reparation':
+              this.typeDemande = 'SORTIE_REPARATION';
+              break;
+            default:
+              this.typeDemande = 'SORTIE';
+              break;
+          }
+       } else {
+         this.typeDemande = 'SORTIE';
+       }
+       this.initData();
+    });
   }
 
   listMarque(): void {
@@ -415,9 +444,9 @@ export class NouvelleDemandeComponent implements OnInit {
       this.gamme = '';
       this.modele = '';
       this.myProduitListToSelected = [];
-      this.validateNewDemandeForm.get('gamme').setValue(null);
-      this.validateNewDemandeForm.get('model').setValue(null);
-      this.validateNewDemandeForm.get('marque').setValue(null);
+      this.validateNewDemandeForm?.get('gamme')?.setValue(null);
+      this.validateNewDemandeForm?.get('model')?.setValue(null);
+      this.validateNewDemandeForm?.get('marque')?.setValue(null);
       this.currentEquipementSelected = null;
       this.currentModelSelected = null;
       this.currentMarqueSelected = null;
@@ -613,9 +642,22 @@ export class NouvelleDemandeComponent implements OnInit {
 
   // apply filtre on produitList
   applyFiltre(): Array<Produit> {
-    let result: Array<Produit> = this.produitList.filter( produit =>
-        produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etatActuel)
-    );
+    let result: Array<Produit> = [];
+    // selon le type de demande
+    if (this.typeDemande === 'SORTIE') { // SORTIE
+      result = this.produitList.filter( produit =>
+          produit.status === 'EN_STOCK' && ['ETAT', 'NEW'].includes(produit.etatActuel)
+      );
+    } else if (this.typeDemande === 'SORTIE_REPARATION') { // SORTIE_REPARATION
+      result = this.produitList.filter( produit =>
+          produit.status === 'EN_STOCK' && ['HS'].includes(produit.etatActuel)
+      );
+    } else if (this.typeDemande === 'SORTIE_REBUT') { // SORTIE_REBUT
+      result = this.produitList.filter( produit =>
+          produit.status === 'EN_STOCK' && ['HS', 'ETAT', 'NEW'].includes(produit.etatActuel)
+      );
+    }
+
     // equipement
     if (![null, undefined].includes(this.currentEquipementSelected)) {
       result = result.filter(produit => produit.gamme.id === this.currentEquipementSelected.id);

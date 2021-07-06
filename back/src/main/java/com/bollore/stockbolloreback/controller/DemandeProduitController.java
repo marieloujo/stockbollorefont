@@ -1,6 +1,7 @@
 package com.bollore.stockbolloreback.controller;
 
 import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
+import com.bollore.stockbolloreback.enumeration.EnumDemandeType;
 import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
 import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
 import com.bollore.stockbolloreback.models.Demande;
@@ -83,7 +84,19 @@ public class DemandeProduitController {
         // update status produit
         Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
           if(produit != null) {
-              produit.setStatus(EnumProduitStatus.EN_ATTENTE_VALIDATION);
+
+              // SORTIE
+              if(EnumDemandeType.SORTIE.equals(demandeProduit.getDemande().getTypeDemande())){
+                  produit.setStatus(EnumProduitStatus.EN_ATTENTE_VALIDATION);
+              }
+              // SORTIE_REPARATION
+              if(EnumDemandeType.SORTIE_REPARATION.equals(demandeProduit.getDemande().getTypeDemande())){
+                  produit.setStatus(EnumProduitStatus.EN_ATTENTE_ENVOIE_REPARATION);
+              }
+              // SORTIE_REBUT
+              if(EnumDemandeType.SORTIE_REBUT.equals(demandeProduit.getDemande().getTypeDemande())){
+                  produit.setStatus(EnumProduitStatus.EN_ATTENTE_DE_MISE_AU_REBUT);
+              }
               produitRepository.save(produit);
           }
         demandeProduit.setStatus(EnumDemandeStatus.EN_ATTENTE);
@@ -181,9 +194,12 @@ public class DemandeProduitController {
         demandeProduit = demandeProduitRepository.save(demandeProduit);
         Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
         if(produit != null) {
+            // uniquement pour les demande de sortie
+            if(EnumDemandeType.SORTIE.equals(demandeProduit.getDemande().getTypeDemande())){
                 produit.setEtatActuel(EnumProduitEtat.ETAT);
                 produit.setStatus(EnumProduitStatus.EN_UTILISAION);
                 produitRepository.save(produit);
+            }
         }
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
@@ -204,8 +220,20 @@ public class DemandeProduitController {
         demandeProduit = demandeProduitRepository.save(demandeProduit);
         Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
         if (produit != null) {
+
+            // SORTIE
+            if(EnumDemandeType.SORTIE.equals(demandeProduit.getDemande().getTypeDemande())){
                 produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
-                produitRepository.save(produit);
+            }
+            // SORTIE_REPARATION
+            if(EnumDemandeType.SORTIE_REPARATION.equals(demandeProduit.getDemande().getTypeDemande())){
+                produit.setStatus(EnumProduitStatus.EN_REPARATION);
+            }
+            // SORTIE_REBUT
+            if(EnumDemandeType.SORTIE_REBUT.equals(demandeProduit.getDemande().getTypeDemande())){
+                produit.setStatus(EnumProduitStatus.MISE_AU_REBUT);
+            }
+            produitRepository.save(produit);
         }
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }

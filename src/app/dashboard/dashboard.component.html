@@ -64,13 +64,18 @@
             </a>
           </li>
           <li nz-menu-item *ngIf="is_demandeur">
-            <a [routerLink]="['/dashboard/nouvelle-demande']">
-              Nouvelle demande
+            <a [routerLink]="['/dashboard/demande/sortie']">
+              Demande sortie
             </a>
           </li>
           <li nz-menu-item >
-            <a [routerLink]="['/dashboard/demande-gestionnaire']">
-              Demande gestionnaire
+            <a [routerLink]="['/dashboard/demande/reparation']">
+              Demande réparation
+            </a>
+          </li>
+          <li nz-menu-item >
+            <a [routerLink]="['/dashboard/demande/rebut']">
+              Demande rebut
             </a>
           </li>
         </ul>

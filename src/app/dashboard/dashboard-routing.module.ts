@@ -24,12 +24,8 @@ const routes: Routes = [
         canActivate: [ MagaGuard ],
       },
       {
-        path: 'nouvelle-demande',
+        path: 'demande/:type',
         component: NouvelleDemandeComponent,
-      },
-      {
-        path: 'demande-gestionnaire',
-        component: DemandeGestionnaireComponent,
       },
       {
         path: 'apropos',

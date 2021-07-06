@@ -1,3 +1,11 @@
+<div nz-row>
+  <div nz-col nzSpan="12" style="text-align: left">
+    <h2>Vous êtes en train de faire une demande :
+      <span nz-typography nzType="danger">{{EnumDemandeType[typeDemande]}}</span>
+    </h2>
+  </div>
+</div>
+
 <nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
 
   <nz-tab [nzTitle]="'Nouvelle demande' ">

@@ -1,5 +1,5 @@
-export enum DemandeStatus {
+export enum DemandeType {
     SORTIE = 'Sortie',
     SORTIE_REPARATION = 'Sortie réparation',
-    SORTIE_REBUT = 'Sortie rébut'
+    SORTIE_REBUT = 'Sortie rebut'
 }
