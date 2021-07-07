@@ -8,6 +8,8 @@ import {AproposComponent} from './apropos/apropos.component';
 import {HistoriqueDemandeComponent} from './historique-demande/historique-demande.component';
 import { AuthGuard } from '../auth.guard';
 import { MagaGuard } from '../maga.guard';
+import { MatGuard } from '../mat.guard';
+import { DemgestGuard } from '../demgest.guard';
 import { DemandeGestionnaireComponent } from './demande-gestionnaire/demande-gestionnaire.component';
 
 const routes: Routes = [
@@ -37,7 +39,8 @@ const routes: Routes = [
       },
       {
         path: 'materiel',
-        loadChildren: () => import('./materiel/materiel.module').then(value => value.MaterielModule)
+        loadChildren: () => import('./materiel/materiel.module').then(value => value.MaterielModule),
+        canActivate: [ MatGuard ],
       },
       {
         path: 'utilisateur',

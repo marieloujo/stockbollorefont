@@ -12,26 +12,26 @@
         </a>
       </li>
 
-      <li nz-menu-item *ngIf="is_gestionnaire">
+      <li nz-menu-item *ngIf="is_gestionnaire || is_auditeur">
         <a [routerLink]="['/dashboard/magasins']">
           <i nz-icon nzType="shop"></i>
           <span>Magasin</span>
         </a>
       </li>
 
-      <li nz-submenu nzIcon="insert-row-below" *ngIf="is_gestionnaire || is_admin" nzTitle="Matériel">
+      <li nz-submenu nzIcon="insert-row-below" *ngIf="is_gestionnaire || is_admin || is_auditeur" nzTitle="Matériel">
         <ul>
-          <li nz-menu-item *ngIf="is_gestionnaire">
+          <li nz-menu-item *ngIf="is_gestionnaire || is_auditeur">
             <a [routerLink]="['/dashboard/materiel/marque']">
               Marque
             </a>
           </li>
-          <li nz-menu-item *ngIf="is_gestionnaire">
+          <li nz-menu-item *ngIf="is_gestionnaire || is_auditeur">
             <a [routerLink]="['/dashboard/materiel/gamme']">
               Equipement
             </a>
           </li>
-          <li nz-menu-item *ngIf="is_gestionnaire">
+          <li nz-menu-item *ngIf="is_gestionnaire || is_auditeur">
             <a [routerLink]="['/dashboard/materiel/modele']">
             Modèle
             </a>
@@ -58,7 +58,7 @@
 
       <li nz-submenu nzIcon="file-text" nzTitle="Demande">
         <ul>
-          <li nz-menu-item *ngIf="is_gestionnaire || is_admin || is_validateur" >
+          <li nz-menu-item *ngIf="is_gestionnaire || is_admin || is_validateur || is_auditeur" >
             <a [routerLink]="['/dashboard/historique-demande']">
               Historique
             </a>
@@ -68,12 +68,12 @@
               Demande sortie
             </a>
           </li>
-          <li nz-menu-item >
+          <li nz-menu-item *ngIf="is_gestionnaire" >
             <a [routerLink]="['/dashboard/demande/reparation']">
               Demande réparation
             </a>
           </li>
-          <li nz-menu-item >
+          <li nz-menu-item *ngIf="is_gestionnaire">
             <a [routerLink]="['/dashboard/demande/rebut']">
               Demande rebut
             </a>
@@ -81,9 +81,9 @@
         </ul>
       </li>
 
-      <li *ngIf="is_admin || is_demandeur" nz-submenu nzIcon="team" nzTitle="Utilisateur">
+      <li *ngIf="is_admin || is_demandeur || is_auditeur" nz-submenu nzIcon="team" nzTitle="Utilisateur">
         <ul>
-          <li nz-menu-item *ngIf="is_admin ">
+          <li nz-menu-item *ngIf="is_admin || is_auditeur">
             <a [routerLink]="['/dashboard/utilisateur/service']">
               Service
             </a>
@@ -93,7 +93,7 @@
               Profil
             </a>
           </li-->
-          <li nz-menu-item *ngIf="is_admin || is_demandeur">
+          <li nz-menu-item *ngIf="is_admin || is_demandeur || is_auditeur">
             <a [routerLink]="['/dashboard/utilisateur/user']">
               Utilisateur
             </a>

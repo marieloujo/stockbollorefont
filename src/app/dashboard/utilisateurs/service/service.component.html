@@ -50,7 +50,7 @@
     </div>
   </nz-dropdown-menu>
 
-  <nz-tab [nzTitle]="'Nouveau service' ">
+  <nz-tab *ngIf="is_admin" [nzTitle]="'Nouveau service' ">
 
     <form [formGroup]="validateServiceForm" nz-form>
       <div nz-row>

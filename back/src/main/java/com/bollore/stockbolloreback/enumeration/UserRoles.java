@@ -7,6 +7,6 @@ public enum UserRoles {
         ROLE_GESTIONNAIRE,
         ROLE_VALIDATEUR,
         ROLE_ADMIN,
-        ROLE_AUDITEUR
+        ROLE_AUDITEUR,
 
 }

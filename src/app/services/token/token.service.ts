@@ -51,4 +51,10 @@ export class TokenService {
         return token.roles.indexOf(environment.ROLE_VALIDATEUR) > -1;
     }
 
+    isAuditeur(): boolean {
+        const token = this.getAccessToken();
+        return token.roles.indexOf(environment.ROLE_AUDITEUR) > -1;
+    }
+
+
 }

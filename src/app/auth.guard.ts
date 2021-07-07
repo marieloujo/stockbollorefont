@@ -48,9 +48,12 @@ export class AuthGuard implements CanActivate {
         return this.token.roles.indexOf(environment.ROLE_VALIDATEUR) > -1;
     }
 
+    isAuditeur(): boolean {
+        return this.token.roles.indexOf(environment.ROLE_AUDITEUR) > -1;
+    }
 
     canAccess(): boolean {
-        return this.isAdmin() || this.isDemandeur() || this.isGestionnaire() || this.isValidateur();
+        return this.isAdmin() || this.isDemandeur() || this.isGestionnaire() || this.isAuditeur() || this.isValidateur();
     }
 
   
