@@ -2,6 +2,7 @@ package com.bollore.stockbolloreback.models;
 
 
 import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
+import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
@@ -58,6 +59,20 @@ public class DemandeProduit extends AbstractAuditingEntity {
 
     @Column(name = "date_rejet")
     private Date dateRejet;
+
+    @Column(name = "date_demande_retour")
+    private Date dateDemandeRetour;
+
+    @Column(name = "date_validation_retour")
+    private Date dateValidationRetour;
+
+    @Column(name = "date_rejet_retour")
+    private Date dateRejetRetour;
+
+    @Column(name = "etat_produit_retour")
+    @Enumerated(value = EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private EnumProduitEtat etatProduitRetour;
 
 
     @ManyToOne
@@ -240,5 +255,41 @@ public class DemandeProduit extends AbstractAuditingEntity {
 
     public void setDateRejet(Date dateRejet) {
         this.dateRejet = dateRejet;
+    }
+
+    public Date getDateLivraison() {
+        return dateLivraison;
+    }
+
+    public Date getDateDemandeRetour() {
+        return dateDemandeRetour;
+    }
+
+    public void setDateDemandeRetour(Date dateDemandeRetour) {
+        this.dateDemandeRetour = dateDemandeRetour;
+    }
+
+    public Date getDateValidationRetour() {
+        return dateValidationRetour;
+    }
+
+    public void setDateValidationRetour(Date dateValidationRetour) {
+        this.dateValidationRetour = dateValidationRetour;
+    }
+
+    public Date getDateRejetRetour() {
+        return dateRejetRetour;
+    }
+
+    public void setDateRejetRetour(Date dateRejetRetour) {
+        this.dateRejetRetour = dateRejetRetour;
+    }
+
+    public EnumProduitEtat getEtatProduitRetour() {
+        return etatProduitRetour;
+    }
+
+    public void setEtatProduitRetour(EnumProduitEtat etatProduitRetour) {
+        this.etatProduitRetour = etatProduitRetour;
     }
 }

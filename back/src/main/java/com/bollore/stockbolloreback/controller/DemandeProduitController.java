@@ -6,6 +6,7 @@ import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
 import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
 import com.bollore.stockbolloreback.models.Demande;
 import com.bollore.stockbolloreback.models.DemandeProduit;
+import com.bollore.stockbolloreback.models.DemandeRetourForm;
 import com.bollore.stockbolloreback.models.Produit;
 import com.bollore.stockbolloreback.repository.DemandeProduitRepository;
 import com.bollore.stockbolloreback.repository.ProduitRepository;
@@ -29,6 +30,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Demande produit controller.
+ */
 @RestController
 @RequestMapping("/demande-produit")
 @Api(value = "DemandeProduit controller",
@@ -45,12 +49,29 @@ public class DemandeProduitController {
 
     private static final String ENTITY_NAME = "stockBollore_DemandeProduit";
 
+    /**
+     * Get all demande produit response entity.
+     *
+     * @return the response entity
+     */
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes produit")
     @GetMapping(value = "/list")
     public ResponseEntity<List<DemandeProduit>> getAllDemandeProduit(){
         return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findAll());
     }
 
+    @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes retour produit")
+    @GetMapping(value = "/list/retour")
+    public ResponseEntity<List<DemandeProduit>> getListRetourDemandeProduit(){
+        return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findByDateDemandeRetourIsNull());
+    }
+
+    /**
+     * Gets demande produit created by.
+     *
+     * @param id the id
+     * @return the demande produit created by
+     */
     @ApiOperation(value = "cette ressource permet d'obtenir le created By de demandeProduit")
     @GetMapping(value = "/demande-produit-createdBy/{id}")
     public ResponseEntity<List<String>> getDemandeProduitCreatedBy(@PathVariable("id") Long id){
@@ -67,6 +88,11 @@ public class DemandeProduitController {
         return ResponseEntity.status(HttpStatus.OK).body(demandeurEtDate);
     }
 
+    /**
+     * Get all demande produit des by create date response entity.
+     *
+     * @return the response entity
+     */
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes produit par ordre décoissant")
     @GetMapping(value = "/list/desc-create-date")
     public ResponseEntity<List<DemandeProduit>> getAllDemandeProduitDesByCreateDate(){
@@ -74,6 +100,13 @@ public class DemandeProduitController {
         return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findAllByLivrerIsFalseOrderByCreatedDateDesc());
     }
 
+    /**
+     * Create demande produit response entity.
+     *
+     * @param demandeProduit the demande produit
+     * @return the response entity
+     * @throws URISyntaxException the uri syntax exception
+     */
     @ApiOperation(value = "cette ressource permet d'ajouter des produits a une demande")
     @PostMapping(value = "/creer-demande-produit")
     public ResponseEntity<DemandeProduit> createDemandeProduit(@Valid @RequestBody DemandeProduit demandeProduit) throws URISyntaxException {
@@ -105,6 +138,13 @@ public class DemandeProduitController {
         return ResponseEntity.created(new URI("/demande-produit/creer-demande-produit"+ newDemandeProduit.getId())).body(newDemandeProduit);
     }
 
+    /**
+     * Create demande produit rep response entity.
+     *
+     * @param demandeProduit the demande produit
+     * @return the response entity
+     * @throws URISyntaxException the uri syntax exception
+     */
     @ApiOperation(value = "cette ressource permet d'ajouter des produits a une demande")
     @PostMapping(value = "/creer-demande-produit-rep")
     public ResponseEntity<DemandeProduit> createDemandeProduitRep(@Valid @RequestBody DemandeProduit demandeProduit) throws URISyntaxException {
@@ -124,6 +164,12 @@ public class DemandeProduitController {
     }
 
 
+    /**
+     * Update demande produit response entity.
+     *
+     * @param demandeProduit the demande produit
+     * @return the response entity
+     */
     @ApiOperation(value = "cette ressource permet de modifier une demande ayant rapport a un produit")
     @PutMapping(value = "/modifier-demande-produit")
     public ResponseEntity<DemandeProduit> updateDemandeProduit(@RequestBody DemandeProduit demandeProduit){
@@ -142,6 +188,13 @@ public class DemandeProduitController {
 
     }
 
+    /**
+     * Gets all demande produit between create date.
+     *
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the all demande produit between create date
+     */
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes produit contenu entre deux dates")
     @GetMapping(value = "/list/between-created-date")
     public ResponseEntity<List<DemandeProduit>> getAllDemandeProduitBetweenCreateDate(@RequestParam LocalDate startDate,@RequestParam("data02") LocalDate endDate){
@@ -154,7 +207,12 @@ public class DemandeProduitController {
     }
 
 
-
+    /**
+     * Rejeter demande response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @ApiOperation(value = "cette ressource permet de rejeter une demande")
     @PostMapping(value = "/rejeter/{id}")
     public ResponseEntity<DemandeProduit> rejeterDemande(@PathVariable("id") Long id){
@@ -178,6 +236,12 @@ public class DemandeProduitController {
     }
 
 
+    /**
+     * Livrer demande response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @ApiOperation(value = "cette ressource permet de livrer une demande")
     @PostMapping(value = "/livrer/{id}")
     public ResponseEntity<DemandeProduit> livrerDemande(@PathVariable("id") Long id){
@@ -204,6 +268,12 @@ public class DemandeProduitController {
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
 
+    /**
+     * Valider demande response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @ApiOperation(value = "cette ressource permet de valider une demande")
     @PostMapping(value = "/valider/{id}")
     public ResponseEntity<DemandeProduit> validerDemande(@PathVariable("id") Long id){
@@ -234,6 +304,94 @@ public class DemandeProduitController {
                 produit.setStatus(EnumProduitStatus.MISE_AU_REBUT);
             }
             produitRepository.save(produit);
+        }
+        return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
+    }
+
+
+    /**
+     * Retour create demande response entity.
+     *
+     * @param demandeRetourForm the demande retour form
+     * @return the response entity
+     */
+    @ApiOperation(value = "cette ressource permet de créer une demande retour")
+    @PostMapping(value = "/retour/create")
+    public ResponseEntity<DemandeProduit> retourCreateDemande(@RequestBody DemandeRetourForm demandeRetourForm){
+        if (demandeRetourForm.getDemandeProduitId() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        DemandeProduit demandeProduit = demandeProduitRepository.findById(demandeRetourForm.getDemandeProduitId()).orElse(null);
+        if (demandeProduit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demandeProduit.setStatus(EnumDemandeStatus.RETOUR_EN_ATTENNTE);
+        demandeProduit.setDateDemandeRetour(new Date());
+        demandeProduit.setEtatProduitRetour(demandeRetourForm.getEtatProduitRetour());
+        demandeProduit = demandeProduitRepository.save(demandeProduit);
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+        if (produit != null) {
+
+            produitRepository.save(produit);
+        }
+        return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
+    }
+
+    /**
+     * Retour valider demande response entity.
+     *
+     * @param demandeRetourForm the demande retour form
+     * @return the response entity
+     */
+    @ApiOperation(value = "cette ressource permet de valider une demande de retour")
+    @PostMapping(value = "/retour/valider")
+    public ResponseEntity<DemandeProduit> retourValiderDemande(@RequestBody DemandeRetourForm demandeRetourForm){
+        if (demandeRetourForm.getDemandeProduitId() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        DemandeProduit demandeProduit = demandeProduitRepository.findById(demandeRetourForm.getDemandeProduitId()).orElse(null);
+        if (demandeProduit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demandeProduit.setStatus(EnumDemandeStatus.RETOUR_VALIDEE);
+        demandeProduit.setDateValidationRetour(new Date());
+        demandeProduit = demandeProduitRepository.save(demandeProduit);
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+        if (produit != null) {
+            produit.setStatus(EnumProduitStatus.EN_STOCK);
+            produit.setEtatActuel(demandeProduit.getEtatProduitRetour());
+            produitRepository.save(produit);
+        }
+        return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
+    }
+
+    /**
+     * Retour rejeter demande response entity.
+     *
+     * @param demandeRetourForm the demande retour form
+     * @return the response entity
+     */
+    @ApiOperation(value = "cette ressource permet de rejeter une demande de retour")
+    @PostMapping(value = "/retour/rejeter")
+    public ResponseEntity<DemandeProduit> retourRejeterDemande(@RequestBody DemandeRetourForm demandeRetourForm){
+        if (demandeRetourForm.getDemandeProduitId() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        DemandeProduit demandeProduit = demandeProduitRepository.findById(demandeRetourForm.getDemandeProduitId()).orElse(null);
+        if (demandeProduit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // demande status
+        demandeProduit.setStatus(EnumDemandeStatus.RETOUR_REJETEE);
+        demandeProduit.setDateRejetRetour(new Date());
+        demandeProduit = demandeProduitRepository.save(demandeProduit);
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+        // todo:
+        if (produit != null) {
+
+          //  produitRepository.save(produit);
         }
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }

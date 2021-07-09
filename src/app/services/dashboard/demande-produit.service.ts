@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DemandeProduit} from '../../models/demande-produit';
 import { RequestService } from '../request/request.service';
+import {DemandeRetourForm} from "../../models/demande-retour-form";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class DemandeProduitService {
 
   getList(): Observable<Object> {
     return this.http.get(`${this.url}/list`, this.requestService.http_get_request());
+  }
+
+  getListForRetour(): Observable<Object> {
+    return this.http.get(`${this.url}/list/retour`, this.requestService.http_get_request());
   }
 
   createDemandeProduit(demandeProduit: DemandeProduit): Observable<Object> {
@@ -69,6 +74,18 @@ export class DemandeProduitService {
 
   livrerDemande(id: number): Observable<Object> {
     return this.http.post(`${this.url}/livrer/` + id, {}, this.requestService.http_get_request());
+  }
+
+  retourRejeterDemande(demandeRetourForm: DemandeRetourForm): Observable<Object> {
+    return this.http.post(`${this.url}/retour/create`, JSON.stringify(demandeRetourForm), this.requestService.http_get_request());
+  }
+
+  retourValiderDemande(demandeRetourForm: DemandeRetourForm): Observable<Object> {
+    return this.http.post(`${this.url}/retour/valider`, JSON.stringify(demandeRetourForm), this.requestService.http_get_request());
+  }
+
+  retourCreateDemande(demandeRetourForm: DemandeRetourForm): Observable<Object> {
+    return this.http.post(`${this.url}/retour/rejeter`, JSON.stringify(demandeRetourForm), this.requestService.http_get_request());
   }
 
 

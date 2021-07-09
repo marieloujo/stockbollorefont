@@ -9,6 +9,7 @@ import {HistoriqueDemandeComponent} from './historique-demande/historique-demand
 import { AuthGuard } from '../auth.guard';
 import { MagaGuard } from '../maga.guard';
 import { DemandeGestionnaireComponent } from './demande-gestionnaire/demande-gestionnaire.component';
+import {DemandeRetourComponent} from "./demande-retour/demande-retour.component";
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
       {
         path: 'demande/:type',
         component: NouvelleDemandeComponent,
+      },
+      {
+        path: 'demande-retour',
+        component: DemandeRetourComponent,
       },
       {
         path: 'apropos',
