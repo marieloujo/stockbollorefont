@@ -75,7 +75,7 @@ export class ProduitComponent implements OnInit {
   searchValueMagasin = '';
   visibleMagasin = false;
 
-  listOfDisplayData;
+  listOfDisplayData = [];
 
   is_gestionnaire: boolean;
 

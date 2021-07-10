@@ -1,13 +1,57 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "line-scale-pulse-out" [fullScreen] = "true"><p style="color: white" > Chargement... </p></ngx-spinner>
 
+<div nz-row>
+    <div nz-col nzSpan="12" style="text-align: left">
+        <h2>Vous êtes en train de faire une demande :
+            <span nz-typography nzType="danger">Retour</span>
+        </h2>
+    </div>
+</div>
 
-<h2>Liste des demandes ({{demandeProduitList.length}})</h2>
+
+<h2>Filtre de recherche</h2>
 
 <div nz-row>
 
-    <button nz-button nzBlock nzType="primary" style="margin-bottom: 10px" *ngIf="can_create">
-        <a [routerLink]="['/dashboard/nouvelle-demande']"> Faire une nouvelle demande </a>
-    </button>
+    <div nz-col nzSpan="12" style="padding-right: 1.5em">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="24">Personne concernée</nz-form-label>
+            <nz-select [(ngModel)]="currentPersonneSelected" (ngModelChange)="personneSelectChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une personne" >
+                <nz-option *ngFor="let pers of personneList" [nzLabel]=" pers.serviceB? pers.nom + ' ' + pers.prenom + ' --- '+pers.serviceB?.libelle :  pers.nom + ' ' + pers.prenom " [nzValue]="pers"></nz-option>
+            </nz-select>
+        </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12" style="padding-right: 1.5em">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="24">Equipement</nz-form-label>
+            <nz-select [(ngModel)]="currentEquipementSelected" (ngModelChange)="equipementSelectChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Selectionner l'équipement">
+                <nz-option *ngFor="let equipement of gammeList" [nzLabel]=" equipement.libelle" [nzValue]="equipement"></nz-option>
+            </nz-select>
+        </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12" style="padding-right: 1.5em">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="24">Modele</nz-form-label>
+            <nz-select [(ngModel)]="currentModelSelected" (ngModelChange)="modelSelectChange($event)"  nzShowSearch nzAllowClear nzPlaceHolder="Selectionner le model">
+                <nz-option *ngFor="let model of modeleList" [nzLabel]=" model.libelle" [nzValue]="model"></nz-option>
+            </nz-select>
+        </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12" style="padding-right: 1.5em">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="24">Marque</nz-form-label>
+            <nz-select [(ngModel)]="currentMarqueSelected" (ngModelChange)="marqueSelectChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Selectionner une marque">
+                <nz-option *ngFor="let marque of marqueList" [nzLabel]="marque.libelle" [nzValue]="marque"></nz-option>
+            </nz-select>
+        </nz-form-item>
+    </div>
+
+</div>
+
+<div nz-row>
 
     <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5" style="margin-top: 1.5em">
         <thead>
@@ -49,10 +93,13 @@
             <td>{{ data.personne?.nom + ' ' + data.personne?.prenom   + ' -- ' + data.personne?.serviceB.libelle}}</td>
 
             <td>
-                <button (click)="openDrawer(data)" nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline"
-                                                                                                  nzType="bars"></i>
+                <button (click)="showModalForSubmission(data)" nz-button  nzType="success">
+                    {{tokenService.isGestionnaire() ? 'Valider' : 'Soumettre'}}
                 </button>
-
+                &nbsp;
+                <!--button (click)="openDrawer(data)" nz-button nzShape="circle" nzType="primary">
+                    <i nz-icon nzTheme="outline" nzType="bars"></i>
+                </button-->
             </td>
         </tr>
         </tbody>
@@ -148,4 +195,32 @@
 
     </div>
   </ng-container>
+</nz-modal>
+
+
+<!-- modal from submission -->
+<nz-modal
+        [(nzVisible)]="canShowModalForSubmission"
+        nzTitle="Veuillez sélectionner le nouvel état du produit"
+        (nzOnCancel)="handleCancel()"
+        (nzOnOk)="handleOk()"
+        [nzOkLoading]="isOkLoading"
+>
+    <div *nzModalContent>
+     <div nz-row>
+         <div nz-col nzSpan="24" style="padding-right: 1.5em">
+             <nz-form-item>
+                 <nz-form-label>Nouvel état du produit {{[null, undefined].includes(demandeProduitSelected) ? '-' : demandeProduitSelected.produit.numSerie}} </nz-form-label>
+                 <nz-select [(ngModel)]="nouvelEtatProduit" (ngModelChange)="nouvelEtatProduitEnumChange($event)" nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un état" >
+                     <nz-option [nzLabel]="'Hors service'" [nzValue]="'HS'"></nz-option>
+                     <nz-option [nzLabel]="'En état'" [nzValue]="'ETAT'"></nz-option>
+                 </nz-select>
+             </nz-form-item>
+         </div>
+     </div>
+    </div>
+    <div *nzModalFooter>
+        <button nz-button nzType="danger" (click)="handleCancel()">Annuler</button>
+        <button nz-button nzType="primary" [disabled]="[null, undefined].includes(nouvelEtatProduit)" (click)="handleOk()" [nzLoading]="isOkLoading">Valider</button>
+    </div>
 </nz-modal>

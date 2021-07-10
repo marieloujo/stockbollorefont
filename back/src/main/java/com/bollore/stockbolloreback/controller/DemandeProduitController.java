@@ -25,10 +25,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The type Demande produit controller.
@@ -61,9 +58,10 @@ public class DemandeProduitController {
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes retour produit")
-    @GetMapping(value = "/list/retour")
+    @GetMapping(value = "/list/for-retour")
     public ResponseEntity<List<DemandeProduit>> getListRetourDemandeProduit(){
-        return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findByDateDemandeRetourIsNull());
+        List<DemandeProduit> result = demandeProduitRepository.findByStatusAndDateDemandeRetourIsNull(EnumDemandeStatus.LIVREE);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     /**
@@ -97,7 +95,15 @@ public class DemandeProduitController {
     @GetMapping(value = "/list/desc-create-date")
     public ResponseEntity<List<DemandeProduit>> getAllDemandeProduitDesByCreateDate(){
         //return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findTop10ByOrderByCreatedDateDesc());
-        return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findAllByLivrerIsFalseOrderByCreatedDateDesc());
+        List<EnumDemandeStatus> demandeStatusList = Arrays.asList(
+                EnumDemandeStatus.REJETEE,
+                EnumDemandeStatus.LIVREE,
+                EnumDemandeStatus.RETOUR_REJETEE,
+                EnumDemandeStatus.RETOUR_VALIDEE
+        );
+        List<DemandeProduit> result = demandeProduitRepository.findByStatusNotInOrderByCreatedDateDesc(demandeStatusList);
+       // return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findAllByLivrerIsFalseOrderByCreatedDateDesc());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     /**
@@ -334,6 +340,9 @@ public class DemandeProduitController {
         if (produit != null) {
 
             produitRepository.save(produit);
+        }
+        if(demandeRetourForm.getCanValidate() == true) {
+            return retourValiderDemande(demandeRetourForm);
         }
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }

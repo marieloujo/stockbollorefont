@@ -41,68 +41,8 @@ interface Detail {
 })
 export class HistoriqueDemandeComponent implements OnInit {
 
-
-  listOfData: Historique[] = [
-    {
-      numserie: '1002DFB852',
-      marque: 'DELL',
-      modele: 'A80',
-      gamme: 'Ecran',
-      demandeur: 'Pierre HOUNDO',
-      date: '04 mai 2021',
-    },
-    {
-      numserie: '875EFG6924',
-      marque: 'HP',
-      modele: 'D40',
-      gamme: 'Souris',
-      demandeur: 'Samson CATRAYE',
-      date: '04 mai 2021',
-    },
-    {
-      numserie: '658ADCF87G',
-      marque: 'CASIO',
-      modele: 'CP55',
-      gamme: 'Projecteur',
-      demandeur: 'Jacob VIGANVI',
-      date: '05 mai 2021',
-    },
-    {
-      numserie: '201ASC568R',
-      marque: 'CASIO',
-      modele: 'RA8',
-      gamme: 'Rallonge',
-      demandeur: 'Jacob VIGANVI',
-      date: '05 mai 2021',
-    },
-
-  ];
-
-  listOfDetail: Detail[] = [
-    {
-      demandeur: 'Paul Sam',
-      date_demande: '04 mai 2021',
-      validateur: 'Samuel Ba',
-      date_Validation: '04 mai 2021',
-      gestionnaire: 'Pat Ba',
-      date_sorti: '05 mai 2021',
-      destination: 'Comptabilité',
-      date_service: '14 mai 2021',
-    },
-    /*{
-      demandeur: 'Mamane Po',
-      date_demande: '04 mai 2021',
-      validateur: 'Samuel Ba',
-      date_Validation: '05 mai 2021',
-      gestionnaire: 'Pat Ba',
-      date_sorti: '05 mai 2021',
-      destination: 'Comptabilité',
-      date_service: '18 mai 2021',
-    },*/
-  ];
-
   descriptionCourante: string = '';
-  urlCourante: String = '';
+  urlCourante: string = '';
   demandeurCourant: string = '';
   dateDemandeCourant: string = '';
   dateValidationDateCourant: string = '';
@@ -120,7 +60,7 @@ export class HistoriqueDemandeComponent implements OnInit {
   personneByUsernameList: Personne[] = [];
 
   listOfColumn: any = [];
-  listOfDisplayData;
+  listOfDisplayData = [];
 
   visibleDrawer = false;
 
@@ -228,6 +168,18 @@ export class HistoriqueDemandeComponent implements OnInit {
 
   listOfColumnHeader() {
     this.listOfColumn = [
+      {
+        title: 'Date de la demande',
+        compare: null,
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.demande.dateHeure.toString().localeCompare(b.demande.dateHeure.toString()),
+        //sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie - b.produit.numSerie,
+      },
+      {
+        title: 'Date de retour',
+        compare: null,
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.dateValidationRetour.toString().localeCompare(b.dateValidationRetour.toString()),
+        //sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie - b.produit.numSerie,
+      },
       {
         title: 'Numero Série',
         compare: null,

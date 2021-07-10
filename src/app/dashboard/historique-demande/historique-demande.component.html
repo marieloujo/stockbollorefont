@@ -1,12 +1,12 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "line-scale-pulse-out" [fullScreen] = "true"><p style="color: white" > Chargement... </p></ngx-spinner>
 
 
-<h2>Historique des demandes</h2>
+<h2>Historique des demandes ({{listOfDisplayData.length}})</h2>
 
 <div nz-row>
 
   <button nz-button nzBlock nzType="primary" style="margin-bottom: 10px" *ngIf="can_create">
-    <a [routerLink]="['/dashboard/nouvelle-demande']"> Faire une nouvelle demande </a>
+    <a [routerLink]="['/dashboard/demande/sortie']"> Faire une nouvelle demande </a>
   </button>
 
     <!--div nz-col nzSpan="8">
@@ -72,7 +72,8 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of sortTable.data">
-
+      <td>{{ data.demande.dateHeure | date: 'dd/MM/yyyy à HH:mm' }}</td>
+      <td>{{ [null, undefined].includes(data.dateValidationRetour) ? '-' : (data.dateValidationRetour | date: 'dd/MM/yyyy à HH:mm') }}</td>
       <td>{{ data.produit.numSerie }}</td>
       <td>{{ data.gamme?.libelle }}</td>
       <td>{{ data.marque?.libelle }}</td>

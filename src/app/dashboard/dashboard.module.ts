@@ -38,6 +38,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { DemandeGestionnaireComponent } from './demande-gestionnaire/demande-gestionnaire.component';
 import {NzTypographyModule} from "ng-zorro-antd/typography";
 import { DemandeRetourComponent } from './demande-retour/demande-retour.component';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import { DemandeRetourComponent } from './demande-retour/demande-retour.componen
         NzCardModule,
         NzDatePickerModule,
         NzTypographyModule,
+        NzNotificationModule,
     ]
 })
 export class DashboardModule { }

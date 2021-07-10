@@ -22,7 +22,7 @@ export class DemandeProduitService {
   }
 
   getListForRetour(): Observable<Object> {
-    return this.http.get(`${this.url}/list/retour`, this.requestService.http_get_request());
+    return this.http.get(`${this.url}/list/for-retour`, this.requestService.http_get_request());
   }
 
   createDemandeProduit(demandeProduit: DemandeProduit): Observable<Object> {
@@ -77,7 +77,7 @@ export class DemandeProduitService {
   }
 
   retourRejeterDemande(demandeRetourForm: DemandeRetourForm): Observable<Object> {
-    return this.http.post(`${this.url}/retour/create`, JSON.stringify(demandeRetourForm), this.requestService.http_get_request());
+    return this.http.post(`${this.url}/retour/rejeter`, JSON.stringify(demandeRetourForm), this.requestService.http_get_request());
   }
 
   retourValiderDemande(demandeRetourForm: DemandeRetourForm): Observable<Object> {
@@ -85,7 +85,23 @@ export class DemandeProduitService {
   }
 
   retourCreateDemande(demandeRetourForm: DemandeRetourForm): Observable<Object> {
-    return this.http.post(`${this.url}/retour/rejeter`, JSON.stringify(demandeRetourForm), this.requestService.http_get_request());
+    return this.http.post(`${this.url}/retour/create`, JSON.stringify(demandeRetourForm), this.requestService.http_get_request());
+  }
+
+  public getTextColorByStatusDemandeProduit(status: string): 'secondary' | 'warning' | 'danger' | 'success' {
+    // 'secondary' | 'warning' | 'danger' | 'success'
+    if (['VALIDEE', 'RETOUR_VALIDEE'].includes(status)){
+      return 'success';
+    }
+    if (['RETOUR_EN_ATTENNTE', 'EN_ATTENTE'].includes(status)){
+      return 'warning';
+    }
+    if (['LIVREE'].includes(status)){
+      return 'secondary';
+    }
+    if (['RETOUR_REJETEE', 'REJETEE'].includes(status)){
+      return 'danger';
+    }
   }
 
 

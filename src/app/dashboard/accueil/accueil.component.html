@@ -37,7 +37,7 @@
 
 <nz-divider></nz-divider>
 
-<h2 style="margin-top: 10px">Liste des demandes récentes</h2>
+<h2 style="margin-top: 10px">Liste des demandes récentes ({{listOfDisplayData.length}})</h2>
 
 <div nz-row>
   <div nz-col nzSpan="24">
@@ -58,14 +58,18 @@
       <tr *ngFor="let data of sortTable.data">
 
         <td>{{ data.demande.dateHeure | date: 'dd/MM/yyyy à HH:mm' }}</td>
+        <td>{{ [null, undefined].includes(data.dateValidationRetour) ? '-' : (data.dateValidationRetour | date: 'dd/MM/yyyy à HH:mm') }}</td>
         <td>{{ data.produit.numSerie }}</td>
         <td>{{ data.gamme?.libelle }}</td>
         <td>{{ data.marque?.libelle }}</td>
         <td>{{ data.modele?.libelle }}</td>
         <td>
-          <strong nz-typography [nzType]="produitService.getTextColorByStatusProduit(data.produit?.status)">
-            {{ ProduitStatus[data.produit.status] }}
+          <strong nz-typography [nzType]="demandeProduitService.getTextColorByStatusDemandeProduit(data?.status)">
+            {{ DemandeStatusEnum[data.status] }}
           </strong>
+          <ng-container *ngIf="data.status === 'RETOUR_EN_ATTENNTE'">
+            (Etat de retour : {{ProduitEtat[data.etatProduitRetour]}})
+          </ng-container>
         </td>
         <td>{{ ProduitEtat[data.produit.etatActuel] }}</td>
         <td>{{ data.personne?.nom + ' ' + data.personne?.prenom }}</td>
@@ -74,6 +78,11 @@
           <button *ngIf="data.status === 'EN_ATTENTE'" (click)="validerDemande(data.id)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
           <button  *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'VALIDEE'"  (click)="livrerDemande(data.id)" nz-button  nzType="primary" style="margin-right: 2px;">Fait</button>
           <button *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'EN_ATTENTE'" (click)="rejeterDemande(data.id)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
+
+          <!-- retour -->
+          <button *ngIf="data.status === 'RETOUR_EN_ATTENNTE'" (click)="validerRetourDemande(data)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
+          <button *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'RETOUR_EN_ATTENNTE'" (click)="rejeterRetourDemande(data)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
+
         </td>
       </tr>
       </tbody>

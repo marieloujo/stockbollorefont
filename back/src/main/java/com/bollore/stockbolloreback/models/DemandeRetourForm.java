@@ -8,6 +8,7 @@ import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
 public class DemandeRetourForm {
     private Long demandeProduitId;
     private EnumProduitEtat etatProduitRetour;
+    private Boolean canValidate;
 
     /**
      * Gets demande produit id.
@@ -43,5 +44,23 @@ public class DemandeRetourForm {
      */
     public void setEtatProduitRetour(EnumProduitEtat etatProduitRetour) {
         this.etatProduitRetour = etatProduitRetour;
+    }
+
+    /**
+     * Gets can validate.
+     *
+     * @return the can validate
+     */
+    public Boolean getCanValidate() {
+        return canValidate;
+    }
+
+    /**
+     * Sets can validate.
+     *
+     * @param canValidate the can validate
+     */
+    public void setCanValidate(Boolean canValidate) {
+        this.canValidate = canValidate;
     }
 }

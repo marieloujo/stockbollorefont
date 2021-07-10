@@ -33,4 +33,9 @@ export class DemandeProduit {
   dateLivraison: string;
   dateRejet: string;
 
+  dateDemandeRetour: string;
+  dateValidationRetour: string;
+  dateRejetRetour: string;
+  etatProduitRetour: string;
+
 }

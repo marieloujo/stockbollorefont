@@ -20,6 +20,7 @@ import {DemandeStatus} from '../../enumerations/demande-status.enum';
 import { ProduitStatus } from 'src/app/enumerations/produit-status.enum';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { ProduitEtat } from 'src/app/enumerations/produit-etat.enum';
+import {DemandeRetourForm} from "../../models/demande-retour-form";
 
 interface StatsPer_dayWeekMonthYear {
   day: number;
@@ -39,7 +40,7 @@ export class AccueilComponent implements OnInit {
   demandeProduitDescList: DemandeProduit[] = [];
 
   listOfColumn: any = [];
-  listOfDisplayData;
+  listOfDisplayData = [];
   token: Token;
   environment = environment;
   livreur: boolean;
@@ -47,7 +48,7 @@ export class AccueilComponent implements OnInit {
   etatList: Etat[] = [];
   etatProduitList: EtatProduit[] = [];
   etatProduitListSortByProduit: EtatProduit[] = [];
-  DemandeStatus = DemandeStatus;
+  DemandeStatusEnum = DemandeStatus;
   ProduitStatus = ProduitStatus;
   public ProduitEtat = ProduitEtat;
 
@@ -62,11 +63,11 @@ export class AccueilComponent implements OnInit {
     private behaviorService: BehaviorService,
     public produitService: ProduitService,
     private demandeService: DemandeService,
-    private tokenService: TokenService,
+    public tokenService: TokenService,
     private gammeService: GammeService,
     private etatService: EtatService,
     private etatProduitService: EtatProduitService,
-    private demandeProduitService: DemandeProduitService,
+    public demandeProduitService: DemandeProduitService,
   ) {
     this.token = this.tokenService.getAccessToken();
   }
@@ -139,7 +140,7 @@ export class AccueilComponent implements OnInit {
 
 
 
-  livrerDemande(id: number) {
+  livrerDemande(id: number): void {
     this.demandeProduitService.livrerDemande(id).subscribe(
         (data: Demande) => {
         console.log('Demande livree  ==>', data);
@@ -151,7 +152,7 @@ export class AccueilComponent implements OnInit {
 
   }
 
-  validerDemande(id: number) {
+  validerDemande(id: number): void {
     this.demandeProduitService.validerDemande(id).subscribe(
         (data: Demande) => {
         console.log('Demande validee  ==>', data);
@@ -163,7 +164,24 @@ export class AccueilComponent implements OnInit {
 
   }
 
-  rejeterDemande(id: number) {
+  validerRetourDemande(demandeProduit: DemandeProduit): void {
+    const demandeProduitForm: DemandeRetourForm = {
+      etatProduitRetour: demandeProduit.etatProduitRetour,
+      demandeProduitId: demandeProduit.id,
+      canValidate: this.tokenService.isGestionnaire()
+    };
+    this.demandeProduitService.retourValiderDemande(demandeProduitForm).subscribe(
+        (data: Demande) => {
+        console.log('Demande validee  ==>', data);
+        window.location.reload();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+
+  }
+
+  rejeterDemande(id: number): void {
     this.demandeProduitService.rejeterDemande(id).subscribe(
       (data: Demande) => {
         console.log('Demande rejetee  ==>', data);
@@ -175,7 +193,25 @@ export class AccueilComponent implements OnInit {
 
   }
 
-  listDemandeProduitDescCreatedDate() {
+
+  rejeterRetourDemande(demandeProduit: DemandeProduit): void {
+    const demandeProduitForm: DemandeRetourForm = {
+      etatProduitRetour: demandeProduit.etatProduitRetour,
+      demandeProduitId: demandeProduit.id,
+      canValidate: this.tokenService.isGestionnaire()
+    };
+    this.demandeProduitService.retourRejeterDemande(demandeProduitForm).subscribe(
+      (data: Demande) => {
+        console.log('Demande rejetee  ==>', data);
+        window.location.reload();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+
+  }
+
+  listDemandeProduitDescCreatedDate(): void {
     this.demandeProduitService.getListDescCreateDate().subscribe(
       (data: DemandeProduit[]) => {
         this.demandeProduitDescList = data;
@@ -213,12 +249,18 @@ export class AccueilComponent implements OnInit {
       });
   }
 
-  listOfColumnHeader() {
+  listOfColumnHeader(): void {
     this.listOfColumn = [
       {
         title: 'Date de la demande',
         compare: null,
         sortFn: (a: DemandeProduit, b: DemandeProduit) => a.demande.dateHeure.toString().localeCompare(b.demande.dateHeure.toString()),
+        //sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie - b.produit.numSerie,
+      },
+      {
+        title: 'Date de retour',
+        compare: null,
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.dateValidationRetour.toString().localeCompare(b.dateValidationRetour.toString()),
         //sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.numSerie - b.produit.numSerie,
       },
       {
@@ -270,13 +312,5 @@ export class AccueilComponent implements OnInit {
     ];
   }
 
-
-  getEtatProduitById(id): string {
-  const etatProduit: EtatProduit = this.etatProduitList.find(etat => etat.produit.id === id && etat.actuel === true);
-  if ([null, undefined].includes(etatProduit)){
-    return '';
-  }
-  return etatProduit.etat.libelle;
-  }
 
 }
