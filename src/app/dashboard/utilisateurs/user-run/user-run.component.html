@@ -42,7 +42,7 @@
         <td>{{ data?.prenom }}</td>
         <td>{{ data?.email }}</td>
         <td>{{ data?.sexe }}</td>
-        <td> <span *ngFor="let role of data?.roles">{{ role.libelle+", " }}</span> </td>
+        <td> <span *ngFor="let role of data?.roles">{{ role.libelle+" " }}</span> </td>
         <td>{{ data?.serviceB?.libelle }}</td>
         <td *ngIf="is_admin">
           <nz-space>
@@ -188,6 +188,7 @@
             <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selectionner un sexe" formControlName="sexe" >
               <nz-option  [nzLabel]="'Masculin'" [nzValue]="'Masculin'"></nz-option>
               <nz-option  [nzLabel]="'Féminin'" [nzValue]="'Féminin'"></nz-option>
+              <nz-option  [nzLabel]="'Non précisé'" [nzValue]="'Non précisé'"></nz-option>
             </nz-select>
           </nz-form-item>
         </div>

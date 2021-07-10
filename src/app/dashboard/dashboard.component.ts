@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   is_validateur: boolean;
   is_gestionnaire: boolean;
   is_demandeur: boolean;
+  is_auditeur: boolean;
   constructor(private tokenService: TokenService, private router: Router) {
       this.token = tokenService.getAccessToken();
   }
@@ -31,6 +32,7 @@ export class DashboardComponent implements OnInit {
       this.is_validateur = this.isValidateur();
       this.is_gestionnaire = this.isGestionnaire();
       this.is_demandeur = this.isDemandeur();
+      this.is_auditeur = this.isAuditeur();
   }
 
 
@@ -55,6 +57,10 @@ export class DashboardComponent implements OnInit {
 
   isDemandeur(): boolean {
   return this.token.roles.indexOf(environment.ROLE_DEMANDEUR) > -1;
+}
+
+  isAuditeur(): boolean {
+  return this.token.roles.indexOf(environment.ROLE_AUDITEUR) > -1;
 }
 
 

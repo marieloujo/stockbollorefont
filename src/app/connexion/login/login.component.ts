@@ -92,6 +92,22 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/dashboard']);
                 }
 
+
+                let role_auditeur = true;
+
+                token.roles.forEach(role => {
+                    if(role != environment.ROLE_AUDITEUR) {
+                        role_auditeur = false;
+                    }
+                });
+
+                if (role_auditeur) {
+                    this.router.navigate(['/dashboard']);
+                
+                }
+
+
+
             },
             error: err => { // erreur
                 this.login_echec = true;

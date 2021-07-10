@@ -179,6 +179,10 @@ public class AuthController {
                             Role vldtRole = roleRepository.findByName(UserRoles.ROLE_VALIDATEUR)
                                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                             roles.add(vldtRole);
+                        case "auditeur":
+                            Role audiRole = roleRepository.findByName(UserRoles.ROLE_AUDITEUR)
+                                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            roles.add(audiRole);
 
                             break;
                         default:

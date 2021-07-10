@@ -7,6 +7,12 @@ import {ServiceBService} from '../../../services/dashboard/service-b.service';
 import {ServiceB} from '../../../models/service-b';
 import {HttpErrorResponse} from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { TokenService } from 'src/app/services/token/token.service';
+import { Token } from 'src/app/models/token.model';
+import {environment} from '../../../../environments/environment';
+
+
+
 
 @Component({
   selector: 'app-service',
@@ -23,6 +29,10 @@ export class ServiceComponent implements OnInit {
 
   listOfColumn: any = [];
 
+  is_admin: boolean;
+  //is_auditeur: boolean;
+  token: Token;
+
   searchValue = '';
   visible = false;
   listOfDisplayData;
@@ -32,7 +42,10 @@ export class ServiceComponent implements OnInit {
     private behaviorService: BehaviorService,
     private fb: FormBuilder,
     private serviceBService: ServiceBService,
-  ) { }
+    private tokenService: TokenService,
+  ) {
+    this.token = tokenService.getAccessToken();
+    } 
 
   ngOnInit(): void {
     this.behaviorService.setBreadcrumbItems(['Accueil', 'Gestion Utilisateur', 'Service']);
@@ -43,7 +56,16 @@ export class ServiceComponent implements OnInit {
 
     this.listOfColumnHeadeer();
 
+    this.is_admin = this.canWrite();
+
+    //this.is_auditeur = this.canWrite();
+
   }
+
+  canWrite(): boolean {
+    return this.token.roles.indexOf(environment.ROLE_ADMIN) > -1;
+  }
+
 
   makeServiceForm(serviceB: ServiceB){
     this.validateServiceForm = this.fb.group({

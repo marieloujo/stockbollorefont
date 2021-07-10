@@ -139,6 +139,9 @@ export class UserRunComponent implements OnInit {
                 case environment.ROLE_VALIDATEUR:
                     element.libelle = "VALIDATEUR"
                     break;
+                case environment.ROLE_AUDITEUR:
+                   element.libelle = "AUDITEUR"
+                    break;
                 default:
                     break;
             }
@@ -262,6 +265,9 @@ export class UserRunComponent implements OnInit {
                     case environment.ROLE_VALIDATEUR:
                         role.libelle = "VALIDATEUR"
                         break;
+                    case environment.ROLE_AUDITEUR:
+                          role.libelle = "AUDITEUR"
+                          break;
                     default:
                         break;
                 }
@@ -334,6 +340,9 @@ export class UserRunComponent implements OnInit {
                     case environment.ROLE_VALIDATEUR:
                         role.libelle = "VALIDATEUR"
                         break;
+                        case environment.ROLE_AUDITEUR:
+                          role.libelle = "AUDITEUR"
+                          break;
                     default:
                         break;
                 }
@@ -453,7 +462,7 @@ export class UserRunComponent implements OnInit {
         sortFn: (a: Personne, b: Personne) => a.email.localeCompare(b.email),
       },
       {
-        title: 'Sexe',
+        title: 'Sexe', 
         compare: null,
         sortFn: (a: Personne, b: Personne) => a.sexe.localeCompare(b.sexe),
       },
