@@ -160,6 +160,10 @@ export class DemandeRetourComponent implements OnInit {
     this.demandeProduitService.getListForRetour().subscribe(
         (data: DemandeProduit[]) => {
           this.demandeProduitList = data;
+          // pour les demandeurs, la demande retour est encore possible jusqu'à la 3e fois [dateDemandeRetour3 == null]
+          if (this.tokenService.isDemandeur()){
+            this.demandeProduitList = this.demandeProduitList.filter(demandeProduit => [null, undefined].includes(demandeProduit.dateDemandeRetour3));
+          }
           console.log('DemandeProduit List ==>', this.demandeProduitList);
 
           for (const dmdProd of this.demandeProduitList) {

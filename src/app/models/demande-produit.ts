@@ -33,9 +33,28 @@ export class DemandeProduit {
   dateLivraison: string;
   dateRejet: string;
 
+  // gestionnaire
   dateDemandeRetour: string;
   dateValidationRetour: string;
   dateRejetRetour: string;
   etatProduitRetour: string;
+
+  // 1
+  dateDemandeRetour1: string;
+  dateValidationRetour1: string;
+  dateRejetRetour1: string;
+  etatProduitRetour1: string;
+
+  // 2
+  dateDemandeRetour2: string;
+  dateValidationRetour2: string;
+  dateRejetRetour2: string;
+  etatProduitRetour2: string;
+
+  // 3
+  dateDemandeRetour3: string;
+  dateValidationRetour3: string;
+  dateRejetRetour3: string;
+  etatProduitRetour3: string;
 
 }

@@ -75,6 +75,53 @@ public class DemandeProduit extends AbstractAuditingEntity {
     private EnumProduitEtat etatProduitRetour;
 
 
+    // 1
+    @Column(name = "date_demande_retour_1")
+    private Date dateDemandeRetour1;
+
+    @Column(name = "date_validation_retour_1")
+    private Date dateValidationRetour1;
+
+    @Column(name = "date_rejet_retour_1")
+    private Date dateRejetRetour1;
+
+    @Column(name = "etat_produit_retour_1")
+    @Enumerated(value = EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private EnumProduitEtat etatProduitRetour1;
+
+
+    // 2
+    @Column(name = "date_demande_retour_2")
+    private Date dateDemandeRetour2;
+
+    @Column(name = "date_validation_retour_2")
+    private Date dateValidationRetour2;
+
+    @Column(name = "date_rejet_retour_2")
+    private Date dateRejetRetour2;
+
+    @Column(name = "etat_produit_retour_2")
+    @Enumerated(value = EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private EnumProduitEtat etatProduitRetour2;
+
+    // 3
+    @Column(name = "date_demande_retour_3")
+    private Date dateDemandeRetour3;
+
+    @Column(name = "date_validation_retour_3")
+    private Date dateValidationRetour3;
+
+    @Column(name = "date_rejet_retour_3")
+    private Date dateRejetRetour3;
+
+    @Column(name = "etat_produit_retour_3")
+    @Enumerated(value = EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private EnumProduitEtat etatProduitRetour3;
+
+
     @ManyToOne
     @JsonIgnoreProperties(value = {"etatProduits", "demandeProduits", "modele", "marque", "gamme", "magazinProduits"}, allowSetters = true)
     private Produit produit;
@@ -509,5 +556,221 @@ public class DemandeProduit extends AbstractAuditingEntity {
      */
     public void setEtatProduitRetour(EnumProduitEtat etatProduitRetour) {
         this.etatProduitRetour = etatProduitRetour;
+    }
+
+    /**
+     * Gets date demande retour 1.
+     *
+     * @return the date demande retour 1
+     */
+    public Date getDateDemandeRetour1() {
+        return dateDemandeRetour1;
+    }
+
+    /**
+     * Sets date demande retour 1.
+     *
+     * @param dateDemandeRetour1 the date demande retour 1
+     */
+    public void setDateDemandeRetour1(Date dateDemandeRetour1) {
+        this.dateDemandeRetour1 = dateDemandeRetour1;
+    }
+
+    /**
+     * Gets date validation retour 1.
+     *
+     * @return the date validation retour 1
+     */
+    public Date getDateValidationRetour1() {
+        return dateValidationRetour1;
+    }
+
+    /**
+     * Sets date validation retour 1.
+     *
+     * @param dateValidationRetour1 the date validation retour 1
+     */
+    public void setDateValidationRetour1(Date dateValidationRetour1) {
+        this.dateValidationRetour1 = dateValidationRetour1;
+    }
+
+    /**
+     * Gets date rejet retour 1.
+     *
+     * @return the date rejet retour 1
+     */
+    public Date getDateRejetRetour1() {
+        return dateRejetRetour1;
+    }
+
+    /**
+     * Sets date rejet retour 1.
+     *
+     * @param dateRejetRetour1 the date rejet retour 1
+     */
+    public void setDateRejetRetour1(Date dateRejetRetour1) {
+        this.dateRejetRetour1 = dateRejetRetour1;
+    }
+
+    /**
+     * Gets etat produit retour 1.
+     *
+     * @return the etat produit retour 1
+     */
+    public EnumProduitEtat getEtatProduitRetour1() {
+        return etatProduitRetour1;
+    }
+
+    /**
+     * Sets etat produit retour 1.
+     *
+     * @param etatProduitRetour1 the etat produit retour 1
+     */
+    public void setEtatProduitRetour1(EnumProduitEtat etatProduitRetour1) {
+        this.etatProduitRetour1 = etatProduitRetour1;
+    }
+
+    /**
+     * Gets date demande retour 2.
+     *
+     * @return the date demande retour 2
+     */
+    public Date getDateDemandeRetour2() {
+        return dateDemandeRetour2;
+    }
+
+    /**
+     * Sets date demande retour 2.
+     *
+     * @param dateDemandeRetour2 the date demande retour 2
+     */
+    public void setDateDemandeRetour2(Date dateDemandeRetour2) {
+        this.dateDemandeRetour2 = dateDemandeRetour2;
+    }
+
+    /**
+     * Gets date validation retour 2.
+     *
+     * @return the date validation retour 2
+     */
+    public Date getDateValidationRetour2() {
+        return dateValidationRetour2;
+    }
+
+    /**
+     * Sets date validation retour 2.
+     *
+     * @param dateValidationRetour2 the date validation retour 2
+     */
+    public void setDateValidationRetour2(Date dateValidationRetour2) {
+        this.dateValidationRetour2 = dateValidationRetour2;
+    }
+
+    /**
+     * Gets date rejet retour 2.
+     *
+     * @return the date rejet retour 2
+     */
+    public Date getDateRejetRetour2() {
+        return dateRejetRetour2;
+    }
+
+    /**
+     * Sets date rejet retour 2.
+     *
+     * @param dateRejetRetour2 the date rejet retour 2
+     */
+    public void setDateRejetRetour2(Date dateRejetRetour2) {
+        this.dateRejetRetour2 = dateRejetRetour2;
+    }
+
+    /**
+     * Gets etat produit retour 2.
+     *
+     * @return the etat produit retour 2
+     */
+    public EnumProduitEtat getEtatProduitRetour2() {
+        return etatProduitRetour2;
+    }
+
+    /**
+     * Sets etat produit retour 2.
+     *
+     * @param etatProduitRetour2 the etat produit retour 2
+     */
+    public void setEtatProduitRetour2(EnumProduitEtat etatProduitRetour2) {
+        this.etatProduitRetour2 = etatProduitRetour2;
+    }
+
+    /**
+     * Gets date demande retour 3.
+     *
+     * @return the date demande retour 3
+     */
+    public Date getDateDemandeRetour3() {
+        return dateDemandeRetour3;
+    }
+
+    /**
+     * Sets date demande retour 3.
+     *
+     * @param dateDemandeRetour3 the date demande retour 3
+     */
+    public void setDateDemandeRetour3(Date dateDemandeRetour3) {
+        this.dateDemandeRetour3 = dateDemandeRetour3;
+    }
+
+    /**
+     * Gets date validation retour 3.
+     *
+     * @return the date validation retour 3
+     */
+    public Date getDateValidationRetour3() {
+        return dateValidationRetour3;
+    }
+
+    /**
+     * Sets date validation retour 3.
+     *
+     * @param dateValidationRetour3 the date validation retour 3
+     */
+    public void setDateValidationRetour3(Date dateValidationRetour3) {
+        this.dateValidationRetour3 = dateValidationRetour3;
+    }
+
+    /**
+     * Gets date rejet retour 3.
+     *
+     * @return the date rejet retour 3
+     */
+    public Date getDateRejetRetour3() {
+        return dateRejetRetour3;
+    }
+
+    /**
+     * Sets date rejet retour 3.
+     *
+     * @param dateRejetRetour3 the date rejet retour 3
+     */
+    public void setDateRejetRetour3(Date dateRejetRetour3) {
+        this.dateRejetRetour3 = dateRejetRetour3;
+    }
+
+    /**
+     * Gets etat produit retour 3.
+     *
+     * @return the etat produit retour 3
+     */
+    public EnumProduitEtat getEtatProduitRetour3() {
+        return etatProduitRetour3;
+    }
+
+    /**
+     * Sets etat produit retour 3.
+     *
+     * @param etatProduitRetour3 the etat produit retour 3
+     */
+    public void setEtatProduitRetour3(EnumProduitEtat etatProduitRetour3) {
+        this.etatProduitRetour3 = etatProduitRetour3;
     }
 }

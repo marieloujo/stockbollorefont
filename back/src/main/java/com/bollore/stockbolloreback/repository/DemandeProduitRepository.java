@@ -32,6 +32,8 @@ public interface DemandeProduitRepository extends JpaRepository<DemandeProduit, 
 
     List<DemandeProduit> findByStatusAndDateDemandeRetourIsNull(EnumDemandeStatus status);
 
+    List<DemandeProduit> findByStatusInAndDateDemandeRetourIsNull(List<EnumDemandeStatus> statusList);
+
     List<DemandeProduit> findByStatusInOrderByCreatedDateDesc(List<EnumDemandeStatus> statusList);
 
     List<DemandeProduit> findByStatusNotInOrderByCreatedDateDesc(List<EnumDemandeStatus> statusList);

@@ -60,7 +60,11 @@ public class DemandeProduitController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes retour produit")
     @GetMapping(value = "/list/for-retour")
     public ResponseEntity<List<DemandeProduit>> getListRetourDemandeProduit(){
-        List<DemandeProduit> result = demandeProduitRepository.findByStatusAndDateDemandeRetourIsNull(EnumDemandeStatus.LIVREE);
+        List<EnumDemandeStatus> list = Arrays.asList(
+                EnumDemandeStatus.LIVREE,
+                EnumDemandeStatus.RETOUR_REJETEE
+        );
+        List<DemandeProduit> result = demandeProduitRepository.findByStatusInOrderByCreatedDateDesc(list);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -331,19 +335,38 @@ public class DemandeProduitController {
         if (demandeProduit == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        // demande status
-        demandeProduit.setStatus(EnumDemandeStatus.RETOUR_EN_ATTENNTE);
-        demandeProduit.setDateDemandeRetour(new Date());
-        demandeProduit.setEtatProduitRetour(demandeRetourForm.getEtatProduitRetour());
-        demandeProduit = demandeProduitRepository.save(demandeProduit);
         Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
-        if (produit != null) {
+        if (produit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
-            produitRepository.save(produit);
-        }
-        if(demandeRetourForm.getCanValidate() == true) {
+        // validation gestionnaire
+        if(demandeRetourForm.getCanValidate()) {
+            demandeProduit.setStatus(EnumDemandeStatus.RETOUR_EN_ATTENNTE);
+            demandeProduit.setDateDemandeRetour(new Date());
+            demandeProduit.setEtatProduitRetour(demandeRetourForm.getEtatProduitRetour());
+            demandeProduit = demandeProduitRepository.save(demandeProduit);
             return retourValiderDemande(demandeRetourForm);
-        }
+        } else
+            // cas de creation 1
+            if(demandeProduit.getDateDemandeRetour1() == null) {
+                demandeProduit.setDateDemandeRetour1(new Date());
+                demandeProduit.setEtatProduitRetour1(demandeRetourForm.getEtatProduitRetour());
+            } else
+                // cas de creation 2
+                if(demandeProduit.getDateDemandeRetour2() == null) {
+                    demandeProduit.setDateDemandeRetour2(new Date());
+                    demandeProduit.setEtatProduitRetour2(demandeRetourForm.getEtatProduitRetour());
+                } else
+                    // cas de creation 3
+                    if(demandeProduit.getDateDemandeRetour3() == null) {
+                        demandeProduit.setDateDemandeRetour3(new Date());
+                        demandeProduit.setEtatProduitRetour3(demandeRetourForm.getEtatProduitRetour());
+                    }
+        // demande status
+        demandeProduit.setEtatProduitRetour(demandeRetourForm.getEtatProduitRetour());
+        demandeProduit.setStatus(EnumDemandeStatus.RETOUR_EN_ATTENNTE);
+        demandeProduit = demandeProduitRepository.save(demandeProduit);
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
 
@@ -363,16 +386,37 @@ public class DemandeProduitController {
         if (demandeProduit == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+        if (produit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        // validation gestionnaire
+        if(demandeRetourForm.getCanValidate()) {
+            demandeProduit.setDateValidationRetour(new Date());
+            produit.setEtatActuel(demandeRetourForm.getEtatProduitRetour());
+        } else
+        // cas de validation 1
+        if(demandeProduit.getDateRejetRetour1() == null && demandeProduit.getDateValidationRetour1() == null) {
+            demandeProduit.setDateRejetRetour1(new Date());
+            produit.setEtatActuel(demandeProduit.getEtatProduitRetour1());
+        } else
+            // cas de validation 2
+            if(demandeProduit.getDateRejetRetour2() == null && demandeProduit.getDateValidationRetour2() == null) {
+                demandeProduit.setDateRejetRetour2(new Date());
+                produit.setEtatActuel(demandeProduit.getEtatProduitRetour2());
+            } else
+                // cas de validation 3
+                if(demandeProduit.getDateRejetRetour3() == null && demandeProduit.getDateValidationRetour3() == null) {
+                    demandeProduit.setDateRejetRetour3(new Date());
+                    produit.setEtatActuel(demandeProduit.getEtatProduitRetour3());
+                }
         // demande status
         demandeProduit.setStatus(EnumDemandeStatus.RETOUR_VALIDEE);
-        demandeProduit.setDateValidationRetour(new Date());
         demandeProduit = demandeProduitRepository.save(demandeProduit);
-        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
-        if (produit != null) {
-            produit.setStatus(EnumProduitStatus.EN_STOCK);
-            produit.setEtatActuel(demandeProduit.getEtatProduitRetour());
-            produitRepository.save(produit);
-        }
+        // save product
+        produit.setStatus(EnumProduitStatus.EN_STOCK);
+        produitRepository.save(produit);
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
 
@@ -392,11 +436,26 @@ public class DemandeProduitController {
         if (demandeProduit == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+        if (produit == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        // cas de rejet 1
+        if(demandeProduit.getDateRejetRetour1() == null) {
+            demandeProduit.setDateRejetRetour1(new Date());
+        } else
+        // cas de rejet 2
+        if(demandeProduit.getDateRejetRetour2() == null) {
+            demandeProduit.setDateRejetRetour2(new Date());
+        } else
+        // cas de rejet 3
+        if(demandeProduit.getDateRejetRetour3() == null) {
+            demandeProduit.setDateRejetRetour3(new Date());
+        }
         // demande status
         demandeProduit.setStatus(EnumDemandeStatus.RETOUR_REJETEE);
-        demandeProduit.setDateRejetRetour(new Date());
         demandeProduit = demandeProduitRepository.save(demandeProduit);
-        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
         // todo:
         if (produit != null) {
 
