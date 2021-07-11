@@ -69,12 +69,6 @@
             </a>
           </li>
 
-          <li nz-menu-item>
-            <a [routerLink]="['/dashboard/demande-retour']">
-              Demande retour
-            </a>
-          </li>
-
           <li nz-menu-item *ngIf="is_gestionnaire" >
             <a [routerLink]="['/dashboard/demande/reparation']">
               Demande réparation
@@ -83,6 +77,12 @@
           <li nz-menu-item *ngIf="is_gestionnaire">
             <a [routerLink]="['/dashboard/demande/rebut']">
               Demande rebut
+            </a>
+          </li>
+
+          <li nz-menu-item  *ngIf="is_gestionnaire || is_admin">
+            <a [routerLink]="['/dashboard/demande-retour']">
+              Demande retour
             </a>
           </li>
         </ul>
@@ -125,18 +125,20 @@
   <nz-layout>
     <nz-header>
       <i (click)="isCollapsed = !isCollapsed" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" class="trigger"
-         nz-icon></i> <span style="font-weight: bold; text-align: center "> BIENVENUE A BOLLORE GROUPE </span>
-
+         nz-icon >  </i> <span style="font-weight: bold; text-align: center "> BIENVENUE A BOLLORE GROUPE </span> <span style="margin-left: 60rem"></span> <span><a  (click)="logout()"  nz-button class="btn btn-white btn-outline-white" style="color:rgb(29, 0, 107)"> <b> {{connectPersonne}} </b></a> </span>
+        
       <!--<h3>BIENVENUE A BOLLORE GROUPE</h3>-->
-
+      
     </nz-header>
     <nz-content>
       <div style="padding: 10px;">
-        <app-breadcrumb></app-breadcrumb>
+        
+     <a  (click)="logout()" class="btn btn-white btn-outline-white" style="color:rgb(29, 0, 107)"> <b><app-breadcrumb></app-breadcrumb> </b></a>
       </div>
 
       <div class="inner-content">
         <router-outlet></router-outlet>
+       
       </div>
     </nz-content>
     <nz-footer> Gestion de Stock Bollore ©2021 Implement By IT interns </nz-footer>

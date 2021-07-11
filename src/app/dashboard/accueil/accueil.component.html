@@ -75,13 +75,13 @@
         <td>{{ data.personne?.nom + ' ' + data.personne?.prenom }}</td>
 
         <td *ngIf="validateur || livreur">
-          <button *ngIf="data.status === 'EN_ATTENTE'" (click)="validerDemande(data.id)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
-          <button  *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'VALIDEE'"  (click)="livrerDemande(data.id)" nz-button  nzType="primary" style="margin-right: 2px;">Fait</button>
-          <button *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'EN_ATTENTE'" (click)="rejeterDemande(data.id)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
+          <button *ngIf="data.status === 'EN_ATTENTE'" [disabled]="livreur" (click)="validerDemande(data.id)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
+          <button  *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'VALIDEE'"  [disabled]="validateur" (click)="livrerDemande(data.id)" nz-button  nzType="primary" style="margin-right: 2px;">Fait</button>
+          <button *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'EN_ATTENTE'" [disabled]="livreur" (click)="rejeterDemande(data.id)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
 
           <!-- retour -->
-          <button *ngIf="data.status === 'RETOUR_EN_ATTENNTE'" (click)="validerRetourDemande(data)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
-          <button *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'RETOUR_EN_ATTENNTE'" (click)="rejeterRetourDemande(data)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
+          <button *ngIf="data.status === 'RETOUR_EN_ATTENNTE'"  [disabled]="validateur" (click)="validerRetourDemande(data)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
+          <button *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'RETOUR_EN_ATTENNTE'"  [disabled]="validateur" (click)="rejeterRetourDemande(data)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
 
         </td>
       </tr>
