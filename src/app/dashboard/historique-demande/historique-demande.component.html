@@ -219,105 +219,142 @@
   <ng-container *nzDrawerContent>
     <h2 class="title" style=" margin-bottom: 24px;"> DÉTAILS COMPLÉMENTAIRE </h2>
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Demandeur">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">{{demandeurCourant}}</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>
+      <div nz-row>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Demandeur">
+                  <nz-descriptions-item nzTitle=" ">{{demandeurCourant}}</nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
+              <nz-descriptions [nzColumn]="2" nzTitle="Date demande">
+                  <nz-descriptions-item nzTitle=" ">{{ dateToShow + ' à ' + timeToShow}}.</nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
+              <nz-descriptions [nzColumn]="2" nzTitle="Validateur">
+                  <nz-descriptions-item nzTitle=" ">{{validateurCourant}}.</nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      </div>
+      <nz-divider></nz-divider>
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Date demande">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">{{ dateToShow + ' à ' + timeToShow}}.</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>
+      <div nz-row>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Date Validation">
+                  <nz-descriptions-item nzTitle=" ">{{ dateValidationDateCourant + ' à ' + dateLivraisonTimeCourant}}.</nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Gestionnaire">
+                  <nz-descriptions-item nzTitle=" ">{{gestionnaireCourant}}.</nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Date sorti">
+                  <nz-descriptions-item nzTitle=" ">{{ dateLivraisonDateCourant + ' à ' + dateLivraisonTimeCourant}}.</nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      </div>
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Validateur">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">{{validateurCourant}}.</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>
+      <nz-divider></nz-divider>
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Date Validation">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">{{ dateValidationDateCourant + ' à ' + dateLivraisonTimeCourant}}.</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>
+      <!-- retour 1 -->
+      <div nz-row *ngIf="![null, undefined].includes(demandeProduitSelected)">
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Retour 1">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateDemandeRetour1 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Etat">
+                  <nz-descriptions-item nzTitle="{{ProduitEtat[demandeProduitSelected.etatProduitRetour1}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Rejet">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateRejetRetour1 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Validation">
+                  <nz-descriptions-item nzTitle=" ">
+                      <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateValidationRetour1 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+                  </nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      </div>
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Gestionnaire">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">{{gestionnaireCourant}}.</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>
+      <nz-divider></nz-divider>
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Date sorti">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">{{ dateLivraisonDateCourant + ' à ' + dateLivraisonTimeCourant}}.</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>
+      <!-- retour 2 -->
+      <div nz-row>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Retour 2">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateDemandeRetour2 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Etat">
+                  <nz-descriptions-item nzTitle="{{ProduitEtat[demandeProduitSelected.etatProduitRetour2]}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Rejet">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateRejetRetour2 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Validation">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateValidationRetour2 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      </div>
+      <nz-divider></nz-divider>
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Description">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">{{descriptionCourante}}.</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>
+      <!-- retour 3 -->
+      <div nz-row *ngIf="![null, undefined].includes(demandeProduitSelected)">
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Retour 3">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateDemandeRetour3 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Etat">
+                  <nz-descriptions-item nzTitle="{{ProduitEtat[demandeProduitSelected.etatProduitRetour3]}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Rejet">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateRejetRetour3 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="6" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Validation">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateValidationRetour3 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      </div>
+      <nz-divider></nz-divider>
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Pièce Jointe">
-        <nz-descriptions-item nzTitle=" " [nzSpan]="2"> <a href="{{urlCourante}}"  target="_blank" rel="noopener noreferrer">{{urlCourante}}</a></nz-descriptions-item>
-      </nz-descriptions>
-    <nz-divider></nz-divider>
 
-    <!--<nz-descriptions [nzColumn]="2" nzTitle="Destination">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">Comptabilité.</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>
+      <div nz-row>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Description">
+                  <nz-descriptions-item nzTitle=" " [nzSpan]="2">{{descriptionCourante}}.</nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Pièce Jointe">
+                  <nz-descriptions-item nzTitle=" "> <a href="{{urlCourante}}"  target="_blank" rel="noopener noreferrer">{{urlCourante}}</a></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="8" style="padding-right: 1.5em">
 
-    <nz-descriptions [nzColumn]="2" nzTitle="Date mise en service">
-      <nz-descriptions-item nzTitle=" " [nzSpan]="2">18 mai 2021.</nz-descriptions-item>
-    </nz-descriptions>
-    <nz-divider></nz-divider>-->
+          </div>
+      </div>
+
+
+
 
   </ng-container>
 </nz-drawer>
-
-
-<!--<nz-modal
-  (nzOnCancel)="handleCancelMiddle()"
-  (nzOnOk)="handleOkMiddle()"
-  [(nzVisible)]="isVisibleMiddle"
-  nzCentered
-  nzTitle="DETAILS"
->
-  <ng-container *nzModalContent >
-
-    <div nz-row>
-
-      <div nz-col nzSpan="24">
-
-        &lt;!&ndash;<nz-table #basicTable [nzData]="listOfDetail">
-          <thead>
-          <tr>
-            <th>Demandeur</th>
-            <th>Date demande</th>
-            <th>Validateur</th>
-            <th>Date Validation</th>
-            <th>Gestionnaire</th>
-            <th>Date sorti</th>
-            <th>Destination</th>
-            <th>Date mise en service</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let data of basicTable.data">
-            <td>{{data.demandeur}}</td>
-            <td>{{data.date_demande}}</td>
-            <td>{{data.validateur}}</td>
-            <td>{{data.date_Validation}}</td>
-            <td>{{data.gestionnaire}}</td>
-            <td>{{data.date_sorti}}</td>
-            <td>{{data.destination}}</td>
-            <td>{{data.date_service}}</td>
-          </tr>
-          </tbody>
-        </nz-table>&ndash;&gt;
-
-      </div>
-
-    </div>
-
-
-
-  </ng-container>
-</nz-modal>-->

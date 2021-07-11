@@ -13,6 +13,7 @@ import {environment} from '../../../environments/environment';
 import {PersonneService} from '../../services/dashboard/personne.service';
 import {Personne} from '../../models/personne';
 import { NgxSpinnerService } from "ngx-spinner";
+import {ProduitEtat} from "../../enumerations/produit-etat.enum";
 
 interface Historique {
   numserie: string;
@@ -84,6 +85,8 @@ export class HistoriqueDemandeComponent implements OnInit {
 
   startDate: Date;
   endDate: Date;
+  public demandeProduitSelected: DemandeProduit;
+  ProduitEtat = ProduitEtat;
 
 
   constructor(
@@ -224,7 +227,7 @@ export class HistoriqueDemandeComponent implements OnInit {
 
   openDrawer(data: DemandeProduit): void {
 
-    
+    this.demandeProduitSelected = data;
     this.descriptionCourante = data.description;
     this.urlCourante = data.demande.url;
     this.dateValidationDateCourant = new Date(data.validationDate).toLocaleDateString();
