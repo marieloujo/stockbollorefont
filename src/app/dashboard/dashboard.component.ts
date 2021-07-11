@@ -15,6 +15,8 @@ export class DashboardComponent implements OnInit {
   isCollapsed = false;
   token: Token;
   contants = environment;
+  connectPersonne: string;
+
 
   is_access: boolean;
   is_admin: boolean;
@@ -33,6 +35,13 @@ export class DashboardComponent implements OnInit {
       this.is_gestionnaire = this.isGestionnaire();
       this.is_demandeur = this.isDemandeur();
       this.is_auditeur = this.isAuditeur();
+
+
+
+      this.connectPersonne = this.token.username  +  ' ' ;  //' ( '+ this.token.email + ' )' +
+
+      console.log('La personne connecter ===>');
+      console.log(this.connectPersonne);
   }
 
 
