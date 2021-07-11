@@ -62,9 +62,13 @@ public class DemandeProduitController {
     public ResponseEntity<List<DemandeProduit>> getListRetourDemandeProduit(){
         List<EnumDemandeStatus> list = Arrays.asList(
                 EnumDemandeStatus.LIVREE,
+                EnumDemandeStatus.RETOUR_REJETEE,
                 EnumDemandeStatus.RETOUR_REJETEE
         );
-        List<DemandeProduit> result = demandeProduitRepository.findByStatusInOrderByCreatedDateDesc(list);
+        List<EnumProduitStatus> enumProduitStatusList = Arrays.asList(
+                EnumProduitStatus.EN_REPARATION
+        );
+        List<DemandeProduit> result = demandeProduitRepository.findByStatusInOrProduitStatusInOrderByCreatedDateDesc(list, enumProduitStatusList);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

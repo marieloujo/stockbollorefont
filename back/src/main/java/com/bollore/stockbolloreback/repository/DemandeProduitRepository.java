@@ -2,6 +2,7 @@ package com.bollore.stockbolloreback.repository;
 
 
 import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
+import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
 import com.bollore.stockbolloreback.models.DemandeProduit;
 import com.bollore.stockbolloreback.models.MagazinProduit;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,6 +36,8 @@ public interface DemandeProduitRepository extends JpaRepository<DemandeProduit, 
     List<DemandeProduit> findByStatusInAndDateDemandeRetourIsNull(List<EnumDemandeStatus> statusList);
 
     List<DemandeProduit> findByStatusInOrderByCreatedDateDesc(List<EnumDemandeStatus> statusList);
+
+    List<DemandeProduit> findByStatusInOrProduitStatusInOrderByCreatedDateDesc(List<EnumDemandeStatus> statusList, List<EnumProduitStatus> enumProduitStatusList);
 
     List<DemandeProduit> findByStatusNotInOrderByCreatedDateDesc(List<EnumDemandeStatus> statusList);
 
