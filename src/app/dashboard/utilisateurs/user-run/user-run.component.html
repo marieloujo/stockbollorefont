@@ -232,15 +232,16 @@
         <div nz-col nzSpan="24">
           <nz-space>
             <nz-space-item>
+              <button (click)="submitPersonneForm()" [disabled]="validatePersonneForm.invalid" nz-button
+              nzType="primary"><i nz-icon nzType="check"></i>
+              Enregistrer
+               </button>
+            </nz-space-item>
+            <nz-space-item>
               <button (click)="resetPersonneForm($event)" nz-button nzType="default"><i nz-icon nzType="close"></i>
                 Annuler
               </button>
-            </nz-space-item>
-            <nz-space-item>
-              <button (click)="submitPersonneForm()" [disabled]="validatePersonneForm.invalid" nz-button
-                      nzType="primary"><i nz-icon nzType="check"></i>
-                Enregistrer
-              </button>
+              
             </nz-space-item>
           </nz-space>
         </div>

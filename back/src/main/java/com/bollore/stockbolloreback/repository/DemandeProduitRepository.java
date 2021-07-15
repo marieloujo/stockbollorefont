@@ -29,6 +29,8 @@ public interface DemandeProduitRepository extends JpaRepository<DemandeProduit, 
 
     List<DemandeProduit> findAllByCreatedByIsBetween(Instant datesaisine1, Instant datesaisine2);
 
+    List<DemandeProduit> findAllByDemande_DateHeureIsBetween(Instant datedemande1, Instant datedemande2);
+
     List<DemandeProduit> findByDateDemandeRetourIsNull();
 
     List<DemandeProduit> findByStatusAndDateDemandeRetourIsNull(EnumDemandeStatus status);

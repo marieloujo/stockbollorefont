@@ -43,7 +43,8 @@ export class AccueilComponent implements OnInit {
   listOfDisplayData = [];
   token: Token;
   environment = environment;
-  livreur: boolean;
+  gestionnaire: boolean;
+  demandeur: boolean;
   validateur: boolean;
   etatList: Etat[] = [];
   etatProduitList: EtatProduit[] = [];
@@ -81,9 +82,10 @@ export class AccueilComponent implements OnInit {
 
     this.getStatsOfDemande();
 
-    this.livreur = this.canLivrer();
+    this.demandeur = this.canLivrer();
     this.validateur = this.canValider();
-    console.log(this.livreur + ' ' + this.validateur);
+    this.gestionnaire = this.canMettreDisposition();
+    console.log(this.gestionnaire + ' ' + this.validateur);
 
     this.listEtat();
     this.listEtatProduit();
@@ -135,6 +137,10 @@ export class AccueilComponent implements OnInit {
 
 
   canLivrer(): boolean {
+    return this.token.roles.indexOf(environment.ROLE_DEMANDEUR) > -1;
+  }
+
+  canMettreDisposition(): boolean {
     return this.token.roles.indexOf(environment.ROLE_GESTIONNAIRE) > -1;
   }
 
@@ -163,6 +169,34 @@ export class AccueilComponent implements OnInit {
       });
 
   }
+
+  misADisposition(id: number): void {
+    this.demandeProduitService.misADisposition(id).subscribe(
+        (data: Demande) => {
+        console.log('Demande misADisposition  ==>', data);
+        window.location.reload();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+
+  }
+
+  confirmationReceptionDemande(id: number): void {
+    this.demandeProduitService.confirmationReceptionDemande(id).subscribe(
+        (data: Demande) => {
+        console.log('Demande confirmationReceptionDemande  ==>', data);
+        window.location.reload();
+      },
+      (error: HttpErrorResponse) => {
+        console.log('error ==>', error.message, ' ', error.status, ' ', error.statusText);
+      });
+
+  }
+  
+
+
+
 
   validerRetourDemande(demandeProduit: DemandeProduit): void {
     const demandeProduitForm: DemandeRetourForm = {

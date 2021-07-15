@@ -8,37 +8,38 @@
   <button nz-button nzBlock nzType="primary" style="margin-bottom: 10px" *ngIf="can_create">
     <a [routerLink]="['/dashboard/demande/sortie']"> Faire une nouvelle demande </a>
   </button>
-
-    <!--div nz-col nzSpan="8">
+  
+   <!--
+    <div nz-col nzSpan="8" style="margin-top: 20px;">
 
         <label>
         Date début:
-        <input [ngModel]="startDate" type="date" name="bday">
-        </label>
+        <input [(ngModel)]="startDate" type="date" name="bday">
+        </label>-->
 
-        <nz-input-group nzCompact>
+        <!--<nz-input-group nzCompact>
         <input type="text" nz-input [ngModel]="'input content'" style="width:50%;" />
         <nz-date-picker></nz-date-picker>
-        </nz-input-group>
-
+        </nz-input-group>-->
+<!--
     </div>
-    <--div nz-col nzSpan="8">
+    <div nz-col nzSpan="8" style="margin-top: 20px;">
 
         <label>
         Date fin:
-        <input [ngModel]="endDate" type="date" name="bday">
-        </label>
+        <input [(ngModel)]="endDate" type="date" name="bday">
+        </label>-->
 
-        <--<nz-input-group nzCompact>
+        <!--<nz-input-group nzCompact>
         <input type="text" nz-input [ngModel]="'input content'" style="width:50%;" />
         <nz-date-picker></nz-date-picker>
-        </nz-input-group>
+        </nz-input-group>-->
 
-    </div -->
+  <!--  </div>
 
-    <!--div nz-col nzSpan="8">
-        <button (click)="rechercherParDate()" nz-button nzType="default">Rechercher par période</button>
-    </div-->
+    <div nz-col nzSpan="8" style="margin-top: 20px;">
+        <button (click)="rechercherParDate()" [disabled]="startDate == null || startDate == undefined || endDate == null || endDate == undefined" nz-button nzType="default">Rechercher par période</button>
+    </div> -->
 
   <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5" style="margin-top: 1.5em">
     <thead>
@@ -66,6 +67,14 @@
           <i nz-icon nzType="search"></i>
         </nz-filter-trigger>
 
+        <nz-filter-trigger *ngIf="column.title == 'Date de la demande'" [(nzVisible)]="visibleDateDemande" [nzActive]="searchValueDateDemande.length > 0" [nzDropdownMenu]="menuDateDemande">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+
+        <nz-filter-trigger *ngIf="column.title == 'Date de retour'" [(nzVisible)]="visibleDateRetour" [nzActive]="searchValueDateRetour.length > 0" [nzDropdownMenu]="menuDateRetour">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+
       </th>
       <th> Détails</th>
     </tr>
@@ -81,8 +90,8 @@
       <td>{{ data.personne?.nom + ' ' + data.personne?.prenom   + ' -- ' + data.personne?.serviceB.libelle}}</td>
 
       <td>
-        <button (click)="openDrawer(data)" nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline"
-                                                                                           nzType="bars"></i>
+        <button (click)="openDrawer(data)" nz-button nzShape="circle" nzType="primary">
+          <i nz-icon nzTheme="outline" nzType="bars"></i>
         </button>
 
       </td>
@@ -149,6 +158,30 @@
       </div>
     </div>
   </nz-dropdown-menu>
+
+  <nz-dropdown-menu #menuDateDemande="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="date" nz-input placeholder="Rechercher date demande" [(ngModel)]="searchValueDateDemande" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchDateDemande()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetDateDemande()"> Annuler </button>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+
+  <!--nz-dropdown-menu #menuDateRetour="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+      <div class="search-box">
+        <input type="date" nz-input placeholder="Rechercher date retour" [(ngModel)]="searchValueDateRetour" />
+        <button nz-button nzSize="small" nzType="primary" (click)="searchDateRetour()" class="search-button">
+          Chercher
+        </button>
+        <button nz-button nzSize="small" (click)="resetDateRetour()"> Annuler </button>
+      </div>
+    </div>
+  </nz-dropdown-menu-->  
 
 
 </div>
@@ -219,7 +252,7 @@
   <ng-container *nzDrawerContent>
     <h2 class="title" style=" margin-bottom: 24px;"> DÉTAILS COMPLÉMENTAIRE </h2>
 
-      <div nz-row>
+      <!-- nz-row>
           <div nz-col nzSpan="8" style="padding-right: 1.5em">
               <nz-descriptions nzTitle="Demandeur">
                   <nz-descriptions-item nzTitle=" ">{{demandeurCourant}}</nz-descriptions-item>
@@ -256,7 +289,7 @@
           </div>
       </div>
 
-      <nz-divider></nz-divider>
+      <nz-divider></nz-divider> -->
 
 
 
@@ -295,7 +328,7 @@
               </nz-descriptions>
           </div>
           <div nz-col nzSpan="6" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Validation">
+              <nz-descriptions nzTitle="">
                   <nz-descriptions-item nzTitle=" ">
                       <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateValidationRetour1 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
                   </nz-descriptions-item>
@@ -323,7 +356,7 @@
               </nz-descriptions>
           </div>
           <div nz-col nzSpan="6" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Validation">
+              <nz-descriptions nzTitle="">
                   <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateValidationRetour2 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
               </nz-descriptions>
           </div>
@@ -348,14 +381,14 @@
               </nz-descriptions>
           </div>
           <div nz-col nzSpan="6" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Validation">
+              <nz-descriptions nzTitle="">
                   <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateValidationRetour3 | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
               </nz-descriptions>
           </div>
       </div>
       <nz-divider></nz-divider>
 
-
+       <!-- retour 3 
       <div nz-row>
           <div nz-col nzSpan="8" style="padding-right: 1.5em">
               <nz-descriptions nzTitle="Description">
@@ -370,7 +403,7 @@
           <div nz-col nzSpan="8" style="padding-right: 1.5em">
 
           </div>
-      </div>
+      </div>-->
 
 
 

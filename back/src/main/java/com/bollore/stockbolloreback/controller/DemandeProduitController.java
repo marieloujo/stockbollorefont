@@ -222,6 +222,24 @@ public class DemandeProduitController {
 
 
     /**
+     * Gets all demande produit between demande date.
+     *
+     * @param firstDate the start date
+     * @param lastDate   the end date
+     * @return the all demande produit between demande date
+     */
+    @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes produit entre deux date de demandes")
+    @GetMapping(value = "/list/between-demande-date/{firstDate}/{lastDate}")
+    public ResponseEntity<List<DemandeProduit>> getAllDemandeProduitBetweenDemandeDate(@RequestParam LocalDate firstDate,@RequestParam LocalDate lastDate){
+
+        Instant instant1 = firstDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+        Instant instant2 = lastDate != null ? lastDate.atTime(LocalTime.of(23, 59, 59)).toInstant(ZoneOffset.UTC)
+                : firstDate.atTime(LocalTime.of(23, 59, 59)).toInstant(ZoneOffset.UTC);
+
+        return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findAllByDemande_DateHeureIsBetween(instant1, instant2));
+    }
+
+    /**
      * Rejeter demande response entity.
      *
      * @param id the id
@@ -278,6 +296,15 @@ public class DemandeProduitController {
                 produit.setStatus(EnumProduitStatus.EN_UTILISAION);
                 produitRepository.save(produit);
             }
+
+            // SORTIE_REPARATION
+            if(EnumDemandeType.SORTIE_REPARATION.equals(demandeProduit.getDemande().getTypeDemande())){
+                produit.setStatus(EnumProduitStatus.EN_REPARATION);
+            }
+            // SORTIE_REBUT
+            if(EnumDemandeType.SORTIE_REBUT.equals(demandeProduit.getDemande().getTypeDemande())){
+                produit.setStatus(EnumProduitStatus.MISE_AU_REBUT);
+            }
         }
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
@@ -307,20 +334,116 @@ public class DemandeProduitController {
 
             // SORTIE
             if(EnumDemandeType.SORTIE.equals(demandeProduit.getDemande().getTypeDemande())){
-                produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
+                produit.setStatus(EnumProduitStatus.EN_ATTENTE_SORTIE_MAG_STA);
             }
             // SORTIE_REPARATION
             if(EnumDemandeType.SORTIE_REPARATION.equals(demandeProduit.getDemande().getTypeDemande())){
-                produit.setStatus(EnumProduitStatus.EN_REPARATION);
+                produit.setStatus(EnumProduitStatus.EN_ATTENTE_SORTIE_MAG_REP);
             }
             // SORTIE_REBUT
             if(EnumDemandeType.SORTIE_REBUT.equals(demandeProduit.getDemande().getTypeDemande())){
-                produit.setStatus(EnumProduitStatus.MISE_AU_REBUT);
+                produit.setStatus(EnumProduitStatus.EN_ATTENTE_SORTIE_MAG_REB);
             }
             produitRepository.save(produit);
         }
         return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
     }
+
+
+    /**
+    * mise à disposition du demandeur demande response entity.
+    *
+    * @param id the id
+    * @return the response entity
+    */
+   @ApiOperation(value = "cette ressource : confirmation sortie de magasin")
+   @PostMapping(value = "/mettreDisposition/{id}")
+   public ResponseEntity<DemandeProduit> mettreDisposition(@PathVariable("id") Long id){
+       if (id == null){
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+       }
+       DemandeProduit demandeProduit = demandeProduitRepository.findById(id).orElse(null);
+       if (demandeProduit == null) {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+       }
+       // demande status
+       demandeProduit.setStatus(EnumDemandeStatus.VALIDEE);
+       demandeProduit.setDateValidation(new Date());
+       demandeProduit = demandeProduitRepository.save(demandeProduit);
+       Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+       if (produit != null) {
+
+           // SORTIE
+           if(EnumDemandeType.SORTIE.equals(demandeProduit.getDemande().getTypeDemande())){
+               produit.setStatus(EnumProduitStatus.EN_ATTENTE_RECEPTION_STA);
+           }
+           // SORTIE_REPARATION
+           if(EnumDemandeType.SORTIE_REPARATION.equals(demandeProduit.getDemande().getTypeDemande())){
+               produit.setStatus(EnumProduitStatus.EN_ATTENTE_RECEPTION_REP);
+           }
+           // SORTIE_REBUT
+           if(EnumDemandeType.SORTIE_REBUT.equals(demandeProduit.getDemande().getTypeDemande())){
+               produit.setStatus(EnumProduitStatus.EN_ATTENTE_DE_MISE_AU_REBUT);
+           }
+           produitRepository.save(produit);
+       }
+       return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
+
+   }
+
+
+
+   /**
+    * accuser de reception demande response entity.
+    *
+    * @param id the id
+    * @return the response entity
+    */
+   @ApiOperation(value = "cette ressource : confirmation reception par demandeur")
+   @PostMapping(value = "/accuserReceptionDemande/{id}")
+   public ResponseEntity<DemandeProduit> accuserReceptionDemande(@PathVariable("id") Long id){
+       if (id == null){
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+       }
+       DemandeProduit demandeProduit = demandeProduitRepository.findById(id).orElse(null);
+       if (demandeProduit == null) {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+       }
+       // demande status
+       demandeProduit.setStatus(EnumDemandeStatus.VALIDEE);
+       demandeProduit.setDateValidation(new Date());
+       demandeProduit = demandeProduitRepository.save(demandeProduit);
+       Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
+       if (produit != null) {
+
+           // SORTIE
+           if(EnumDemandeType.SORTIE.equals(demandeProduit.getDemande().getTypeDemande())){
+               produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON);
+           }
+           // SORTIE_REPARATION
+           if(EnumDemandeType.SORTIE_REPARATION.equals(demandeProduit.getDemande().getTypeDemande())){
+               produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON_REP);
+           }
+           // SORTIE_REBUT
+           if(EnumDemandeType.SORTIE_REBUT.equals(demandeProduit.getDemande().getTypeDemande())){
+               produit.setStatus(EnumProduitStatus.EN_ATTENTE_LIVRAISON_REB);
+           }
+           produitRepository.save(produit);
+       }
+       return new ResponseEntity<DemandeProduit>(demandeProduit, HttpStatus.OK);
+   }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**

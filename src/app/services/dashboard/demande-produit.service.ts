@@ -63,6 +63,10 @@ export class DemandeProduitService {
     return this.http.get(`${this.url}/list/between-created-date?startDate=${date01}&endDate=${date02}`, this.requestService.http_get_request());
   }
 
+  getDemandeProduitBetweenDemandeDate(date01: Date, date02: Date): Observable<Object> {
+    return this.http.get(`${this.url}/list/between-demande-date?firstDate=${date01}&lastDate=${date02}`, this.requestService.http_get_request());
+  }
+
 
   rejeterDemande(id: number): Observable<Object> {
     return this.http.post(`${this.url}/rejeter/` + id, {}, this.requestService.http_get_request());
@@ -72,9 +76,19 @@ export class DemandeProduitService {
     return this.http.post(`${this.url}/valider/` + id, {}, this.requestService.http_get_request());
   }
 
+  misADisposition(id: number): Observable<Object> {
+    return this.http.post(`${this.url}/mettreDisposition/` + id, {}, this.requestService.http_get_request());
+  }  
+
+  confirmationReceptionDemande(id: number): Observable<Object> {
+    return this.http.post(`${this.url}/accuserReceptionDemande/` + id, {}, this.requestService.http_get_request());
+  }
+
+
   livrerDemande(id: number): Observable<Object> {
     return this.http.post(`${this.url}/livrer/` + id, {}, this.requestService.http_get_request());
   }
+
 
   retourRejeterDemande(demandeRetourForm: DemandeRetourForm): Observable<Object> {
     return this.http.post(`${this.url}/retour/rejeter`, JSON.stringify(demandeRetourForm), this.requestService.http_get_request());

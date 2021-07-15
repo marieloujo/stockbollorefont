@@ -1,8 +1,8 @@
 <nz-layout>
   <nz-sider [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzCollapsible style="min-height: 100vh">
-    <div class="logo">
+    <!--div class="logo">
       <img [src]="'./assets/img/logoBollore.jpeg'" width="180" height="35" scrollamount="100">
-    </div>
+    </div-->
     <ul nz-menu nzMode="inline" nzTheme="dark" >
 
       <li nz-menu-item>
@@ -58,7 +58,7 @@
 
       <li nz-submenu nzIcon="file-text" nzTitle="Demande">
         <ul>
-          <li nz-menu-item *ngIf="is_gestionnaire || is_admin || is_validateur || is_auditeur" >
+          <li nz-menu-item *ngIf="is_gestionnaire || is_admin || is_validateur || is_auditeur || is_demandeur" >
             <a [routerLink]="['/dashboard/historique-demande']">
               Historique
             </a>
@@ -80,7 +80,7 @@
             </a>
           </li>
 
-          <li nz-menu-item  *ngIf="is_gestionnaire || is_admin">
+          <li nz-menu-item  *ngIf="is_gestionnaire || is_demandeur">
             <a [routerLink]="['/dashboard/demande-retour']">
               Demande retour
             </a>
@@ -125,8 +125,14 @@
   <nz-layout>
     <nz-header>
       <i (click)="isCollapsed = !isCollapsed" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" class="trigger"
-         nz-icon >  </i> <span style="font-weight: bold; text-align: center "> BIENVENUE A BOLLORE GROUPE </span> <span style="margin-left: 60rem"></span> <span><a  (click)="logout()"  nz-button class="btn btn-white btn-outline-white" style="color:rgb(29, 0, 107)"> <b> {{connectPersonne}} </b></a> </span>
-        
+         nz-icon >  </i> 
+          
+            <span style="font-weight: bold; text-align: center;"> BIENVENUE A BOLLORE GROUPE </span> 
+            
+            <span class="float-right"><a (click)="logout()" nz-button class="btn btn-white btn-outline-white" style="color:rgb(29, 0, 107)"> 
+              <b> {{connectPersonne}} </b></a> 
+            </span>
+          
       <!--<h3>BIENVENUE A BOLLORE GROUPE</h3>-->
       
     </nz-header>

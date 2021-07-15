@@ -14,6 +14,7 @@ import {PersonneService} from '../../services/dashboard/personne.service';
 import {Personne} from '../../models/personne';
 import { NgxSpinnerService } from "ngx-spinner";
 import {ProduitEtat} from "../../enumerations/produit-etat.enum";
+import { formatDate } from '@angular/common';
 
 interface Historique {
   numserie: string;
@@ -73,12 +74,16 @@ export class HistoriqueDemandeComponent implements OnInit {
   searchValueMarque = '';
   searchValueModele = '';
   searchValueDemandeur = '';
+  searchValueDateDemande = '';
+  searchValueDateRetour = '';
 
   visibleNumero = false;
   visibleEquipement = false;
   visibleMarque = false;
   visibleModele = false;
   visibleDemandeur = false;
+  visibleDateDemande = false;
+  visibleDateRetour = false;
 
   dateToShow: string = '';
   timeToShow: string = '';
@@ -371,6 +376,35 @@ export class HistoriqueDemandeComponent implements OnInit {
     this.listOfDisplayData = this.demandeProduitList.filter((item: DemandeProduit) => item.personne.nom.indexOf(this.searchValueDemandeur) !== -1 || item.personne.prenom.indexOf(this.searchValueDemandeur) !== -1);
   }
 
+  /////////////////
+  resetDateDemande(): void {
+    this.searchValueDateDemande = '';
+    this.searchDateDemande();
+  }
+
+  searchDateDemande(): void {
+    this.visibleDateDemande = false;
+    //const format = 'dd/MM/yyyy';
+    const format = 'MM/dd/yyyy';
+    const locale = 'en-US';
+   
+    this.listOfDisplayData = this.demandeProduitList.filter((item: DemandeProduit) => new Date(formatDate(item.demande.dateHeure, format, locale)).getTime() == new Date(formatDate(this.searchValueDateDemande, format, locale)).getTime() );
+  }
+
+  resetDateRetour(): void {
+    this.searchValueDateRetour = '';
+    this.searchDateRetour();
+  }
+
+  searchDateRetour(): void {
+    this.visibleDateRetour = false;
+    //const format = 'dd/MM/yyyy';
+    const format = 'MM/dd/yyyy';
+    const locale = 'en-US';
+   
+    this.listOfDisplayData = this.demandeProduitList.filter((item: DemandeProduit) => [null, undefined].includes(item.dateValidationRetour) ? new Date(formatDate('', format, locale)).getTime() == new Date(formatDate(this.searchValueDateRetour, format, locale)).getTime() : new Date(formatDate(item.dateValidationRetour, format, locale)).getTime() == new Date(formatDate(this.searchValueDateRetour, format, locale)).getTime() );
+}
+
   rechercherParDate(){
 
     console.log('start Day')
@@ -386,19 +420,30 @@ export class HistoriqueDemandeComponent implements OnInit {
 
     let ddd = new Date(sd);
     let ddd2 = new Date(ed);
-    console.log(ddd);
-    console.log(ddd2);
+    
     console.log(sd);
+    console.log(ddd);
     console.log(ed);
+    console.log(ddd2);
     //console.log(de.getUTCMonth()+1);
 
-    this.demandeProduitService.getDemandeProduitBetweenCreatedDate(this.startDate, this.endDate).subscribe(
+    /*this.demandeProduitService.getDemandeProduitBetweenCreatedDate(ddd, ddd2).subscribe(
       (data: DemandeProduit[]) => {
         console.log('Dans le get demandeProduit between created date');
         console.log(data);
       },
       (error: HttpErrorResponse) => {
         console.log('Error in Get demandeProduit Between createdDate  non ok ' + error.status + '  ' + error.statusText + '  ' + error.message);
+      }
+    );*/
+
+    this.demandeProduitService.getDemandeProduitBetweenDemandeDate(this.startDate, this.endDate).subscribe(
+      (data: DemandeProduit[]) => {
+        console.log('Dans le get demandeProduit between demande date');
+        console.log(data);
+      },
+      (error: HttpErrorResponse) => {
+        console.log('Error in Get demandeProduit Between demande  non ok ' + error.status + '  ' + error.statusText + '  ' + error.message);
       }
     );
 
