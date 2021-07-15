@@ -346,5 +346,13 @@ export class AccueilComponent implements OnInit {
     ];
   }
 
+  /**
+   *
+   * @param data
+   */
+  public canValidateOrCancel(data: DemandeProduit): boolean {
+    // soit le demandeur de la demande || soit le gestionnaire
+    return (data.personne.id === this.tokenService.getAccessToken().id);
+  }
 
 }
