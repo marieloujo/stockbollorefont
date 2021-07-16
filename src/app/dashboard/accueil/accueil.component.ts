@@ -346,7 +346,11 @@ export class AccueilComponent implements OnInit {
     ];
   }
 
+<<<<<<< HEAD
  /**
+=======
+  /**
+>>>>>>> 9e6283de24482facf13dce656291bbb5180fb641
    *
    * @param data
    */
@@ -354,6 +358,9 @@ export class AccueilComponent implements OnInit {
     // soit le demandeur de la demande || soit le gestionnaire
     return (data.personne.id === this.tokenService.getAccessToken().id);
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9e6283de24482facf13dce656291bbb5180fb641
 
 }
