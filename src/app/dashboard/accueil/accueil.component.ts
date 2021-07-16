@@ -173,7 +173,7 @@ export class AccueilComponent implements OnInit {
   misADisposition(id: number): void {
     this.demandeProduitService.misADisposition(id).subscribe(
         (data: Demande) => {
-        console.log('Demande misADisposition  ==>', data);
+        console.log('Demande validee  ==>', data);
         window.location.reload();
       },
       (error: HttpErrorResponse) => {
@@ -344,6 +344,15 @@ export class AccueilComponent implements OnInit {
         priority: 1
       }*/
     ];
+  }
+
+ /**
+   *
+   * @param data
+   */
+  public canValidateOrCancel(data: DemandeProduit): boolean {
+    // soit le demandeur de la demande || soit le gestionnaire
+    return (data.personne.id === this.tokenService.getAccessToken().id);
   }
 
 
