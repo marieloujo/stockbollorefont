@@ -75,12 +75,20 @@
         <td>{{ data.personne?.nom + ' ' + data.personne?.prenom }}</td>
 
         <td *ngIf="validateur || gestionnaire || demandeur">
+<<<<<<< HEAD
           <button *ngIf="data.status === 'EN_ATTENTE'" [disabled]="gestionnaire || demandeur" (click)="validerDemande(data.id)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
           <button  *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'VALIDEE'"  [disabled]="validateur || demandeur" (click)="misADisposition(data.id)" nz-button  nzType="success" style="margin-right: 2px;">Disposer</button>
           <button  *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'DISPOSEE'"  [disabled]="validateur || gestionnaire"(click)="confirmationReceptionDemande(data.id)" nz-button  nzType="success" style="margin-right: 2px;">Reçu</button>
           <button  *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'RECU'"  [disabled]="validateur || gestionnaire" (click)="livrerDemande(data.id)" nz-button  nzType="primary" style="margin-right: 2px;">Livrer</button>
           <button *ngIf="data.demande.typeDemande === 'SORTIE' && data.status === 'EN_ATTENTE' || 'VALIDEE' || 'DISPOSEE' || 'RECU'"  [disabled]="demandeur" (click)="rejeterDemande(data.id)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
           <button *ngIf="data.demande.typeDemande === 'SORTIE' && data.status ===  'RECU'"  [disabled]="demandeur || gestionnaire" (click)="rejeterDemande(data.id)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
+=======
+          <button *ngIf="(validateur) && data.status === 'EN_ATTENTE'" (click)="validerDemande(data.id)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
+          <button  *ngIf="(gestionnaire) && data.demande.typeDemande === 'SORTIE' && data.status === 'VALIDEE'"  [disabled]="validateur || demandeur" (click)="misADisposition(data.id)" nz-button  nzType="primary" style="margin-right: 2px;">Mise à disposition</button>
+          <button  *ngIf="(demandeur) && data.demande.typeDemande === 'SORTIE' && data.status === 'VALIDEE'"  [disabled]="validateur || gestionnaire"(click)="confirmationReceptionDemande(data.id)" nz-button  nzType="primary" style="margin-right: 2px;">Reçu</button>
+          <button  *ngIf="(demandeur) && data.demande.typeDemande === 'SORTIE' && data.status === 'VALIDEE'"  (click)="livrerDemande(data.id)" nz-button  nzType="primary" style="margin-right: 2px;">Livrer</button>
+          <button *ngIf="(validateur || gestionnaire || demandeur) && data.demande.typeDemande === 'SORTIE' && data.status === 'EN_ATTENTE'"  [disabled]="gestionnaire" (click)="rejeterDemande(data.id)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
+>>>>>>> 4575e0e2517185f21ce034f52835169a0b69d2fc
 
           <!-- retour -->
           <button *ngIf="data.status === 'RETOUR_EN_ATTENNTE'"  [disabled]="validateur" (click)="validerRetourDemande(data)" nz-button nzType="success" style="margin-right: 2px;">Valider</button>
