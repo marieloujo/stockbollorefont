@@ -173,7 +173,7 @@ export class AccueilComponent implements OnInit {
   misADisposition(id: number): void {
     this.demandeProduitService.misADisposition(id).subscribe(
         (data: Demande) => {
-        console.log('Demande misADisposition  ==>', data);
+        console.log('Demande validee  ==>', data);
         window.location.reload();
       },
       (error: HttpErrorResponse) => {
@@ -345,6 +345,7 @@ export class AccueilComponent implements OnInit {
       }*/
     ];
   }
+
 
   /**
    *
