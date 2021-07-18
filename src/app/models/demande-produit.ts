@@ -33,6 +33,8 @@ export class DemandeProduit {
   dateLivraison: string;
   dateRejet: string;
   status: string;
+  dateMiseADisposition: string;
+  dateReception: string;
 
   // gestionnaire
   dateDemandeRetour: string;

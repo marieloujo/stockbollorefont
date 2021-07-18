@@ -8,5 +8,7 @@ public enum EnumDemandeStatus {
     // RETOUR
     RETOUR_EN_ATTENNTE,
     RETOUR_REJETEE,
-    RETOUR_VALIDEE
+    RETOUR_VALIDEE,
+    DISPOSEE,
+    RECUE
 }

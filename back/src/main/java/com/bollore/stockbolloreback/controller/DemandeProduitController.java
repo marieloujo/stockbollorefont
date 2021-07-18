@@ -367,8 +367,8 @@ public class DemandeProduitController {
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
        }
        // demande status
-       demandeProduit.setStatus(EnumDemandeStatus.VALIDEE);
-       demandeProduit.setDateValidation(new Date());
+       demandeProduit.setStatus(EnumDemandeStatus.DISPOSEE);
+       demandeProduit.setDateMiseADisposition(new Date());
        demandeProduit = demandeProduitRepository.save(demandeProduit);
        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
        if (produit != null) {
@@ -410,8 +410,8 @@ public class DemandeProduitController {
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
        }
        // demande status
-       demandeProduit.setStatus(EnumDemandeStatus.VALIDEE);
-       demandeProduit.setDateValidation(new Date());
+       demandeProduit.setStatus(EnumDemandeStatus.RECUE);
+       demandeProduit.setDateReception(new Date());
        demandeProduit = demandeProduitRepository.save(demandeProduit);
        Produit produit = produitRepository.findById(demandeProduit.getProduit().getId()).orElse(null);
        if (produit != null) {

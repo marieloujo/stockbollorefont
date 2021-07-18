@@ -74,6 +74,12 @@ public class DemandeProduit extends AbstractAuditingEntity {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private EnumProduitEtat etatProduitRetour;
 
+    @Column(name = "date_mise_a_disposition")
+    private Date dateMiseADisposition;
+
+    @Column(name = "date_reception")
+    private Date dateReception;
+
 
     // 1
     @Column(name = "date_demande_retour_1")
@@ -772,5 +778,41 @@ public class DemandeProduit extends AbstractAuditingEntity {
      */
     public void setEtatProduitRetour3(EnumProduitEtat etatProduitRetour3) {
         this.etatProduitRetour3 = etatProduitRetour3;
+    }
+
+    /**
+     * Gets date mise a disposition.
+     *
+     * @return the date mise a disposition
+     */
+    public Date getDateMiseADisposition() {
+        return dateMiseADisposition;
+    }
+
+    /**
+     * Sets date mise a disposition.
+     *
+     * @param dateMiseADisposition the date mise a disposition
+     */
+    public void setDateMiseADisposition(Date dateMiseADisposition) {
+        this.dateMiseADisposition = dateMiseADisposition;
+    }
+
+    /**
+     * Gets date reception.
+     *
+     * @return the date reception
+     */
+    public Date getDateReception() {
+        return dateReception;
+    }
+
+    /**
+     * Sets date reception.
+     *
+     * @param dateReception the date reception
+     */
+    public void setDateReception(Date dateReception) {
+        this.dateReception = dateReception;
     }
 }
