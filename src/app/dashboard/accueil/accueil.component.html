@@ -85,7 +85,9 @@
           <!-- OK -->
           <button *ngIf="(demandeur && canValidateOrCancel(data)) && data.status === 'RECUE'"  (click)="livrerDemande(data.id)" nz-button  nzType="primary" style="margin-right: 2px;">Livrer</button>
           <!-- OK -->
-          <button *ngIf="(validateur || (gestionnaire && data.status === 'VALIDEE') || (demandeur && canValidateOrCancel(data) && ['EN_ATTENTE', 'RECUE'].includes(data.status))) && data.demande.typeDemande === 'SORTIE'" (click)="rejeterDemande(data.id)" nz-button  nzType="danger" style="margin-right: 2px;">Rejeter</button>
+          <button *ngIf="(validateur || (gestionnaire && data.status === 'VALIDEE') || (demandeur && canValidateOrCancel(data) && ['EN_ATTENTE', 'RECUE'].includes(data.status))) && data.demande.typeDemande === 'SORTIE'" (click)="rejeterDemande(data.id)" nz-button  nzType="danger" style="margin-right: 2px;">
+            {{demandeur ? 'Annuler' : 'Rejeter'}}
+          </button>
 
 
           <!-- retour -->

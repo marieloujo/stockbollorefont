@@ -358,6 +358,8 @@ export class AccueilComponent implements OnInit {
    */
   public canValidateOrCancel(data: DemandeProduit): boolean {
     // si c'est la personne qui a fait la demande
+    console.log('personne email ' + data.personne.email);
+    console.log('token email ' + this.tokenService.getAccessToken().email);
     return (data.personne.email === this.tokenService.getAccessToken().email);
   }
 
