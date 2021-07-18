@@ -32,6 +32,7 @@ export class DemandeProduit {
   dateValidation: string;
   dateLivraison: string;
   dateRejet: string;
+  status: string;
 
   // gestionnaire
   dateDemandeRetour: string;

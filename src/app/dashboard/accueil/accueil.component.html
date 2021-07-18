@@ -63,6 +63,7 @@
         <td>{{ data.gamme?.libelle }}</td>
         <td>{{ data.marque?.libelle }}</td>
         <td>{{ data.modele?.libelle }}</td>
+        <td>{{ ProduitStatus[data.produit?.status] }}</td>
         <td>
           <strong nz-typography [nzType]="demandeProduitService.getTextColorByStatusDemandeProduit(data?.status)">
             {{ DemandeStatusEnum[data.status] }}

@@ -319,9 +319,14 @@ export class AccueilComponent implements OnInit {
         sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.modele.libelle.localeCompare(b.produit.modele.libelle),
       },
       {
-        title: 'Statut',
+        title: 'Statut produit',
         compare: null,
         sortFn: (a: DemandeProduit, b: DemandeProduit) => a.produit.status.localeCompare(b.produit.status),
+      },
+      {
+        title: 'Statut demande',
+        compare: null,
+        sortFn: (a: DemandeProduit, b: DemandeProduit) => a.status.localeCompare(b.status),
       },
       {
         title: 'Etat',
