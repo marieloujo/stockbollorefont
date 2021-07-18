@@ -252,45 +252,20 @@
   <ng-container *nzDrawerContent>
     <h2 class="title" style=" margin-bottom: 24px;"> DÉTAILS COMPLÉMENTAIRE </h2>
 
-      <!-- nz-row>
-          <div nz-col nzSpan="8" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Demandeur">
-                  <nz-descriptions-item nzTitle=" ">{{demandeurCourant}}</nz-descriptions-item>
+      <!-- date demande -->
+      <div nz-row *ngIf="![null, undefined].includes(demandeProduitSelected)">
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Date de la demande">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.createdDate | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
               </nz-descriptions>
           </div>
-          <div nz-col nzSpan="8" style="padding-right: 1.5em">
-              <nz-descriptions [nzColumn]="2" nzTitle="Date demande">
-                  <nz-descriptions-item nzTitle=" ">{{ dateToShow + ' à ' + timeToShow}}.</nz-descriptions-item>
-              </nz-descriptions>
-          </div>
-          <div nz-col nzSpan="8" style="padding-right: 1.5em">
-              <nz-descriptions [nzColumn]="2" nzTitle="Validateur">
-                  <nz-descriptions-item nzTitle=" ">{{validateurCourant}}.</nz-descriptions-item>
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Auteur">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.personne.nom + ' ' + demandeProduitSelected.personne.prenom}}"></nz-descriptions-item>
               </nz-descriptions>
           </div>
       </div>
       <nz-divider></nz-divider>
-
-      <div nz-row>
-          <div nz-col nzSpan="8" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Date Validation">
-                  <nz-descriptions-item nzTitle=" ">{{ dateValidationDateCourant + ' à ' + dateLivraisonTimeCourant}}.</nz-descriptions-item>
-              </nz-descriptions>
-          </div>
-          <div nz-col nzSpan="8" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Gestionnaire">
-                  <nz-descriptions-item nzTitle=" ">{{gestionnaireCourant}}.</nz-descriptions-item>
-              </nz-descriptions>
-          </div>
-          <div nz-col nzSpan="8" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Date sorti">
-                  <nz-descriptions-item nzTitle=" ">{{ dateLivraisonDateCourant + ' à ' + dateLivraisonTimeCourant}}.</nz-descriptions-item>
-              </nz-descriptions>
-          </div>
-      </div>
-
-      <nz-divider></nz-divider> -->
-
 
 
       <!-- retour gestionnaire -->
@@ -308,6 +283,57 @@
       </div>
 
       <nz-divider></nz-divider>
+
+
+      <!-- mise a disposition -->
+      <div nz-row *ngIf="![null, undefined].includes(demandeProduitSelected)">
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Date mise à disposition">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateMiseADisposition | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Auteur">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.gestionnaire}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      </div>
+      <nz-divider></nz-divider>
+
+
+      <!-- réception -->
+      <div nz-row *ngIf="![null, undefined].includes(demandeProduitSelected)">
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Date mise à disposition">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateReception | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Auteur">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.personne.nom + ' ' + demandeProduitSelected.personne.prenom}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      </div>
+      <nz-divider></nz-divider>
+
+      <!-- livraison -->
+      <div nz-row *ngIf="![null, undefined].includes(demandeProduitSelected)">
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Date mise à disposition">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateLivraison | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+          <div nz-col nzSpan="12" style="padding-right: 1.5em">
+              <nz-descriptions nzTitle="Auteur">
+                  <nz-descriptions-item nzTitle="{{demandeProduitSelected.gestionnaire}}"></nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+      </div>
+      <nz-divider></nz-divider>
+
+
+
+
 
 
       <!-- retour 1 -->
