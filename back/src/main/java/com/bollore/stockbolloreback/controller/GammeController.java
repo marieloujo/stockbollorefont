@@ -39,7 +39,7 @@ public class GammeController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des gammes")
     @GetMapping(value = "/list")
     public ResponseEntity<List<Gamme>> getAllGammes(){
-        return ResponseEntity.status(HttpStatus.OK).body(gammeRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(gammeRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir une gamme par son id")

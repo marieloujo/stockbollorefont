@@ -34,7 +34,7 @@ public class MagazinProduitController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des magasin produit")
     @GetMapping(value = "/list")
     public ResponseEntity<List<MagazinProduit>> getAllMagazinProduit(){
-        return ResponseEntity.status(HttpStatus.OK).body(magazinProduitRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(magazinProduitRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir un objet magasinProduit par id")

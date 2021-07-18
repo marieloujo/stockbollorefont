@@ -40,7 +40,7 @@ public class EtatProduitController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des etats produit")
     @GetMapping(value = "/list")
     public ResponseEntity<List<EtatProduit>> getAllEtatProduit(){
-        return ResponseEntity.status(HttpStatus.OK).body(etatProduitRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(etatProduitRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir un objet etatProduit par id")

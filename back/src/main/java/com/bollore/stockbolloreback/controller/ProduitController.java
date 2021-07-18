@@ -49,7 +49,7 @@ public class ProduitController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des produits")
     @GetMapping(value = "/list")
     public ResponseEntity<List<Produit>> getAllProduits(){
-        return ResponseEntity.status(HttpStatus.OK).body(produitRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(produitRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir un produit par id")

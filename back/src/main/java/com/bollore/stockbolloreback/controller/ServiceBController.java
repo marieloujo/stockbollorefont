@@ -39,7 +39,7 @@ public class ServiceBController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des services")
     @GetMapping(value = "/list")
     public ResponseEntity<List<ServiceB>> getAllServiceB(){
-        return ResponseEntity.status(HttpStatus.OK).body(serviceBRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(serviceBRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir un service par son id")

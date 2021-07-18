@@ -37,7 +37,7 @@ public class ModeleController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des modeles")
     @GetMapping(value = "/list")
     public ResponseEntity<List<Modele>> getAllModeles(){
-        return ResponseEntity.status(HttpStatus.OK).body(modeleRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(modeleRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir un modele par son id")

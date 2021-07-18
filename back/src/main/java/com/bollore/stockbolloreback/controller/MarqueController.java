@@ -38,7 +38,7 @@ public class MarqueController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des marques")
     @GetMapping(value = "/list")
     public ResponseEntity<List<Marque>> getAllMarques(){
-        return ResponseEntity.status(HttpStatus.OK).body(marqueRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(marqueRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir une marque par son id")

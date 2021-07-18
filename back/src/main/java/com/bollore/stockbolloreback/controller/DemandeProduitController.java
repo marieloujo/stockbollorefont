@@ -54,7 +54,7 @@ public class DemandeProduitController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes produit")
     @GetMapping(value = "/list")
     public ResponseEntity<List<DemandeProduit>> getAllDemandeProduit(){
-        return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(demandeProduitRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des demandes retour produit")

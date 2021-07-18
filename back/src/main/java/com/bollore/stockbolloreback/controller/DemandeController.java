@@ -3,10 +3,7 @@ package com.bollore.stockbolloreback.controller;
 import com.bollore.stockbolloreback.enumeration.EnumDemandeStatus;
 import com.bollore.stockbolloreback.enumeration.EnumProduitStatus;
 import com.bollore.stockbolloreback.enumeration.EnumProduitEtat;
-import com.bollore.stockbolloreback.models.Demande;
-import com.bollore.stockbolloreback.models.DemandeProduit;
-import com.bollore.stockbolloreback.models.Etat;
-import com.bollore.stockbolloreback.models.Produit;
+import com.bollore.stockbolloreback.models.*;
 import com.bollore.stockbolloreback.repository.DemandeProduitRepository;
 import com.bollore.stockbolloreback.repository.DemandeRepository;
 import com.bollore.stockbolloreback.repository.ProduitRepository;
@@ -46,7 +43,7 @@ public class DemandeController {
     @ApiOperation(value = "cette ressource permet d'obtenir liste des demandes")
     @GetMapping(value = "/list")
     public ResponseEntity<List<Demande>> getAllDemande(){
-        return ResponseEntity.status(HttpStatus.OK).body(demandeRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(demandeRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir une demande par id")

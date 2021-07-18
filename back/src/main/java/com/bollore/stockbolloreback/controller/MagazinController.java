@@ -40,7 +40,7 @@ public class MagazinController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des magazins")
     @GetMapping(value = "/list")
     public ResponseEntity<List<Magazin>> getAllMagazins(){
-        return ResponseEntity.status(HttpStatus.OK).body(magazinRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(magazinRepository.findAllByOrderByCreatedDateDesc());
     }
 
     /*public ResponseEntity<Magazin> createMagazin(@Valid @RequestBody Magazin magazin) throws URISyntaxException {

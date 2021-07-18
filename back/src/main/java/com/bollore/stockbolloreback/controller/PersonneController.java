@@ -37,7 +37,8 @@ public class PersonneController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des personnes")
     @GetMapping(value = "/list")
     public ResponseEntity<List<Personne>> getAllPersonne(){
-        return ResponseEntity.status(HttpStatus.OK).body(personneRepository.findAll());
+        List<Personne> result = personneRepository.findAllByOrderByCreatedDateDesc();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir une personne par son id")

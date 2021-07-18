@@ -38,7 +38,7 @@ public class ActionBController {
     @ApiOperation(value = "cette ressource permet d'obtenir la liste des actions")
     @GetMapping(value = "/list")
     public ResponseEntity<List<ActionB>> getAllActionB(){
-        return ResponseEntity.status(HttpStatus.OK).body(actionBRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(actionBRepository.findAllByOrderByCreatedDateDesc());
     }
 
     @ApiOperation(value = "cette ressource permet d'obtenir une action par son id")

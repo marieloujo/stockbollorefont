@@ -12,7 +12,26 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface ProfilActionRepository extends JpaRepository<ProfilAction, Long> {
+    /**
+     * Find by profil id list.
+     *
+     * @param id the id
+     * @return the list
+     */
     List<ProfilAction> findByProfil_Id(Long id);
 
+    /**
+     * Find by action b id list.
+     *
+     * @param id the id
+     * @return the list
+     */
     List<ProfilAction> findByActionB_Id(Long id);
+
+    /**
+     * Find all by order by created date desc list.
+     *
+     * @return the list
+     */
+    List<ProfilAction> findAllByOrderByCreatedDateDesc();
 }
