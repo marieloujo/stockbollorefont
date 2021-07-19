@@ -304,7 +304,7 @@
       <!-- réception -->
       <div nz-row *ngIf="![null, undefined].includes(demandeProduitSelected)">
           <div nz-col nzSpan="12" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Date mise à disposition">
+              <nz-descriptions nzTitle="Date de réception">
                   <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateReception | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
               </nz-descriptions>
           </div>
@@ -319,7 +319,7 @@
       <!-- livraison -->
       <div nz-row *ngIf="![null, undefined].includes(demandeProduitSelected)">
           <div nz-col nzSpan="12" style="padding-right: 1.5em">
-              <nz-descriptions nzTitle="Date mise à disposition">
+              <nz-descriptions nzTitle="Date de livraison">
                   <nz-descriptions-item nzTitle="{{demandeProduitSelected.dateLivraison | date: 'dd/MM/yyyy à H:m'}}"></nz-descriptions-item>
               </nz-descriptions>
           </div>
