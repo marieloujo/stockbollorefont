@@ -89,7 +89,14 @@
         <tr *ngFor="let data of sortTable.data">
           <td>{{ data?.createdDate | date: 'dd/MM/yyyy à HH:mm'}}</td>
           <td>{{ data?.numSerie }}</td>
-          <td>{{ data?.gamme?.libelle }}</td>
+          <td>
+            {{ data?.gamme?.libelle }}
+            <div *ngIf="gammeService.equipementIsUnderStore(data?.gamme, listOfDisplayData, data?.magasin)">
+              <div nz-typography nzType="danger">Stock minimum atteint !</div>
+              <div nz-typography nzType="danger">Stock min. : {{data?.gamme.stockMin}}</div>
+              <div nz-typography nzType="danger">Stock actuel dans le magasin {{data?.magasin.libelle}} : {{gammeService.getStockInMagasinByEquipement(data?.gamme, listOfDisplayData, data?.magasin)}}</div>
+            </div>
+          </td>
           <td>{{ data?.marque?.libelle }}</td>
           <td>{{ data?.modele?.libelle }}</td>
           <td>{{ ProduitEtat[data?.etatActuel] }}</td>

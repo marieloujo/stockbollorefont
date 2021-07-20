@@ -8,6 +8,7 @@ import { RequestService } from '../request/request.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Token } from 'src/app/models/token.model';
+import {Produit} from "../../models/produit";
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +80,16 @@ getAccessToken(): Token {
     token = JSON.parse(this.Cookie.get('access_token'));
 
     return token;
+}
+
+public equipementIsUnderStore(equipement: Gamme, listProduit: Array<Produit> = [], magasin: Magasin): boolean {
+      const listData = listProduit.filter(p => p.gamme.id === equipement.id && magasin.id === p.magasin.id);
+      console.log('Magasin [' + magasin.libelle + '] ' + ' Equipement[' + equipement.libelle + '] ' + ' Seuil[' + equipement.stockMin + ']' + ' => [' + listData.length + ']');
+      return (equipement.stockMin > listData.length);
+}
+public getStockInMagasinByEquipement(equipement: Gamme, listProduit: Array<Produit> = [], magasin: Magasin): number {
+      const listData = listProduit.filter(p => p.gamme.id === equipement.id && magasin.id === p.magasin.id);
+      return listData.length;
 }
 
 }

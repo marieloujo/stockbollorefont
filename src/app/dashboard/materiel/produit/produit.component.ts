@@ -89,7 +89,7 @@ export class ProduitComponent implements OnInit {
     private fb: FormBuilder,
     public produitService: ProduitService,
     private magasinService: MagasinService,
-    private gammeService: GammeService,
+    public gammeService: GammeService,
     private marqueService: MarqueService,
     private modeleService: ModeleService,
     private etatService: EtatService,
