@@ -41,6 +41,9 @@
         <button (click)="rechercherParDate()" [disabled]="startDate == null || startDate == undefined || endDate == null || endDate == undefined" nz-button nzType="default">Rechercher par période</button>
     </div> -->
 
+    <angular2csv [data]="data" filename="historique_demande" [options]="options"></angular2csv>
+
+
   <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5" style="margin-top: 1.5em">
     <thead>
     <tr>

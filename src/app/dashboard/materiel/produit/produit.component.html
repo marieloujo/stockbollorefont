@@ -1,5 +1,7 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "line-scale-pulse-out" [fullScreen] = "true"><p style="color: white" > Chargement... </p></ngx-spinner>
 
+
+
 <nz-tabset [(nzSelectedIndex)]="indexOfTab" [nzSize]="'large'">
   <!--<div nz-row>
     <div nz-col nzSpan="24" style="padding-right: 1.5em">
@@ -13,9 +15,8 @@
       </nz-form-item>
     </div>
   </div>-->
-
-
-    <nz-tab [nzTitle]="'Liste des produits ( ' + listOfDisplayData.length + ' )'">
+ 
+    <nz-tab [nzTitle]="'Liste des produits ( ' + listOfDisplayData.length + ' )'" id="content" #content>
 
       <!--<div nz-row>
         <div nz-col nzSpan="14" style="padding-right: 1.5em">
@@ -43,96 +44,102 @@
         </div>
       </div>-->
 
+        <button (click)="savePDF()" nz-button nzType="default">
+            <i nz-icon nzType="vertical-align-bottom" nzTheme="outline"></i>
+            Exporter en PDF
+        </button>
 
-      <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5">
-        <thead>
-        <tr>
-          <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">{{ column.title }}
 
-            <nz-filter-trigger *ngIf="column.title == 'Date création'" [(nzVisible)]="visibleDateCreation" [nzActive]="searchValueDateCreation.length > 0" [nzDropdownMenu]="menuDateCreation">
-              <!--i nz-icon nzType="search"></i-->
-            </nz-filter-trigger>
+      <nz-table #sortTable [nzData]="listOfDisplayData" nzTableLayout="fixed" [nzPageSize]="5" >
+            <thead >
+                <tr>
+                <th nzCustomFilter *ngFor="let column of listOfColumn" [nzSortFn]="column.sortFn">{{ column.title }}
 
-              <nz-filter-trigger *ngIf="column.title == 'Numero Série'" [(nzVisible)]="visibleNumSerie" [nzActive]="searchValueNumSerie.length > 0" [nzDropdownMenu]="menuNumSerie">
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
+                    <nz-filter-trigger *ngIf="column.title == 'Date création'" [(nzVisible)]="visibleDateCreation" [nzActive]="searchValueDateCreation.length > 0" [nzDropdownMenu]="menuDateCreation">
+                    <!--i nz-icon nzType="search"></i-->
+                    </nz-filter-trigger>
 
-            <nz-filter-trigger *ngIf="column.title == 'Equipement'"  [(nzVisible)]="visibleGamme" [nzActive]="searchValueGamme.length > 0" [nzDropdownMenu]="menuGamme">
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
+                    <nz-filter-trigger *ngIf="column.title == 'Numero Série'" [(nzVisible)]="visibleNumSerie" [nzActive]="searchValueNumSerie.length > 0" [nzDropdownMenu]="menuNumSerie">
+                    <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
 
-            <nz-filter-trigger *ngIf="column.title == 'Marque'" [(nzVisible)]="visibleMarque" [nzActive]="searchValueMarque.length > 0" [nzDropdownMenu]="menuMarque">
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
+                    <nz-filter-trigger *ngIf="column.title == 'Equipement'"  [(nzVisible)]="visibleGamme" [nzActive]="searchValueGamme.length > 0" [nzDropdownMenu]="menuGamme">
+                    <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
 
-            <nz-filter-trigger *ngIf="column.title == 'Modele'" [(nzVisible)]="visibleModele" [nzActive]="searchValueModele.length > 0" [nzDropdownMenu]="menuModele">
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
+                    <nz-filter-trigger *ngIf="column.title == 'Marque'" [(nzVisible)]="visibleMarque" [nzActive]="searchValueMarque.length > 0" [nzDropdownMenu]="menuMarque">
+                    <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
 
-            <nz-filter-trigger *ngIf="column.title == 'Etat'" [(nzVisible)]="visibleEtat" [nzActive]="searchValueEtat.length > 0" [nzDropdownMenu]="menuEtat">
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
+                    <nz-filter-trigger *ngIf="column.title == 'Modele'" [(nzVisible)]="visibleModele" [nzActive]="searchValueModele.length > 0" [nzDropdownMenu]="menuModele">
+                    <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
 
-            <nz-filter-trigger *ngIf="column.title == 'Status'" [(nzVisible)]="visibleStatus" [nzActive]="searchValueStatus.length > 0" [nzDropdownMenu]="menuStatus">
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
+                    <nz-filter-trigger *ngIf="column.title == 'Etat'" [(nzVisible)]="visibleEtat" [nzActive]="searchValueEtat.length > 0" [nzDropdownMenu]="menuEtat">
+                    <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
 
-            <nz-filter-trigger *ngIf="column.title == 'Magasin'" [(nzVisible)]="visibleMagasin" [nzActive]="searchValueMagasin.length > 0" [nzDropdownMenu]="menuMagasin">
-              <i nz-icon nzType="search"></i>
-            </nz-filter-trigger>
+                    <nz-filter-trigger *ngIf="column.title == 'Status'" [(nzVisible)]="visibleStatus" [nzActive]="searchValueStatus.length > 0" [nzDropdownMenu]="menuStatus">
+                    <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
 
-          </th>
-          <th *ngIf="is_gestionnaire"> Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let data of sortTable.data">
-          <td>{{ data?.createdDate | date: 'dd/MM/yyyy à HH:mm'}}</td>
-          <td>{{ data?.numSerie }}</td>
-          <td>
-            {{ data?.gamme?.libelle }}
-            <div *ngIf="gammeService.equipementIsUnderStore(data?.gamme, listOfDisplayData, data?.magasin)">
-              <div nz-typography nzType="danger">Stock minimum atteint !</div>
-              <div nz-typography nzType="danger">Stock min. : {{data?.gamme.stockMin}}</div>
-              <div nz-typography nzType="danger">Stock actuel dans le magasin {{data?.magasin.libelle}} : {{gammeService.getStockInMagasinByEquipement(data?.gamme, listOfDisplayData, data?.magasin)}}</div>
-            </div>
-          </td>
-          <td>{{ data?.marque?.libelle }}</td>
-          <td>{{ data?.modele?.libelle }}</td>
-          <td>{{ ProduitEtat[data?.etatActuel] }}</td>
-          <td>
-          <ng-container *ngIf="![null, undefined].includes(data?.status)">
-              <strong nz-typography [nzType]="produitService.getTextColorByStatusProduit(data?.status)">
-                {{ProduitStatus[data?.status]}}
-              </strong>
-          </ng-container>
-          <ng-container *ngIf="[null, undefined].includes(data?.status)">
-              -
-          </ng-container>
-          </td>
-          <td>{{ data?.magasin?.libelle }}</td>
+                    <nz-filter-trigger *ngIf="column.title == 'Magasin'" [(nzVisible)]="visibleMagasin" [nzActive]="searchValueMagasin.length > 0" [nzDropdownMenu]="menuMagasin">
+                    <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
 
-          <td *ngIf="is_gestionnaire">
-            <nz-space>
-              <nz-space-item>
-                <button (click)="updateForm(data)"  nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="edit"></i>
-                </button>
-              </nz-space-item>
-              <nz-space-item>
-                <button
-                  nz-popconfirm
-                  nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
-                  (nzOnConfirm)="confirmMsgDelete(data)"
-                  (nzOnCancel)="cancelMsgDelete()"
-                  nzPopconfirmPlacement="topRight"
-                  nz-button nzShape="circle" nzType="danger"><i nz-icon nzTheme="outline" nzType="delete"></i>
-                </button>
-              </nz-space-item>
-            </nz-space>
-          </td>
-        </tr>
-        </tbody>
+                </th>
+                <th *ngIf="is_gestionnaire"> Actions</th>
+                </tr>
+            </thead>
+            <tbody id="produits-list">
+                <tr *ngFor="let data of sortTable.data">
+                <td>{{ data?.createdDate | date: 'dd/MM/yyyy à HH:mm'}}</td>
+                <td>{{ data?.numSerie }}</td>
+                <td>
+                    {{ data?.gamme?.libelle }}
+                    <div *ngIf="gammeService.equipementIsUnderStore(data?.gamme, listOfDisplayData, data?.magasin)">
+                    <div nz-typography nzType="danger">Stock minimum atteint !</div>
+                    <div nz-typography nzType="danger">Stock min. : {{data?.gamme.stockMin}}</div>
+                    <div nz-typography nzType="danger">Stock actuel dans le magasin {{data?.magasin.libelle}} : {{gammeService.getStockInMagasinByEquipement(data?.gamme, listOfDisplayData, data?.magasin)}}</div>
+                    </div>
+                </td>
+                <td>{{ data?.marque?.libelle }}</td>
+                <td>{{ data?.modele?.libelle }}</td>
+                <td>{{ ProduitEtat[data?.etatActuel] }}</td>
+                <td>
+                <ng-container *ngIf="![null, undefined].includes(data?.status)">
+                    <strong nz-typography [nzType]="produitService.getTextColorByStatusProduit(data?.status)">
+                        {{ProduitStatus[data?.status]}}
+                    </strong>
+                </ng-container>
+                <ng-container *ngIf="[null, undefined].includes(data?.status)">
+                    -
+                </ng-container>
+                </td>
+                <td>{{ data?.magasin?.libelle }}</td>
+
+                <td *ngIf="is_gestionnaire">
+                    <nz-space>
+                    <nz-space-item>
+                        <button (click)="updateForm(data)"  nz-button nzShape="circle" nzType="primary"><i nz-icon nzTheme="outline" nzType="edit"></i>
+                        </button>
+                    </nz-space-item>
+                    <nz-space-item>
+                        <button
+                        nz-popconfirm
+                        nzPopconfirmTitle="Voulez-vous vraiment supprimer?"
+                        (nzOnConfirm)="confirmMsgDelete(data)"
+                        (nzOnCancel)="cancelMsgDelete()"
+                        nzPopconfirmPlacement="topRight"
+                        nz-button nzShape="circle" nzType="danger"><i nz-icon nzTheme="outline" nzType="delete"></i>
+                        </button>
+                    </nz-space-item>
+                    </nz-space>
+                </td>
+                </tr>
+            </tbody>
       </nz-table>
+
     </nz-tab>
 
   <nz-dropdown-menu #menuMarque="nzDropdownMenu">

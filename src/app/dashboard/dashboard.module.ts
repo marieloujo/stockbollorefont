@@ -39,6 +39,7 @@ import { DemandeGestionnaireComponent } from './demande-gestionnaire/demande-ges
 import {NzTypographyModule} from "ng-zorro-antd/typography";
 import { DemandeRetourComponent } from './demande-retour/demande-retour.component';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { Angular2CsvModule } from 'angular2-csv';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
         NzDatePickerModule,
         NzTypographyModule,
         NzNotificationModule,
+        Angular2CsvModule
     ]
 })
 export class DashboardModule { }

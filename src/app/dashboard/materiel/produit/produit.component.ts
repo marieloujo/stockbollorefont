@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BehaviorService} from '../../../services/common/behavior.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Magasin} from '../../../models/magasin';
@@ -24,6 +24,8 @@ import {environment} from '../../../../environments/environment';
 import {ProduitStatus} from '../../../enumerations/produit-status.enum';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import {ProduitEtat} from "../../../enumerations/produit-etat.enum";
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable'
 
 // @ts-ignore
 @Component({
@@ -118,6 +120,7 @@ export class ProduitComponent implements OnInit {
     this.getEtatByCode('NEW');
 
     this.is_gestionnaire = this.canWrite();
+
 
   }
 
@@ -385,6 +388,23 @@ export class ProduitComponent implements OnInit {
 
     this.indexOfTab = 1;
   }
+
+
+
+    public savePDF(): void {
+        
+        const doc = new jsPDF()
+
+        autoTable(doc, { 
+            margin: { top: 10 },
+            head: [['Date création', 'Numero Série', 'Equipement', 'Marque', 'Modele', 'Etat', 'Status', 'Magasinx']],
+            html: '#produits-list' 
+        })
+        doc.save('produits.pdf');
+
+    }
+
+
 
 
   list(): void {
